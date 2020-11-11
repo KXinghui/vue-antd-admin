@@ -1,0 +1,54 @@
+.btn {
+    color: #555;
+    font-size: 1.1rem;
+    // line-height: 64px;
+    // line-height: normal;
+    padding: 0 .5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.img {
+    padding: 0 .5rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    color: #1890ff;
+}
+
+.btn .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+}
+
+.clearfloat {
+    clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+
+/* 
+enter-active 定义进入过渡的结束状态
+leave-active 定义离开过渡的结束状态
+ */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+}
+
+/* 
+enter定义进入过渡的开始状态
+ */
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+/* 
+leave-to离场动画结束后的状态
+ */
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}

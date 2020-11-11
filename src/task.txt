@@ -1,0 +1,250 @@
+npm 包下载
+--registry=https://registry.npm.taobao.org
+
+npm cache clean -f
+npm install --registry=https://registry.npm.taobao.org
+
+vue js代码混淆加密、压缩
+[https://blog.csdn.net/liu798675179/article/details/103067868]
+npm install --save-dev javascript-obfuscator webpack-obfuscator
+
+No module factory available for dependency type: CssDependency
+
+"yuicompressor": "^2.4.8"
+
+"webpack": "^4.44.2",
+"webpack-obfuscator": "^2.6.0"
+"javascript-obfuscator": "^2.8.0",
+"compression-webpack-plugin": "^6.0.5",
+
+"imagemin": "^7.0.1",
+"imagemin-jpegtran": "^7.0.0",
+"imagemin-pngquant": "^9.0.1",
+
+module.exports = {
+  css: {
+    extract: false
+  }
+};
+
+Electron Vue
+打包：
+https://www.jianshu.com/p/1dbb96bc8f37
+https://www.php.cn/div-tutorial-411690.html
+自定义图标 ico且256*256以上 【在线转换ico http://www.ico51.cn/】
+
+Vue-Router
+路由嵌套、路由缓存、路由动画
+中心化，在 router.config.js 统一配置和管理
+
+Vue 压缩混肴
+javascript-obfuscator compression-webpack-plugin webpack-obfuscator
+
+Vuex
+
+优化：
+1、首屏加载动画
+实现：
+1. 将 动画加载 dom 元素放在 #app 内，Vue 生命周期开始时，会自动清掉 #app 下的所有元素。
+2. 将 动画加载 dom 元素放在 body 下，Vue 生命周期开始时 App.vue (created, mounted) 调用 `@/utils/utll` 下的 removeLoadingAnimate(#id, timeout) 则会移除加载动画
+最后一步：
+​	将样式插入到 `public/index.html` 文件的 `<head></head>` 最好写成内联 `<style>动画样式</style>` 
+
+2 图标
+svg【symbol svg-sprite-loader（将svg生成对应的symbolId放到body） svgo（精简svg文件）】 
+1、icon-font组件
+2、
+Vue svg-sprite-loader vue.config.js
+svg-sprite-loader 在body上将svg生成对应的symbolId
+
+
+编辑/展示器引入图片查看器 考虑以后用TypeScript和两者对应的插件的样式选择
+1、JavaScript原生 viewerjs
+2、Vue v-view 基于 viewerjs
+选择 v-view，Vue命令 
+
+根据组件中的表单元素的例子使用和组件API来封装组件
+
+// TODO 
+Java 
+SqlInjectFilter【JSqlParser https://github.com/JSQLParser/JSqlParser/wiki】
+XSSFilter
+
+Parsing here
+Building here or here
+Analyzing here
+
+
+Nginx 部署 Vue
+【https://www.jianshu.com/p/99521ae2fa19】
+【https://my.oschina.net/u/1760791/blog/1575808】
+【https://blog.csdn.net/heshengfu1211/article/details/106152983?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159970244619724839227680%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=159970244619724839227680&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~pc_rank_v4-6-106152983.first_rank_ecpm_v3_pc_rank_v4&utm_term=vue2.6+Nginx+%E9%83%A8%E7%BD%B2&spm=1018.2118.3001.4187】
+【https://blog.csdn.net/huangbaokang/article/details/104510945/?biz_id=102&utm_term=vue2.6%20Nginx%20%E9%83%A8%E7%BD%B2&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-104510945&spm=1018.2118.3001.4187】
+【https://www.cnblogs.com/eye-like/p/13305801.html】
+
+formEle{formEleName: {name}}
+
+sys_menu
+sys_sql sys_sql_column
+sys_form【sql、layout['horizontal'|'vertical'|'inline']、labelAlign['left'|'right']
+sys_son_form
+sys_form_field【prop、rules、label、required、
+formEle['input'|'textarea'|'select'|'datePicker'|'radio'|'checkbox'|'inputnumber'|'switch'|'rate'|'table']】
+
+sys_form mainForm
+sys_son_form 
+
+sys_chart
+sys_table
+sys_table_column
+sys_button position:[table_contextmenu form]
+【数据权限】
+
+【
+template + style + js
+sql
+isEditInRow
+indentSize 层缩进宽度 px为单位
+bordered 表格带框
+defaultExpandAllRows  初始时，是否展开所有行
+expandRowByClick  通过点击行来展开子行
+
+isTree 查询后的列表调用TreeUtils的列表转树方法 列表中有children时会自动转树【children别名】
+childrenColumnName children别名
+
+PageConfig 分页配置
+禁用分页 
+一页时是否隐藏
+每页条数
+每页可显示条数[10,20,30]
+showQuickJumper 是否可以快速跳转至某页
+showSizeChanger 是否可以改变 pageSize
+simple  当添加该属性时，显示为简单分页
+
+TreeConfig 树配置
+autoExpandParent  是否自动展开父节点
+switcherIcon  自定义树节点的展开/折叠图标
+showLine  是否展示连接线
+
+】
+
+sys_table_column
+【
+localeLangFormats
+tableName tableAlias fieldName fieldAlias 
+align
+
+SortConfig 排序配置
+sortOrder 排序的受控属性，外界可用此控制列的排序，可设置为 'ascend' 'descend' false
+sortDirections  支持的排序方式，取值为 'ascend' 'descend'
+defaultSort 默认顺序 AES DESC
+
+dataIndex
+fixed 列是否固定，可选 true(等效于 left) 'left' 'right'
+
+width 宽度
+isWidthResize
+minWidth
+maxWidth
+ellipsis 省略
+colSpan 列合并
+filterDropdown 自定义筛选菜单
+isEditInCell
+dataPermission【Map<String, List<String> >】
+
+字段脱敏
+字符串替换
+字符串转换成图片再转base64
+】
+
+在线预览office
+【https://www.cnblogs.com/murenziwei/p/12187781.html】
+http://view.officeapps.live.com/op/view.aspx?src=[officeFileUrl]
+经过url编码
+
+ant-design-vue 封装 组件 思想、步骤
+【https://www.cnblogs.com/twodog/p/12134911.html】
+【https://www.yuque.com/crper/vue_cookbook】
+
+Vue代码保存到数据库
+【https://segmentfault.com/q/1010000010663181】
+编程操作Vue组件
+Vue.extend 创建Vue类 新建Vue类渲染$mount后获取根元素$el，将其添加到html
+【https://blog.csdn.net/qq_32135281/article/details/89020114】
+【https://cloud.tencent.com/developer/news/591770】
+
+Vue.extend()：可以创建一个“子类”。参数是一个包含组件选项的对象。
+propsData：创建实例时传递的 props，只用于 new 创建的实例中。
+$mount()
+
+Webpack打包后将文件保存到数据库再渲染
+【http://www.oldrss.com/rss/article/1502769721.html】
+
+组件通信
+【https://www.cnblogs.com/barryzhang/p/10566515.html】
+【https://segmentfault.com/a/1190000019208626】
+
+
+let icons = [];
+for(let iconEle of document.getElementsByClassName("anticons-list")[0].getElementsByTagName("i")){
+	let attr = iconEle .getAttribute("aria-label");
+	if( attr && attr.indexOf("图标: ") != -1){
+		let icon = attr.split("图标: ")[1];
+		if(!icons.includes(icon)){
+			icons.push(icon);
+		}
+	}	
+}
+
+let events = [];
+for(let iconEle of document.getElementsByTagName("h3")){
+	let attr = iconEle .getAttribute("id");
+	if(attr && !events.includes(attr)){
+		events .push(attr);
+	}	
+}
+
+ant-design-vue 表单 动态组件 封装
+
+ant-design-vue 大数据量性能优化
+列表 vue-virtual-scroll-list
+import VirtualList from 'vue-virtual-scroll-list'
+仅需要3个props
+<virtual-list style="height: 360px; overflow-y: auto;" // make list scrollable
+    :data-key="'uid'"
+    :data-sources="items"
+    :data-component="itemComponent"
+/>
+
+表单
+表格
+
+部署
+jenkins
+
+个人博客
+GitHub Pages
+wordpress
+Jekyll
+
+GitHub 个人网站项目【https://blog.csdn.net/yuexianchang/article/details/53431703】
+
+createElement
+
+视频 https://blog.csdn.net/xingyun89114/article/details/80699527
+vue使用video.js解决m3u8视频播放格式
+https://www.cnblogs.com/reeber/p/11267039.html 
+
+
+userAgent = navigator.userAgent
+
+传props
+https://segmentfault.com/q/1010000012540577
+https://zhuanlan.zhihu.com/p/25623356
+
+【https://zhuanlan.zhihu.com/p/70752505】 Vue创建项目
+【https://zhuanlan.zhihu.com/p/39400697】 Vue 业务实践
+【https://zhuanlan.zhihu.com/p/76754101】
+渲染函数
+【https://blog.csdn.net/qdmoment/article/details/106200145】
+
