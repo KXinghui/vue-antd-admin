@@ -40,6 +40,13 @@ Vue-Router
 Vue 压缩混肴
 javascript-obfuscator compression-webpack-plugin webpack-obfuscator
 
+
+Vue中app.vue中设置height:100%无效的问题及解决方法
+html,body,#app {
+  height: 100%;
+  /* width: 100%; */
+}
+
 Vuex
 
 优化：
@@ -81,6 +88,39 @@ Nginx 部署 Vue
 【https://blog.csdn.net/heshengfu1211/article/details/106152983?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159970244619724839227680%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=159970244619724839227680&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~pc_rank_v4-6-106152983.first_rank_ecpm_v3_pc_rank_v4&utm_term=vue2.6+Nginx+%E9%83%A8%E7%BD%B2&spm=1018.2118.3001.4187】
 【https://blog.csdn.net/huangbaokang/article/details/104510945/?biz_id=102&utm_term=vue2.6%20Nginx%20%E9%83%A8%E7%BD%B2&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-104510945&spm=1018.2118.3001.4187】
 【https://www.cnblogs.com/eye-like/p/13305801.html】
+
+
+【https://blog.csdn.net/xiaoxiangzi520/article/details/103793197】
+Nginx 部署 Vue 带项目名
+Vue打包 vue.config.js publicPath: "/[projName]/"
+Nginx 配置文件 
+location /[projName] {
+	alias        [ProjFilePath];
+	# add_header Access-Control-Allow-Origin *;
+	# add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+	# add_header Access-Control-Allow-Headers '*';
+	try_files $uri $uri/ /index.html;
+	# 请求指向的首页
+	# index index.html index.htm;
+}
+
+Nginx https和http自动跳转到https
+
+server {
+  listen      443 ssl;
+  server_name    wan.bo.com;
+
+  ssl_certificate   /etc/nginx/cert/web.jisuoffice.com.crt;
+  ssl_certificate_key  /etc/nginx/cert/web.jisuoffice.com.key;
+  ssl_session_timeout 5m;
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ·····
+}
+
+docsify  nginx 出现 Welcome to nginx!
+
 
 formEle{formEleName: {name}}
 

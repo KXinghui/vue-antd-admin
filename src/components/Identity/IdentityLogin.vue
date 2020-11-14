@@ -183,7 +183,7 @@ export default {
     let message = {
       contentType: "image/jpg",
       url:
-        "http://i2.hdslb.com/bfs/archive/84e2f23be2f09f03c5b22c8f3290bf2bd16f604a.jpg",
+        "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1743743538,3853392777&fm=26&gp=0.jpg",
       fileName: "EVA.jpg",
       fileSize: "12121212",
       extension: ".jpg",
@@ -192,7 +192,7 @@ export default {
     let message2 = {
       contentType: "application/pdf",
       url:
-        "https://i2.hdslb.com/bfs/archive/84e2f23be2f09f03c5b22c8f3290bf2bd16f604a.jpg",
+        "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1743743538,3853392777&fm=26&gp=0.jpg",
       fileName: "EVA.jpg",
       fileSize: "12121212",
       extension: ".pdf",

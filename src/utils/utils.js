@@ -1,4 +1,4 @@
-import { PSM, OEM } from "tesseract.js";
+// import { PSM, OEM } from "tesseract.js";
 // import { msg } from "./antd-utils";
 
 export function isProd() {
@@ -61,32 +61,32 @@ export function fileToImage(file) {
   return img;
 }
 
-export async function tesseractRecognize(worker, fileList) {
-  if (!fileList || fileList.size == 0) {
-    return;
-  }
-  let startDate = new Date();
-  await worker.load();
-  await worker.loadLanguage("eng+chi_tra");
-  await worker.initialize("eng+chi_tra", OEM.LSTM_ONLY);
-  await worker.setParameters({
-    tessedit_pageseg_mode: PSM.SINGLE_BLOCK
-  });
-  let values = [];
-  for (let file of fileList) {
-    let img = fileToImage(file);
-    const {
-      data: { text }
-    } = await worker.recognize(img);
-    console.log("识别为：", text);
-    values.push(text);
-    // console.log(file + "识别为：" + text);
-  }
-  console.log(values);
-  await worker.terminate();
-  let endDate = new Date();
-  console.log("耗费了： ", endDate.getTime() - startDate.getTime());
-}
+// export async function tesseractRecognize(worker, fileList) {
+//   if (!fileList || fileList.size == 0) {
+//     return;
+//   }
+//   let startDate = new Date();
+//   await worker.load();
+//   await worker.loadLanguage("eng+chi_tra");
+//   await worker.initialize("eng+chi_tra", OEM.LSTM_ONLY);
+//   await worker.setParameters({
+//     tessedit_pageseg_mode: PSM.SINGLE_BLOCK
+//   });
+//   let values = [];
+//   for (let file of fileList) {
+//     let img = fileToImage(file);
+//     const {
+//       data: { text }
+//     } = await worker.recognize(img);
+//     console.log("识别为：", text);
+//     values.push(text);
+//     // console.log(file + "识别为：" + text);
+//   }
+//   console.log(values);
+//   await worker.terminate();
+//   let endDate = new Date();
+//   console.log("耗费了： ", endDate.getTime() - startDate.getTime());
+// }
 
 export function hexToRgba(hex, opacity) {
   return (

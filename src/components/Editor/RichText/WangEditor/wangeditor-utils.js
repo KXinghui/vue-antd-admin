@@ -1,4 +1,4 @@
-import E from "wangeditor";
+// import E from "wangeditor";
 import xss from "xss";
 
 export const EDITOR_NAME = "WangEditor";
@@ -182,9 +182,9 @@ export function initEditor(vm, wangEditor) {
   let isNotCreate = !editor;
   if (isNotCreate) {
     // editor = new E(vm.$refs[vm.realEditroId]);
-    editor = editorComponentConfig.ableEditing
-      ? new E(`#${vm.realEditroId}`)
-      : new E(`#${vm.realEditorMenuId}`, `#${vm.realEditroId}`);
+    editor = editorComponentConfig.ableEditing;
+    /* ? new E(`#${vm.realEditroId}`)
+      : new E(`#${vm.realEditorMenuId}`, `#${vm.realEditroId}`) */
   }
   let configNames = [
     "zIndex",

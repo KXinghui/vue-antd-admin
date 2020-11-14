@@ -1,6 +1,6 @@
-
-/* vue中app.vue中设置height:100%无效的问题及解决方法 */
-html,body,#app {
+html,
+body,
+#app {
   height: 100%;
   /* width: 100%; */
 }

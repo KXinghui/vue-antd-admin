@@ -7,9 +7,12 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/buble.css"> -->
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/dark.css"> -->
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/pure.css"> -->
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/dolphin.css"> -->
   <link rel="icon" href="_media/favicon.ico">
   <style>
-    /* vue中app.vue中设置height:100%无效的问题及解决方法 */
     .first-loading-container {
       display: flex;
       justify-content: center;
@@ -111,6 +114,7 @@
 </head>
 <body>
   <div id="app">
+    <nav class="app-nav"><ul><li><p>翻译</p><ul><li><a href="#/" title=" 中文" class="active"><img class="emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e8-1f1f3.png" alt="cn"> 中文</a></li><li><a href="#/en/" title=" English"><img class="emoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1ec-1f1e7.png" alt="uk"> English</a></li></ul></li></ul></nav>
     <div class="first-loading-container">
       <h1>Vue Antd Admin Docs</h1>
       <div class="loading-wrp">
@@ -120,30 +124,49 @@
     </div>
   </div>
   <script>
+    /* if (typeof navigator.serviceWorker !== 'undefined') {
+      debugger;
+	    navigator.serviceWorker.register('sw.js')
+	  } */
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="//unpkg.com/docsify-demo-box-vue@1.1.0/dist/docsify-demo-box-vue.min.js"></script>
+  <script>
+    /* TODO 这里可以字符串追加 \n<script src="${js}"> */
+    var jsResources = '<scr' + 'ipt src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></scr' + 'ipt>'
+    var cssResources = '@import url("//yarnpkg.com/en/package/normalize.css");'
+    var bootCode = 'var globalVariable = "leon"'
+    var globalVariable = "leon"
+
     window.$docsify = {
-      name: '',
-      repo: '',
-      // coverpage: true,
+      routerMode: 'history',
+      name: 'Vue Antd Admin',
+      repo: 'https://github.com/KXinghui/vue-antd-admin.git',
       onlyCover: false,
-      coverpage: ['/', '/zh-cn/'],
+      // coverpage: true,
+      coverpage: ['/', '/zh-cn/', '/en/'],
       loadNavbar: true,
+      logo: './_media/faviconx64.png',
+      notFoundPage: true,
+      mergeNavbar: true,
       search: {
         maxAge: 86400000, // Expiration time, the default one day
-        paths: [], // or 'auto'
-        placeholder: 'Type to search',
-
+        paths: ['/','en'], // or 'auto'
         // Localization
         placeholder: {
+          '/en/': 'Type to search',
           '/zh-cn/': '搜索',
-          '/': 'Type to search'
+          '/': '搜索'
         },
 
         noData: 'No Results!',
 
         // Localization
         noData: {
+          '/en/': 'No Results',
           '/zh-cn/': '找不到结果',
-          '/': 'No Results'
+          '/': '找不到结果'
         },
 
         // Headline depth, 1 - 6
@@ -153,48 +176,90 @@
 
         // To avoid search index collision
         // between multiple websites under the same domain
-        namespace: 'website-1',
+        // namespace: 'website-1',
 
         // Use different indexes for path prefixes (namespaces).
         // NOTE: Only works in 'auto' mode.
         //
         // When initialiazing an index, we look for the first path from the sidebar.
         // If it matches the prefix from the list, we switch to the corresponding index.
-        pathNamespaces: ['/zh-cn', '/ru-ru', '/ru-ru/v1'],
+        pathNamespaces: ['/', '/en'],
 
         // You can provide a regexp to match prefixes. In this case,
         // the matching substring will be used to identify the index
-        pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
+        pathNamespaces: /^(\/(|zh-cn|en))?(\/(v1|v2))?/
       },
       // docsify-copy-code (defaults)
       copyCode: {
         buttonText: {
+          '/en/'   : 'Copy to clipboard',
           '/zh-cn/': '点击复制',
           '/ru/'   : 'Скопировать в буфер обмена',
           '/de-de/': 'Klicken Sie zum Kopieren',
           '/es/'   : 'Haga clic para copiar',
-          '/'      : 'Copy to clipboard'
+          '/'      : '点击复制'
         },
         errorText: {
+          '/en/'   : 'Error',
           '/zh-cn/': '错误',
           '/ru/'   : 'ошибка',
-          '/'      : 'Error'
+          '/'      : '错误'
         },
         successText: {
+          '/en/'   : 'Copied',
           '/zh-cn/': '复制',
           '/ru/'   : 'Скопировано',
           '/de-de/': 'Kopiert',
           '/es/'   : 'Copiado',
-          '/'      : 'Copied'
+          '/'      : '复制'
         }
-      }
+      },
+      pagination: {
+        previousText: '上一章节',
+        // previousText: {
+        //   '/en/'   : 'Pre Page',
+        //   '/zh-cn/': '上一章节',
+        //   '/'      : '上一章节'
+        // },
+        nextText: '下一章节',
+        // nextText: {
+        //   '/en/'   : 'Next Page',
+        //   '/'      : '下一章节'
+        // },
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      count:{
+        countable: true,
+        position: 'top',
+        margin: '10px',
+        float: 'right',
+        fontsize:'0.9em',
+        color:'rgb(90,90,90)',
+        language:'chinese',
+        localization: {
+          words: "",
+          minute: ""
+        },
+        isExpected: true
+      },
+      plugins: [
+        DemoBoxVue.create(jsResources, cssResources, bootCode)
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script> -->
+  <script src="//unpkg.com/docsify-copy-code@2"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-count@latest/dist/countable.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
   <!-- <script>
     debugger;
   </script> -->
