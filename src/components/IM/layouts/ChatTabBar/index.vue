@@ -1,6 +1,10 @@
 <template>
   <div class="chat-tabbar-wrap">
     <slot name="chatTabBarItem">
+      <!-- <bs-core
+        :options="{ scrollY: false, scrollX: true, scrollbar: false }"
+        width="100%"
+      > -->
       <chat-tab-bar-item
         v-for="(chatTabBar, index) in chatTabBars"
         :item="chatTabBar"
@@ -11,16 +15,18 @@
         @change="changeTabBar(index)"
         v-bind="$props"
       ></chat-tab-bar-item>
+      <!-- </bs-core> -->
     </slot>
   </div>
 </template>
 
 <script>
+// import BsCore from "../../../BetterScroll/BsCore";
 import ChatTabBarItem from "./ChatTabBarItem";
 
 export default {
   name: "ChatTabBar",
-  components: { ChatTabBarItem },
+  components: { /* BsCore, */ ChatTabBarItem },
   data() {
     return {
       inActiveItemKey: ""

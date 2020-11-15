@@ -66,7 +66,7 @@ export default {
       default: "",
       required: false,
       validator: function(value) {
-        return !value || PROVIDERS.indexOf(value) !== -1;
+        return !value || PROVIDERS.includes(value);
       }
     },
     icon: {
@@ -91,7 +91,7 @@ export default {
       if (!provider) {
         console.error(`IconProvider Is Not Empty`);
       }
-      let isSupport = provider && PROVIDERS.indexOf(provider) != -1;
+      let isSupport = provider && PROVIDERS.includes(provider);
       if (!isSupport) {
         console.error(`IconProvider ${provider} Is Not Support`);
       }

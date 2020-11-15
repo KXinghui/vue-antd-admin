@@ -1,151 +1,155 @@
 <template>
-  <div class="chat-record-msg-wrap">
-    <template v-if="isHtml">{{ chatMsg.html }}</template>
-    <div v-if="isFile" class="chat-record-file-wrap">
-      <div v-if="isImage" class="chat-record-img">
-        <img v-lazy="chatMsg.url" :alt="imgAlt" />
-      </div>
-      <div v-else class="chat-record-file">
-        <div class="chat-record-file-info-wrap">
-          <identity-avatar
-            class="chat-record-file-avatar"
-            :identity="{ name: chatMsg.extension }"
-            avatar-shape="square"
-            :avatar-size="50"
-          ></identity-avatar>
-          <div class="chat-record-file-info">
-            <a-tooltip
-              :title="chatMsg.fileName"
-              :get-popup-container="getPopupContainer"
-            >
-              <div class="filename" v-text="chatMsg.fileName"></div>
-            </a-tooltip>
-            <div class="filesize" v-text="chatMsg.fileSize"></div>
-          </div>
+  <div
+    class="chat-cell-wrap"
+    :style="{ minHeight: cellSize }"
+    v-on="$listeners"
+  >
+    <div class="chat-cell-left-wrap">
+      <slot name="left">
+        <div class="chat-cell-left-content">
+          <icon v-if="icon" class="chat-cell-left-icon" :icon="icon"></icon>
+          <span class="chat-cell-text" v-text="text"></span>
         </div>
-        <a-icon type="download" @click="downloadFile" />
-      </div>
+        <span class="chat-cell-label" v-text="label"></span>
+      </slot>
     </div>
-    <template v-if="chatMsgType === isDynamic"> </template>
-    <template v-if="chatMsgType === isRecord"> </template>
-    <template v-if="chatMsgType === isBizCard"> </template>
+    <div class="chat-cell-right-wrap">
+      <slot name="right">
+        <div class="chat-cell-right-content">
+          <span class="chat-cell-text" v-text="rightText"></span>
+          <a-icon v-if="arrow" type="right" />
+          <icon
+            v-if="!arrow && icon"
+            class="chat-cell-right-icon"
+            :icon="rightIcon"
+          ></icon>
+        </div>
+        <span class="chat-cell-label" v-text="rightLabel"></span>
+      </slot>
+    </div>
   </div>
 </template>
 
 <script>
-import { download } from "../../utils/file-utils";
-import { msg } from "../../utils/antd-utils";
-import { ChatMsgTypeEnum } from "../../consts/im";
-import IdentityAvatar from "../Identity/IdentityAvatar";
+const SIZES = ["small", "default", "large"];
 
 export default {
   name: "ChatCell",
-  components: { IdentityAvatar },
   data() {
-    return {
-      chatRecordStyle: {},
-      overlayStyle: {
-        /* "max-width": "60%" */
-      },
-      visible: true
-    };
+    return {};
   },
   props: {
-    chatRecord: {
-      type: [Object],
-      default: function() {
-        return null;
-      },
-      required: true
+    size: {
+      type: [String, Number],
+      default: "default",
+      required: false,
+      validator(value) {
+        if (parseFloat(value) == value) {
+          return true;
+        }
+        return SIZES.includes(value);
+      }
+    },
+    title: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    icon: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    text: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    label: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    arrow: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    rightIcon: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    rightText: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    rightLabel: {
+      type: [String],
+      default: "",
+      required: false
     }
   },
   computed: {
-    chatMsg() {
-      let msg = this.chatRecord.message;
-      return JSON.parse(msg);
-    },
-    isHtml() {
-      return ChatMsgTypeEnum.HTML.equals(this.chatMsgType);
-    },
-    isImage() {
-      let contentType = this.chatMsg.contentType;
-      return contentType && contentType.indexOf("image") != -1;
-    },
-    imgAlt() {
-      /* <span v-text="chatMsg.fileName"></span>
-          <span v-text="chatMsg.fileSize"></span>
-          <a :href="chatMsg.url" download><a-icon type="download"/></a> */
-      return this.chatMsg.fileName;
-    },
-    isFile() {
-      return ChatMsgTypeEnum.FILE.equals(this.chatMsgType);
-    },
-    isDynamic() {
-      return ChatMsgTypeEnum.DYNAMIC.equals(this.chatMsgType);
-    },
-    isRecord() {
-      return ChatMsgTypeEnum.RECORD.equals(this.chatMsgType);
-    },
-    isBizCard() {
-      return ChatMsgTypeEnum.BIZ_CARD.equals(this.chatMsgType);
-    },
-    chatMsgType() {
-      return this.chatRecord.chatMsgTypeEnum || ChatMsgTypeEnum.HTML.name;
+    cellSize() {
+      let size = this.size;
+      if (SIZES.includes(size)) {
+        // if("default"== value)
+        switch (size) {
+          case "small":
+            return "1.63rem";
+          case "default":
+            return "3.25rem";
+          case "large":
+            return "6.5rem";
+          default:
+            break;
+        }
+      }
+      return `${size}rem`;
     }
   },
-  methods: {
-    downloadFile() {
-      let chatMsg = this.chatMsg;
-      let fileName = chatMsg.fileName;
-      let isDownload = download({ url: chatMsg.url }, fileName);
-      isDownload.then(result => {
-        let responseResult = {
-          code: result ? "1" : "0",
-          msg: result ? `下载${fileName}成功` : `下载${fileName}失败`
-        };
-        msg(responseResult);
-      });
-    },
-    getPopupContainer(trigger) {
-      return trigger.parentElement;
-    }
-  },
+  methods: {},
   mounted() {}
 };
 </script>
 
 <style>
-/* .chat-record-msg-wrap {
-} */
-.chat-record-img img {
-  width: 100%;
-  cursor: pointer;
-}
-.chat-record-file,
-.chat-record-file-info-wrap {
+.chat-cell-wrap {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.chat-record-file {
   justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.4s;
+  /* margin: 0.5rem 0; */
 }
 
-.chat-record-file-info-wrap {
-  max-width: 90%;
+.chat-cell-left-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.chat-record-file-info {
-  max-width: 65%;
+.chat-cell-left-icon {
+  margin-right: 0.6rem;
 }
-.chat-record-file-info .filename {
-  /* font-size: x-large; */
-  /* 强制不换行，省略号 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.1rem;
-  font-weight: bold;
+.chat-cell-label {
+  color: #969799;
+  font-size: 0.5rem;
+}
+
+.chat-cell-right-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.chat-cell-right-icon {
+  margin-left: 0.6rem;
 }
 </style>

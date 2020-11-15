@@ -59,6 +59,16 @@ export default {
           officialSiteUrl: "http://www.wangeditor.com",
           documentUrl: "https://www.kancloud.cn/wangfupeng/wangeditor3/332599",
           routePath: "/editor/richText/wangEditor"
+        },
+        {
+          name: "QuillEditor",
+          description:
+            "QuillEditor —— API驱动的富文本编辑器，为开发者构建、跨平台",
+          author: "wangfupeng1988",
+          githubUrl: "https://github.com/quilljs/quill/",
+          officialSiteUrl: "https://quilljs.com/",
+          documentUrl: "https://quilljs.com/docs/quickstart/",
+          routePath: "/editor/richText/quillEditor"
         }
       ]
     };

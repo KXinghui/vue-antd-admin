@@ -1,17 +1,22 @@
 <template>
-  <div class="chat-main-wrap">
+  <div class="chat-main-wrap" v-on="$listeners">
     <div class="chat-main-scroll">
-      <slot name="header"></slot>
-      <slot name="main"></slot>
-      <!-- <b-scroll> </b-scroll> -->
-      <slot name="footer"></slot>
+      <bs-pull height="600px">
+        <slot name="header"></slot>
+        <slot name="main"></slot>
+        <!-- <b-scroll> </b-scroll> -->
+        <slot name="footer"></slot>
+      </bs-pull>
     </div>
   </div>
 </template>
 
 <script>
+// import BsCore from "../../BetterScroll/BsCore";
+import BsPull from "../../BetterScroll/BsPull";
 export default {
   name: "ChatMain",
+  components: { BsPull },
   data() {
     return {
       chatRecordStyle: {},
@@ -82,6 +87,7 @@ export default {
 
 <style>
 .chat-main-wrap {
+  border: 1px solid red;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -95,6 +101,9 @@ export default {
   /* #e1dfde */
   /* padding: 2rem 0.5rem; */
   position: absolute;
-  top: 10rem;
+  top: 4rem;
+}
+.chat-main-scroll {
+  width: 100%;
 }
 </style>

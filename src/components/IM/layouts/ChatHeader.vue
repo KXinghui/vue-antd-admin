@@ -1,12 +1,23 @@
 <template>
   <div class="chat-header-wrap">
     <div class="chat-header-left">
-      <div class="chat-header-back-icon" @click="clickBackIcon">
-        <slot name="backIcon"
-          ><icon v-if="showBackIcon" icon="Antd_left"
-        /></slot>
+      <div class="chat-header-icon">
+        <div class="chat-header-back-icon" @click="clickBackIcon">
+          <slot name="backIcon"
+            ><icon v-if="showBackIcon" icon="Antd_left"
+          /></slot>
+        </div>
+        <div
+          v-if="!showBackIcon && showDrawerIcon"
+          class="chat-header-drawer-icon"
+          @click="clickDrawerIcon"
+        >
+          <slot name="drawerIcon"
+            ><icon v-if="!showBackIcon && showDrawerIcon" icon="Antd_left"
+          /></slot>
+        </div>
       </div>
-      <slot name="left"></slot>
+      <slot name="left"><span v-text="title"></span></slot>
     </div>
     <div class="chat-header-middle">
       <slot name="middle"></slot>
@@ -45,6 +56,21 @@ export default {
       default() {
         return null;
       },
+      required: false
+    },
+    title: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    showDrawerIcon: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    defaultDrawer: {
+      type: [Boolean],
+      default: true,
       required: false
     }
   },
@@ -108,6 +134,13 @@ export default {
 .chat-header-left {
   justify-content: flex-start;
 }
+
+.chat-header-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .chat-header-middle {
   justify-content: space-between;
 }

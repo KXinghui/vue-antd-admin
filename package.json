@@ -10,6 +10,13 @@
   },
   "dependencies": {
     "@antv/data-set": "^0.11.7",
+    "@better-scroll/core": "^2.0.5",
+    "@better-scroll/infinity": "^2.0.5",
+    "@better-scroll/mouse-wheel": "^2.0.5",
+    "@better-scroll/observe-dom": "^2.0.5",
+    "@better-scroll/pull-down": "^2.0.5",
+    "@better-scroll/pull-up": "^2.0.5",
+    "@better-scroll/scroll-bar": "^2.0.5",
     "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
     "@toast-ui/vue-editor": "^2.5.0",
     "animate.css": "^4.1.1",

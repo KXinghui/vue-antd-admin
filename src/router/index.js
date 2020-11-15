@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { routes } from "./routes";
 
-import { msg, notify } from "@utils/antd-utils";
+// import { msg, notify } from "@utils/antd-utils";
 
 // import { EDITOR_ROUTES, FORM_ROUTES } from "./admin-routes";
 
@@ -32,23 +32,25 @@ router.beforeEach((to, from, next) => {
   console.log(next);
   console.log("routes    ", routes);
   try {
+    NProgress.start();
+    next();
     // api 解析 to 返回的结果进行判断处理
-    let responseResult = {
-      code: 0,
-      httpCode: 404,
-      msg: "asdfasdfasdf"
-    };
-    let code = responseResult.code;
-    if (1 === code) {
-      NProgress.start();
-      next();
-    } else if (0 === code) {
-      NProgress.start();
-      next();
-      // next({ path: `/${responseResult.httpCode}` });
-    }
-    responseResult.code = "0-1";
-    msg(responseResult), notify(responseResult);
+    // let responseResult = {
+    //   code: 0,
+    //   httpCode: 404,
+    //   msg: "asdfasdfasdf"
+    // };
+    // let code = responseResult.code;
+    // if (1 === code) {
+    //   NProgress.start();
+    //   next();
+    // } else if (0 === code) {
+    //   NProgress.start();
+    //   next();
+    // next({ path: `/${responseResult.httpCode}` });
+    // }
+    // responseResult.code = "0-1";
+    // msg(responseResult), notify(responseResult);
   } catch (error) {
     next(error);
   }

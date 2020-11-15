@@ -50,6 +50,14 @@ export const routes = [
           )
       },
       {
+        path: "richText/quillEditor",
+        name: "QuillEditor",
+        component: () =>
+          import(
+            /* webpackChunkName: "quilleditor" */ "@views/Admin/Editor/RichText/QuillEditorView"
+          )
+      },
+      {
         path: "richText/wangEditor",
         name: "WangEditor",
         component: () =>
@@ -231,7 +239,29 @@ export const routes = [
     path: "/my",
     name: "FrontMy",
     component: () =>
-      import(/* webpackChunkName: "im" */ "../views/IM/Front/My.vue")
+      import(/* webpackChunkName: "im-my" */ "../views/IM/Front/my/My.vue")
+  },
+  {
+    path: "/my/identity/info",
+    name: "FrontMyIdentityInfo",
+    component: () =>
+      import(
+        /* webpackChunkName: "im-my" */ "../views/IM/Front/my/IdentityInfo.vue"
+      )
+  },
+  {
+    path: "/my/identity/security",
+    name: "FrontMyIdentitySecurity",
+    component: () =>
+      import(
+        /* webpackChunkName: "im-my" */ "../views/IM/Front/my/IdentitySecurity.vue"
+      )
+  },
+  {
+    path: "/my/aboutim",
+    name: "FrontMyAboutIM",
+    component: () =>
+      import(/* webpackChunkName: "im-my" */ "../views/IM/Front/my/AboutIM.vue")
   },
   {
     path: "/chatUserFriend/:chatUserId",

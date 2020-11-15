@@ -4,7 +4,7 @@ import { genRouters } from "../../router/routes";
 // import { login, logout, getInfo } from '@/api/login'
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
-  identity: {},
+  identity: { nickname: "kxh", chatNo: "kxh17666" },
   roles: [],
   permissions: []
 };
