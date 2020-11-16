@@ -34,6 +34,8 @@ const CHAT_TABBARS = [
 export const CHAT_ACTIVE_TAB_STORE_KEY = "ChatActiveTab";
 
 export const CHAT_LAYOUT_MIXIN = {
+  // 刷新
+  inject: ["reload"],
   components: {
     ChatHeader,
     ChatMain,

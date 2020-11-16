@@ -10,7 +10,10 @@ const state = () => {
       floatSider: false,
       showSiderLogo: true,
       showMainBreadcrumbBar: true,
-      showTagBar: false
+      showTagBar: false,
+      /* IM */
+      showDrawer: true,
+      drawerPlacement: "left"
     }
   };
 };
@@ -23,6 +26,9 @@ const getters = {
 };
 
 const mutations = {
+  [ADMIN_MUTATION_TYPE.SHOW_DRAWER](state, payload) {
+    state.layoutSetting.showDrawer = payload;
+  },
   [ADMIN_MUTATION_TYPE.SET_LAYOUT_SETTING](state, payload) {
     if (state.layoutSetting === payload) {
       state.layoutSetting = payload;

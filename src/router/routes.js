@@ -17,19 +17,19 @@ export const routes = [
     children: [
       {
         path: "input",
-        name: "Input",
+        name: "FormModelInput",
         component: () =>
           import(/* webpackChunkName: "input" */ "@views/Admin/FormModel/Input")
       },
       {
         path: "test",
-        name: "Test",
+        name: "FormModelTest",
         component: () =>
           import(/* webpackChunkName: "input" */ "@views/Admin/Test")
       },
       {
         path: "test2",
-        name: "Test2",
+        name: "FormModelTest2",
         component: () =>
           import(/* webpackChunkName: "input" */ "@views/Admin/Test/index2")
       }
@@ -200,20 +200,21 @@ export const routes = [
   // },
   {
     path: "/404",
+    alias: "*",
     name: "NotFound",
     component: () =>
       import(
         /* webpackChunkName: "error-page" */ "@views/Admin/ErrorPage/NotFound.vue"
       )
   },
-  {
-    path: "*",
-    name: "NotFound",
-    component: () =>
-      import(
-        /* webpackChunkName: "error-page" */ "@views/Admin/ErrorPage/NotFound.vue"
-      )
-  },
+  // {
+  //   path: "*",
+  //   name: "NotFound",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "error-page" */ "@views/Admin/ErrorPage/NotFound.vue"
+  //     )
+  // },
   {
     path: "/chatUserRecord/:chatUserId",
     name: "FrontChatUserRecord",
@@ -227,7 +228,9 @@ export const routes = [
     path: "/chat",
     name: "FrontChat",
     component: () =>
-      import(/* webpackChunkName: "im" */ "../views/IM/Front/Chat.vue")
+      import(
+        /* webpackChunkName: "im-chat" */ "../views/IM/Front/chat/Chat.vue"
+      )
   },
   {
     path: "/addressbook",
@@ -271,6 +274,12 @@ export const routes = [
         /* webpackChunkName: "im" */ "../views/IM/Front/ChatUserFriend.vue"
       ),
     props: true
+  },
+  {
+    path: "/chatUser/login",
+    name: "FrontChatUserLogin",
+    component: () =>
+      import(/* webpackChunkName: "im" */ "../views/IM/Front/ChatLogin.vue")
   }
 ];
 

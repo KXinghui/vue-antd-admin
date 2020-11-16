@@ -31,7 +31,7 @@
         <div class="identity-wrap">
           <identity-avatar
             :identity="identity"
-            :avatarSize="60"
+            :avatarSize="58"
             avatarShape="square"
           ></identity-avatar>
           <div class="identity-info">
@@ -112,7 +112,7 @@ export default {
 }
 
 .identity-nickname {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: black;
   font-weight: bold;
 }
@@ -123,5 +123,9 @@ export default {
 
 .chat-cell-wrap {
   margin-bottom: 0.5rem;
+}
+.chat-drawer-wrap .ant-drawer-content {
+  display: flex;
+  justify-content: center;
 }
 </style>

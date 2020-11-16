@@ -28,7 +28,8 @@ export default {
   data() {
     return {
       bsWrap: "bs-" + this._uid,
-      BScroll: null
+      BScroll: null,
+      defaultBsOptions: DEFAULT_BS_OPTIONS
     };
   },
   props: {
@@ -68,14 +69,14 @@ export default {
     options: {
       type: [Object],
       default() {
-        return DEFAULT_BS_OPTIONS;
+        return this.defaultBsOptions;
       },
       required: false
     }
   },
   computed: {
     bsOptions() {
-      return Object.assign(this.options, {
+      return Object.assign(this.options || {}, {
         scrollY: this.scrollY,
         scrollX: this.scrollX,
         probeType: this.probeType
@@ -126,6 +127,9 @@ export default {
       this.initBscroll();
     },
     isRefresh() {
+      this.refreshBscroll();
+    },
+    height() {
       this.refreshBscroll();
     }
   }

@@ -46,7 +46,7 @@
           :key="i"
           text="关于IM"
           arrow
-          @click="pushRoute({ path: '/aboutim' })"
+          @click="pushRoute({ path: '/my/aboutim' })"
         ></chat-cell>
       </template>
     </chat-main>

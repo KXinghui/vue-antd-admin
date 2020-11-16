@@ -13,7 +13,7 @@
           @click="clickDrawerIcon"
         >
           <slot name="drawerIcon"
-            ><icon v-if="!showBackIcon && showDrawerIcon" icon="Antd_left"
+            ><icon v-if="!showBackIcon && showDrawerIcon" icon="Antd_menu"
           /></slot>
         </div>
       </div>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+import { ADMIN_MUTATION_TYPE } from "../../../store/mutation-type";
+
 export default {
   name: "ChatHeader",
   data() {
@@ -36,9 +39,22 @@ export default {
       chatRecordStyle: {},
       overlayStyle: {
         /* "max-width": "60%" */
-      },
-      visible: true
+      }
     };
+  },
+  computed: {
+    visible: {
+      // getter
+      get: function() {
+        // Do not mutate vuex store state outside mutation handlers
+        return this.$store.state.admin.layoutSetting.showDrawer;
+      },
+      // setter
+      set: function(newValue) {
+        this[ADMIN_MUTATION_TYPE.SHOW_DRAWER](newValue);
+        console.log(this.$store.state.admin.layoutSetting.showDrawer);
+      }
+    }
   },
   props: {
     showBackIcon: {
@@ -75,6 +91,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations("admin", [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      ADMIN_MUTATION_TYPE.SHOW_DRAWER
+    ]),
     clickBackIcon() {
       if (this.defaultBack) {
         this.$router.go(-1);
@@ -85,6 +105,13 @@ export default {
         } else {
           this.$emit("back");
         }
+      }
+    },
+    clickDrawerIcon() {
+      if (this.defaultDrawer) {
+        this.visible = !this.visible;
+      } else {
+        this.$emit("drawer", !this.visible);
       }
     },
     changeChatRecord(e) {

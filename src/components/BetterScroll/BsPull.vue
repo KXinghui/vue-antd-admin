@@ -1,34 +1,54 @@
 <template>
   <div class="better-scroll-wrap">
-    <div class="bscroll" :style="{ height, width }" :ref="bsWrap">
+    <div class="bscroll" :style="{ height, width }" :id="bsWrap" :ref="bsWrap">
       <div class="pull-scroller">
-        <div class="pull-wrapper">
-          <div v-show="beforePullDown">
+        <div class="pull-tips">
+          <div v-show="beforePullDown" class="before-pull-down">
             <slot name="beforePullDown"></slot>
           </div>
+          <div v-show="isPullingDown" class="pulling-down">
+            <slot name="isPullingDown"
+              ><!-- <span class="pulldown-txt"
+                > --><a-divider><a-icon type="loading" /> Loading...</a-divider
+              ><!-- </span
+              > --></slot
+            >
+          </div>
           <div v-show="!beforePullDown">
-            <div v-show="isPullingDown">
-              <slot name="isPullingDown"><span>Loading...</span></slot>
-            </div>
-            <div v-show="!isPullingDown">
-              <slot name="afterPullDown"><span>Refresh success</span></slot>
+            <div v-show="!isPullingDown" class="after-pull-down">
+              <slot name="afterPullDown"
+                ><span class="pulldown-txt">Refresh success</span></slot
+              >
             </div>
           </div>
         </div>
-        <ul class="pull-list">
+        <div class="pull-list">
           <slot></slot>
-        </ul>
+        </div>
         <div class="pullup-tips">
-          <div v-if="!isPullUpLoad" class="before-trigger">
-            <slot name="beforePullUpLoad"
-              ><span class="pullup-txt">Pull up and load more</span></slot
+          <div v-show="beforePullUp" class="before-pull-up">
+            <slot name="beforePullUp"></slot>
+          </div>
+          <div v-show="isPullingUp" class="pulling-up">
+            <slot name="isPullingUp"
+              ><!-- <span class="pullup-txt"
+                > --><a-divider><a-icon type="loading" /> Loading...</a-divider
+              ><!-- </span
+              > --></slot
             >
           </div>
-          <div v-else class="after-trigger">
-            <slot name="isPullUpLoad"
-              ><span class="pullup-txt">Loading...</span></slot
-            >
+          <div v-show="!beforePullUp">
+            <div v-show="!isPullingUp" class="after-pull-up">
+              <slot name="afterPullUp"
+                ><span class="pullup-txt">Pull up and load success</span></slot
+              >
+            </div>
           </div>
+        </div>
+        <div v-show="isScrollEnd" class="scroll-end">
+          <slot name="scroll-end">
+            <a-divider>我是有底线的</a-divider>
+          </slot>
         </div>
       </div>
     </div>
@@ -48,6 +68,8 @@
 // BScroll.use(Pullup);
 import BsMixin from "./bs-mixin";
 
+// [BScroll warn]: EventEmitter has used unknown event type
+
 const TIME_BOUNCE = 800;
 const TIME_STOP = 600;
 
@@ -57,11 +79,27 @@ export default {
   data() {
     return {
       beforePullDown: true,
+      beforePullUp: true,
       isPullingDown: false,
-      isPullUpLoad: false
+      isPullingUp: false,
+      defaultBsOptions: {
+        pullDownRefresh: true,
+        pullUpLoad: true,
+        scrollbar: { fade: true, interactive: true } || true,
+        mouseWheel: {
+          speed: 20,
+          invert: false,
+          easeTime: 300
+        }
+      }
     };
   },
   props: {
+    isScrollEnd: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
     pullingDownHandler: {
       type: [Function],
       default() {
@@ -95,26 +133,16 @@ export default {
     initBscroll() {
       let BScroll = this.BScroll;
       let bscroll = new BScroll(
-        `#${this.bsWrap}`,
-        Object.assign(
-          {
-            pullDownRefresh: true,
-            pullUpLoad: true,
-            scrollbar: { fade: true, interactive: true } || true,
-            mouseWheel: {
-              speed: 20,
-              invert: false,
-              easeTime: 300
-            }
-          },
-          this.bsOptions
-        )
+        this.$refs[this.bsWrap] || `#${this.bsWrap}`,
+        Object.assign(this.defaultBsOptions, this.bsOptions)
       );
       this.bscroll = bscroll;
       this.bscroll.on("pullingDown", this.pullingDown);
       this.bscroll.on("scroll", this.scroll);
       this.bscroll.on("scrollEnd", e => {
-        console.log("scrollEnd   " + e);
+        if (e.y == -1) {
+          console.log("scrollEnd   " + JSON.stringify(e));
+        }
       });
       this.bscroll.on("pullingUp", this.pullingUp);
     },
@@ -122,7 +150,11 @@ export default {
       this.beforePullDown = false;
       this.isPullingDown = true;
       await this.pullingDownHandler();
-      this.isPullingDown = false;
+      // let vm = this;
+      // setTimeout(function() {
+      //   vm.isPullingDown = false;
+      // }, 3000);
+      // this.isPullingDown = false;
       this.finishPullDown();
     },
     async finishPullDown() {
@@ -130,6 +162,7 @@ export default {
         setTimeout(() => {
           this.bscroll.finishPullDown();
           resolve();
+          this.isPullingDown = false;
         }, TIME_STOP);
       });
       setTimeout(() => {
@@ -138,13 +171,28 @@ export default {
       }, TIME_BOUNCE);
     },
     async pullingUp() {
-      this.isPullUpLoad = true;
-
+      this.beforePullUp = false;
+      this.isPullingUp = true;
       await this.pullingUpHandler();
-
-      this.bscroll.finishPullUp();
-      this.bscroll.refresh();
-      this.isPullUpLoad = false;
+      // let vm = this;
+      // setTimeout(function() {
+      //   vm.isPullingUp = false;
+      // }, 3000);
+      // this.isPullingUp = false;
+      this.finishPullUp();
+    },
+    async finishPullUp() {
+      await new Promise(resolve => {
+        setTimeout(() => {
+          this.bscroll.finishPullUp();
+          resolve();
+          this.isPullingUp = false;
+        }, TIME_STOP);
+      });
+      setTimeout(() => {
+        this.beforePullUp = true;
+        this.bscroll.refresh();
+      }, TIME_BOUNCE);
     }
   },
   mounted() {
@@ -160,5 +208,26 @@ export default {
   padding: 0 10px;
   border: 1px solid #ccc;
   overflow: hidden;
+}
+
+.before-pull-down,
+.pulling-down,
+.after-pull-down,
+.before-pull-up,
+.pulling-up,
+.after-pull-up {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.after-pull-down,
+.after-pull-up {
+  margin: 1rem 0;
+}
+
+.pullup-text,
+.pulldown-text {
+  transition: 0.5s;
 }
 </style>

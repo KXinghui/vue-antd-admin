@@ -1,11 +1,15 @@
 <template>
   <a-drawer
     class="chat-drawer-wrap"
+    :width="width"
     :title="title"
     :placement="placement"
     :closable="false"
     :visible="visible"
     @close="onClose"
+    :wrapClassName="wrapClassName"
+    :mask="mask"
+    v-bind="$props"
   >
     <slot></slot>
   </a-drawer>
@@ -13,22 +17,32 @@
 
 <script>
 export default {
-  name: "ChatHeader",
+  name: "ChatDrawer",
   data() {
-    return {
-      chatRecordStyle: {},
-      overlayStyle: {
-        /* "max-width": "60%" */
-      }
-    };
+    return {};
   },
   props: {
-    title: {
+    wrapClassName: {
       type: [String],
       default: "left",
       required: false
     },
+    width: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    title: {
+      type: [String],
+      default: "",
+      required: false
+    },
     visible: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
+    mask: {
       type: [Boolean],
       default: true,
       required: false
@@ -52,16 +66,11 @@ export default {
         return null;
       },
       required: false
-    },
-    title: {
-      type: [String],
-      default: "",
-      required: false
     }
   },
   methods: {
     onClose() {
-      this.$emit("update:visible", false);
+      this.$emit("update:visible", !this.visible);
     },
     changeChatRecord(e) {
       if (!e || !e.target) {
@@ -81,22 +90,20 @@ export default {
 </script>
 
 <style>
-.chat-drawer-wrap {
+/* .chat-drawer-wrap {
   height: 3.25rem;
   max-height: 3.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  /* background-color: #e1dfde; */
+  background-color: #e1dfde;
   background-color: white;
   position: fixed;
   width: 100%;
   top: 0;
   padding: 0 1rem;
-  /* #e1dfde */
-  /* padding: 2rem 0.5rem; */
-}
+} */
 .chat-drawer-left,
 .chat-drawer-middle,
 .chat-drawer-right {

@@ -31,6 +31,7 @@ router.beforeEach((to, from, next) => {
   console.log(from);
   console.log(next);
   console.log("routes    ", routes);
+  // TODO 鉴权 permission responseResultType为json
   try {
     NProgress.start();
     next();

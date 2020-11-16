@@ -139,18 +139,118 @@
         <!-- 扫码登录 -->
       </a-col>
     </a-row>
+    <a-row>
+      <a-col
+        :xs="24"
+        :sm="20"
+        :md="20"
+        :lg="10"
+        :xl="10"
+        v-viewer="{
+          movable: true,
+          filter: function() {
+            return !isBatch;
+          }
+        }"
+      >
+        <chat-record
+          v-for="chatRecord in chatRecords"
+          :chat-user="identity"
+          :chat-record="chatRecord"
+          :is-batch="isBatch"
+          :chat-record-ids="chatRecordIds"
+          @changeChatRecord="changeChatRecord"
+          :key="chatRecord.id"
+        ></chat-record>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <script>
+import ChatRecord from "../IM/ChatRecord";
 import { FORM_MIXIN } from "@mixins/form-mixin";
+
+let msg =
+  "asdfasdfasdfasdfasdfasdfasdfasdfasdfawsdfasdfasdfasdfasdfasdfafa发射点发射点发啊手动阀手动阀手动阀啊打发手动阀阿道夫";
 
 export default {
   name: "IdentityLogin",
   mixins: [FORM_MIXIN],
+  components: { ChatRecord },
   data() {
+    let text = { html: msg + msg + msg + msg, md: "" };
+    let message = {
+      contentType: "image/jpg",
+      url:
+        "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1743743538,3853392777&fm=26&gp=0.jpg",
+      fileName: "EVA.jpg",
+      fileSize: "12121212",
+      extension: ".jpg",
+      createDate: "2020-10-12 00:00:00"
+    };
+    let message2 = {
+      contentType: "application/pdf",
+      url:
+        "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1743743538,3853392777&fm=26&gp=0.jpg",
+      fileName: "EVA.jpg",
+      fileSize: "12121212",
+      extension: ".pdf",
+      createDate: "2020-10-12 00:00:00"
+    };
+    let message3 = {
+      contentType: "application/pdf",
+      url:
+        "https://win-web-ra01-sycdn.kuwo.cn/f1248de9b25441973ba688658664e886/5f8a53b0/resource/n3/85/85/3570327548.mp3",
+      fileName: "3570327548sadfasdfasdfasdfasdfasdfawsdfasdf.mp3",
+      fileSize: "12121212",
+      extension: ".mp3",
+      createDate: "2020-10-12 00:00:00"
+    };
     return {
+      chatRecordIds: [],
+      isBatch: false,
       identity: { name: "kxh" },
+      chatRecords: [
+        {
+          id: "01",
+          isOwn: "1",
+          message: JSON.stringify(text),
+          createDate: "2020-04-06 05:39:17"
+        },
+        {
+          id: "02",
+          isOwn: "0",
+          message: JSON.stringify(text),
+          createDate: "2020-04-06 05:39:17"
+        },
+        {
+          id: "03",
+          isOwn: "0",
+          isToRead: 1,
+          chatMsgTypeEnum: "FILE",
+          message: JSON.stringify(message),
+          createDate: "2020-04-06 05:39:17"
+        },
+        Object.assign(
+          { id: "05", isOwn: "1" },
+          {
+            isToRead: 1,
+            chatMsgTypeEnum: "FILE",
+            message: JSON.stringify(message2),
+            createDate: "2020-04-06 05:39:17"
+          }
+        ),
+        Object.assign(
+          { id: "06", isOwn: "1" },
+          {
+            isToRead: 1,
+            chatMsgTypeEnum: "FILE",
+            message: JSON.stringify(message3),
+            createDate: "2020-04-06 05:39:17"
+          }
+        )
+      ],
       loginCancleTokenSource: {
         localAccount: null,
         mail: null,
@@ -166,10 +266,10 @@ export default {
         size: "default"
         /* tabBarGutter: 5 */
       },
-      formOption: {
-        // vertical horizontal inline
+      /* formOption: {
+        // vertical horizontal
         layout: "vertical"
-      },
+      }, */
       form: {
         name: "",
         region: undefined,
@@ -216,6 +316,17 @@ export default {
     }
   },
   methods: {
+    changeChatRecord(value, checked) {
+      let index = this.chatRecordIds.indexOf(value);
+      if (checked) {
+        if (index == -1) {
+          this.chatRecordIds.push(value);
+        }
+      } else {
+        this.chatRecordIds.splice(index, 1);
+      }
+      console.log(this.chatRecordIds);
+    },
     changeTabs(activeKey) {
       if (4 == activeKey) {
         if (!this.loginScanCodeBase64) {

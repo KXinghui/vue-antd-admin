@@ -89,7 +89,7 @@ module.exports = {
   runtimeCompiler: true,
   //部署应用包时的基本 URL
   publicPath: "/vue-antd-admin/",
-  productionSourceMap: false,
+  productionSourceMap: process.env.NODE_ENV === "production" ? false : true,
   pages: {
     index: {
       // page 的入口

@@ -1,5 +1,5 @@
 <template>
-  <div class="identity-login">
+  <div class="identity-register">
     <a-row type="flex" justify="center">
       <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
         <a-tabs
@@ -37,7 +37,7 @@
                 />
               </a-form-model-item>
               <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-                <a-button type="primary" @click="loginByLocalAccount" block>
+                <a-button type="primary" @click="registerByLocalAccount" block>
                   登录
                 </a-button>
               </a-form-model-item>
@@ -71,7 +71,7 @@
                 </a-input-group>
               </a-form-model-item>
               <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-                <a-button type="primary" @click="loginByMail" block>
+                <a-button type="primary" @click="registerByMail" block>
                   登录
                 </a-button>
               </a-form-model-item>
@@ -105,7 +105,12 @@
                 </a-input-group>
               </a-form-model-item>
               <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-                <a-button type="primary" @click="loginByMobile" block disabled>
+                <a-button
+                  type="primary"
+                  @click="registerByMobile"
+                  block
+                  disabled
+                >
                   登录(暂不支持)
                 </a-button>
               </a-form-model-item>
@@ -116,12 +121,12 @@
               <a-icon type="qrcode" />
               扫码登录
             </span>
-            <div class="login-wrap login-scan-code-wrap">
-              <img class="login-scan-code" :src="loginScanCodeSrc" />
-              <div class="login-scan-code-tips">
+            <div class="register-wrap register-scan-code-wrap">
+              <img class="register-scan-code" :src="registerScanCodeSrc" />
+              <div class="register-scan-code-tips">
                 <a-alert
-                  :message="loginScanCodeAlert.message"
-                  :type="loginScanCodeAlert.type"
+                  :message="registerScanCodeAlert.message"
+                  :type="registerScanCodeAlert.type"
                   show-icon
                 />
                 <!-- 扫码成功 进入确认登录页 显示Identity的头像和用户名 message="扫描成功" type="success" -->
@@ -139,6 +144,31 @@
         <!-- 扫码登录 -->
       </a-col>
     </a-row>
+    <a-row>
+      <a-col
+        :xs="24"
+        :sm="20"
+        :md="20"
+        :lg="10"
+        :xl="10"
+        v-viewer="{
+          movable: true,
+          filter: function() {
+            return !isBatch;
+          }
+        }"
+      >
+        <chat-record
+          v-for="chatRecord in chatRecords"
+          :chat-user="identity"
+          :chat-record="chatRecord"
+          :is-batch="isBatch"
+          :chat-record-ids="chatRecordIds"
+          @changeChatRecord="changeChatRecord"
+          :key="chatRecord.id"
+        ></chat-record>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -151,13 +181,13 @@ export default {
   data() {
     return {
       identity: { name: "kxh" },
-      loginCancleTokenSource: {
+      registerCancleTokenSource: {
         localAccount: null,
         mail: null,
         mobile: null,
         scanCode: null
       },
-      loginScanCodeBase64: "",
+      registerScanCodeBase64: "",
       tabOption: {
         position: "top",
         tabBarStyle: {
@@ -166,10 +196,10 @@ export default {
         size: "default"
         /* tabBarGutter: 5 */
       },
-      formOption: {
-        // vertical horizontal inline
+      /* formOption: {
+        // vertical horizontal
         layout: "vertical"
-      },
+      }, */
       form: {
         name: "",
         region: undefined,
@@ -180,7 +210,7 @@ export default {
         desc: ""
       },
       /* 登录二维码 */
-      loginScanCodeAlert: {
+      registerScanCodeAlert: {
         message: "请扫描二维码登录",
         type: "warning"
       }
@@ -211,27 +241,27 @@ export default {
           }
         : {};
     }, */
-    loginScanCodeSrc() {
-      return `data:image/png;base64,${this.loginScanCodeBase64}`;
+    registerScanCodeSrc() {
+      return `data:image/png;base64,${this.registerScanCodeBase64}`;
     }
   },
   methods: {
     changeTabs(activeKey) {
       if (4 == activeKey) {
-        if (!this.loginScanCodeBase64) {
+        if (!this.registerScanCodeBase64) {
           // TODO 后台请求 this.identityRole
-          console.log(activeKey, this.loginScanCodeBase64);
+          console.log(activeKey, this.registerScanCodeBase64);
         }
       }
     },
-    loginByLocalAccount() {
-      console.log("localaccount login", this.form);
+    registerByLocalAccount() {
+      console.log("localaccount register", this.form);
     },
-    loginByMail() {
-      console.log("mail login", this.form);
+    registerByMail() {
+      console.log("mail register", this.form);
     },
-    loginByMobile() {
-      console.log("mobile login", this.form);
+    registerByMobile() {
+      console.log("mobile register", this.form);
     },
     getLoginCancleTokenSource(identityType) {
       switch (identityType) {
@@ -247,7 +277,7 @@ export default {
 </script>
 
 <style>
-.identity-login {
+.identity-register {
   width: 100%;
   margin: 0 auto;
 }
@@ -256,14 +286,14 @@ export default {
   display: flex;
 }
 
-.login-wrap,
-.login-scan-code-wrap {
+.register-wrap,
+.register-scan-code-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.login-scan-code-wrap .login-scan-code {
+.register-scan-code-wrap .register-scan-code {
   width: 200px;
   height: 200px;
 }

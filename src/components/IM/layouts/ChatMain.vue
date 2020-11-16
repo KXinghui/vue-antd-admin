@@ -1,7 +1,16 @@
 <template>
   <div class="chat-main-wrap" v-on="$listeners">
-    <div class="chat-main-scroll">
-      <bs-pull height="600px">
+    <div
+      class="chat-main-scroll"
+      :pullingDownHandler="pullingDownHandler"
+      :pullingUpHandler="pullingUpHandler"
+    >
+      <bs-pull
+        :height="chatMainScrollHeight"
+        :isRefresh.sync="isRefresh"
+        :pullingDownHandler="pullingDownHandler"
+        :pullingUpHandler="pullingUpHandler"
+      >
         <slot name="header"></slot>
         <slot name="main"></slot>
         <!-- <b-scroll> </b-scroll> -->
@@ -19,33 +28,56 @@ export default {
   components: { BsPull },
   data() {
     return {
-      chatRecordStyle: {},
-      overlayStyle: {
-        /* "max-width": "60%" */
-      },
-      visible: true
+      isRefresh: false
     };
   },
   props: {
-    showBackIcon: {
-      type: [Boolean],
-      default: false,
-      required: false
-    },
-    defaultBack: {
+    isAutoHeight: {
       type: [Boolean],
       default: true,
       required: false
     },
-    backRoute: {
-      type: [Object],
+    listenClassWrap: {
+      type: [Array],
+      default: function() {
+        return ["chat-header-wrap", "chat-tabbar-wrap"];
+      },
+      required: false
+    },
+    listenRef: {
+      type: [Array],
+      default: function() {
+        return [];
+      },
+      required: false
+    },
+    pullingDownHandler: {
+      type: [Function],
       default() {
-        return null;
+        return {};
+      },
+      required: false
+    },
+    pullingUpHandler: {
+      type: [Function],
+      default() {
+        return {};
       },
       required: false
     }
   },
+  computed: {
+    chatMainScrollHeight() {
+      let height = 800;
+      if (this.isAutoHeight) {
+        // TODO 计算滚动容器高度
+      }
+      return `${height}px`;
+    }
+  },
   methods: {
+    /* async pullingDownHandler() {},
+    async pullingUpHandler() {}, */
     /* async pullingDownHandler() {
       console.log("trigger pullDown");
       this.beforePullDown = false;

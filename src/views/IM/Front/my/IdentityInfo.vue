@@ -12,7 +12,7 @@
     ></chat-cell> -->
     <chat-main style="">
       <div slot="main" style="width: 100%">
-        <chat-cell arrow :size="9" @click="pushRoute({ path: '/aboutim' })">
+        <chat-cell arrow :size="9" @click="pushRoute({ path: '/my/aboutim' })">
           <div slot="left">
             <div class="identity-wrap">
               <identity-avatar
@@ -32,17 +32,17 @@
         <chat-cell
           text="账号与安全"
           arrow
-          @click="pushRoute({ path: '/aboutim' })"
+          @click="pushRoute({ path: '/my/aboutim' })"
         ></chat-cell>
         <chat-cell
           text="隐私"
           arrow
-          @click="pushRoute({ path: '/aboutim' })"
+          @click="pushRoute({ path: '/my/aboutim' })"
         ></chat-cell>
         <chat-cell
           text="关于IM"
           arrow
-          @click="pushRoute({ path: '/aboutim' })"
+          @click="pushRoute({ path: '/my/aboutim' })"
         ></chat-cell>
       </div>
     </chat-main>
