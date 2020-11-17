@@ -131,7 +131,7 @@ export default {
 div.monaco-editor-wrap {
   margin: 1rem 0;
   width: 100%;
-  height: 100%;
+  height: 2000px;
 }
 /* .monaco-editor-wrap > div.monaco-editor,
 .monaco-editor-wrap > div.monaco-diff-editor {

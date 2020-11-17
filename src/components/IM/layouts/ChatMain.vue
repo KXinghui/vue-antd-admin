@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     chatMainScrollHeight() {
-      let height = 800;
+      let height = 650;
       if (this.isAutoHeight) {
         // TODO 计算滚动容器高度
       }
@@ -76,44 +76,30 @@ export default {
     }
   },
   methods: {
-    /* async pullingDownHandler() {},
-    async pullingUpHandler() {}, */
-    /* async pullingDownHandler() {
-      console.log("trigger pullDown");
-      this.beforePullDown = false;
-      this.isPullingDown = true;
-      STEP += 1;
-      /* await this.requestData(); */
-    /*console.log(STEP);
-      this.isPullingDown = false;
-      this.finishPullDown();
-    }, */
-    clickBackIcon() {
-      if (this.defaultBack) {
-        this.$router.go(-1);
-      } else {
-        let backRoute = this.backRoute;
-        if (backRoute) {
-          this.$router.push(backRoute);
-        } else {
-          this.$emit("back");
+    resizeCchatMainScrollHeight() {
+      // TODO 计算滚动容器高度
+      let height = 650;
+      if (this.isAutoHeight) {
+        if (this.listenClassWrap) {
+          let windowHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+          let listensHeight = 0;
+          this.listenClassWrap.forEach(classWrap => {
+            listensHeight += document.getElementsByClassName(classWrap)[0];
+          });
+          height = windowHeight - listensHeight;
         }
       }
-    },
-    changeChatRecord(e) {
-      if (!e || !e.target) {
-        return;
-      }
-      this.$emit("changeChatRecord", e.target.value, e.target.checked);
-    },
-    handleButtonClick(e) {
-      console.log("click left button", e);
-    },
-    handleMenuClick(e) {
-      console.log("click", e);
+      return `${height}px`;
     }
   },
-  mounted() {}
+  mounted() {
+    this.resizeCchatMainScrollHeight();
+    window.addEventListener("resize", this.resizeCchatMainScrollHeight);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resizeCchatMainScrollHeight);
+  }
 };
 </script>
 

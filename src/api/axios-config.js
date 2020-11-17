@@ -1,5 +1,5 @@
 import axios from "axios";
-import https from "https";
+// import https from "https";
 
 // import qs from "qs";
 import { DEFAULT_BASEURL, DEFAULT_TIMEOUT } from "@configs/api";
@@ -14,10 +14,10 @@ const instance = axios.create({
     /* "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Methods": "*" */
-  },
+  } /*,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false
-  })
+  }) */
 });
 // Add a request interceptor
 instance.interceptors.request.use(

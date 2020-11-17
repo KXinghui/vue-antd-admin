@@ -1,6 +1,12 @@
 import * as monaco from "monaco-editor";
 import { msg } from "../../../../utils/antd-utils";
 
+/*
+You must define a function MonacoEnvironment.getWorkerUrl or MonacoEnvironment.getWorker
+
+
+*/
+
 export const EDITOR_NAME = "MonacoEditor";
 export const EDITOR_MENU_NAME = "MonacoEditorMenu";
 

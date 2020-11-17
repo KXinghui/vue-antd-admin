@@ -54,6 +54,7 @@
       </a-form-model-item>
     </a-form-model>
     <monaco-editor
+      height="500px"
       :is-diff="isDiff"
       :is-format.sync="isFormat"
       :language="language"

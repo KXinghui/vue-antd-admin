@@ -102,6 +102,14 @@ export const routes = [
           import(
             /* webpackChunkName: "imageeditor" */ "@views/Admin/Editor/Image"
           )
+      },
+      {
+        path: "image/tuiImageEditor",
+        name: "TuiImageEditor",
+        component: () =>
+          import(
+            /* webpackChunkName: "imageeditor" */ "@views/Admin/Editor/Image/TuiImageEditorView"
+          )
       }
     ]
   },
@@ -220,7 +228,7 @@ export const routes = [
     name: "FrontChatUserRecord",
     component: () =>
       import(
-        /* webpackChunkName: "im" */ "../views/IM/Front/ChatUserRecord.vue"
+        /* webpackChunkName: "im" */ "../views/IM/Front/chat/ChatUserRecord.vue"
       ),
     props: true
   },

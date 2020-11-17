@@ -4,6 +4,10 @@ export const EDITOR_RICHTEXTS_MENUS = [
   {
     path: "/editor/richText/wangEditor",
     name: "WangEditor"
+  },
+  {
+    path: "/editor/richText/quillEditor",
+    name: "QuillEditor"
   }
 ];
 

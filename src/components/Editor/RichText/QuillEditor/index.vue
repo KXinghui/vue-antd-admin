@@ -1,8 +1,10 @@
 <template>
   <!-- Create the editor container -->
   <div class="quill-editor-wrap">
-    <slot name="toolbar"></slot>
-    <div id="editor" :ref="quillRef">
+    <div :id="toolbarWrap" :ref="toolbarWrap">
+      <slot name="toolbar"></slot>
+    </div>
+    <div id="editor" :ref="quillWrap">
       <p>Hello World!</p>
       <p>Some initial <strong>bold</strong> text</p>
       <p><br /></p>
@@ -13,6 +15,8 @@
 <script>
 import Quill from "quill";
 import { isString } from "../../../../utils/utils";
+import "quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css";
 
 const SUPPORT_THEMES = ["bubble", "snow"];
 const SUPPORT_DEBUGS = ["error", "warn", "log", "info"];
@@ -21,7 +25,8 @@ export default {
   name: "QuillEditor",
   data() {
     return {
-      quillRef: "quill-" + this._uid
+      quillWrap: "quill-" + this._uid,
+      toolbarWrap: "toolbar-" + this._uid
     };
   },
   props: {
@@ -76,7 +81,28 @@ export default {
           theme: this.theme,
           placeholder: this.placeholder,
           readOnly: this.readOnly,
-          debug: this.debug
+          debug: this.debug,
+          /* toolbar: {
+            container: `#${this.toolbarWrap}` // Selector for toolbar container
+          } */
+          modules: {
+            toolbar: [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ script: "sub" }, { script: "super" }],
+              [{ indent: "-1" }, { indent: "+1" }],
+              [{ direction: "rtl" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }],
+              [{ font: [] }],
+              [{ align: [] }],
+              ["clean"],
+              ["link", "image", "video"]
+            ]
+          }
         },
         this.options
       );
@@ -84,10 +110,10 @@ export default {
   },
   methods: {
     init() {
-      let quillEle = this.$refs[this.quillRef];
-      this.quill = new Quill(quillEle, this.quillOptions);
-
-      this.quill.on("text-change", function(delta, oldDelta, source) {
+      let quillEle = this.$refs[this.quillWrap];
+      let quill = new Quill(quillEle, this.quillOptions);
+      let vm = this;
+      quill.on("text-change", function(delta, oldDelta, source) {
         console.log(
           "delta   " +
             delta +
@@ -96,13 +122,17 @@ export default {
             "   source   " +
             source
         );
-        this.$emit("update:", this.quill.getContents());
+        vm.$emit("update:content", quill.getContents());
+        vm.$emit("update:text", quill.getText());
+        console.log(quill.getContents());
+        console.log(quill.getText());
         if (source == "api") {
           console.log("An API call triggered this change.");
         } else if (source == "user") {
           console.log("A user action triggered this change.");
         }
       });
+      this.quill = quill;
     },
     destory() {}
   },

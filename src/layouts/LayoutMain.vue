@@ -18,25 +18,29 @@
       </a-col>
     </a-row>
     <!-- 主要内容 -->
-    <div
-      :class="['layout-main', 'animate__animated', animateClass]"
-      :ref="layoutMainRef"
-    >
-      <transition mode="out-in">
-        <keep-alive :max="10">
-          <router-view />
-        </keep-alive>
-      </transition>
-    </div>
-    <a-back-top :visibility-height="100" />
+    <bs-core>
+      <div
+        :class="['layout-main', 'animate__animated', animateClass]"
+        :ref="layoutMainRef"
+      >
+        <transition mode="out-in">
+          <keep-alive :max="10">
+            <router-view />
+          </keep-alive>
+        </transition>
+      </div>
+      <a-back-top :visibility-height="100" />
+    </bs-core>
   </div>
 </template>
 
 <script>
 var elementResizeDetectorMaker = require("element-resize-detector");
+import BsCore from "../components/BetterScroll/BsCore";
 
 export default {
   name: "LayoutMain",
+  components: { BsCore },
   data() {
     return {
       animateClass: "animate__bounceInLeft",
