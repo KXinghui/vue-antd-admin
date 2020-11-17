@@ -2,6 +2,7 @@
   <!-- Create the editor container -->
   <div class="quill-editor-wrap">
     <div :id="toolbarWrap" :ref="toolbarWrap">
+      <a-icon type="cloud-upload" />
       <slot name="toolbar"></slot>
     </div>
     <div id="editor" :ref="quillWrap">
@@ -122,9 +123,9 @@ export default {
             "   source   " +
             source
         );
-        vm.$emit("update:content", quill.getContents());
+        vm.$emit("update:html", quill.root.innerHTML);
         vm.$emit("update:text", quill.getText());
-        console.log(quill.getContents());
+        console.log(quill.root.innerHTML);
         console.log(quill.getText());
         if (source == "api") {
           console.log("An API call triggered this change.");
