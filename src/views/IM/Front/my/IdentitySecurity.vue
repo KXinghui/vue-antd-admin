@@ -1,7 +1,7 @@
 <template>
   <div class="chat-my-wrap">
-    <chat-header showBackIcon title="账户安全"> </chat-header>
-    <!-- <chat-cell
+    <base-header showBackIcon title="账户安全"> </base-header>
+    <!-- <base-cell
       text="图"
       :icon="icon"
       :size="10"
@@ -9,10 +9,10 @@
       rightText="图"
       :rightIcon="icon"
       rightLabel="图图"
-    ></chat-cell> -->
-    <chat-main>
+    ></base-cell> -->
+    <base-main>
       <template slot="main">
-        <!-- <chat-cell arrow :size="9" @click="pushRoute({ path: '/aboutim' })">
+        <!-- <base-cell arrow :size="9" @click="pushRoute({ path: '/aboutim' })">
           <div slot="left">
             <div class="identity-wrap">
               <identity-avatar
@@ -28,51 +28,51 @@
               </div>
             </div>
           </div>
-        </chat-cell> -->
-        <chat-cell
+        </base-cell> -->
+        <base-cell
           text="账号安全"
           arrow
           @click="pushRoute({ path: '/my/identity/security' })"
-        ></chat-cell>
-        <chat-cell
+        ></base-cell>
+        <base-cell
           text="账号安全"
           arrow
           @click="pushRoute({ path: '/my/identity/security' })"
-        ></chat-cell>
+        ></base-cell>
         <!-- v-for="i in 10"
           :key="i" -->
-        <chat-cell
+        <base-cell
           v-for="i in 10"
           :key="i"
           text="关于IM"
           arrow
           @click="pushRoute({ path: '/my/aboutim' })"
-        ></chat-cell>
+        ></base-cell>
       </template>
-    </chat-main>
-    <chat-tab-bar
-      :chat-tab-bars="chatTabBars"
+    </base-main>
+    <base-tab-bar
+      :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
       :color="color"
       :active-color="activeColor"
-    ></chat-tab-bar>
+    ></base-tab-bar>
   </div>
 </template>
 
 <script>
 // import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
-import { CHAT_LAYOUT_MIXIN } from "../../../../components/IM/mixins/ChatLayout";
-import ChatCell from "../../../../components/IM/ChatCell";
+import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import BaseCell from "../../../../components/Mobile/BaseCell";
 // import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 
 export default {
   name: "ChatGroupMember",
-  mixins: [CHAT_LAYOUT_MIXIN],
-  components: { ChatCell /* , IdentityAvatar */ },
+  mixins: [BASE_LAYOUT_MIXIN],
+  components: { BaseCell /* , IdentityAvatar */ },
   data() {
     return {
-      icon: "Antd_fund"
+      msName: "im"
     };
   },
   computed: {
@@ -109,11 +109,11 @@ export default {
   font-weight: bold;
 }
 
-.chat-cell-wrap:first-of-type {
+.base-cell-wrap:first-of-type {
   margin-bottom: 1rem;
 }
 
-.chat-cell-wrap {
+.base-cell-wrap {
   margin-bottom: 0.5rem;
 }
 </style>

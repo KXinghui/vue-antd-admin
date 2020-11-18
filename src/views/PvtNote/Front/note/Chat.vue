@@ -1,6 +1,6 @@
 <template>
   <div class="chat-wrap">
-    <base-header showDrawerIcon>
+    <chat-header showDrawerIcon>
       <div slot="left">聊天</div>
       <div slot="right">
         <icon icon="Antd_search" @click="pushRoute('/search')" />
@@ -22,14 +22,14 @@
         </a-popover>
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
-    </base-header>
-    <base-tab-bar
-      :base-tab-bars="baseTabBars"
+    </chat-header>
+    <chat-tab-bar
+      :chat-tab-bars="chatTabBars"
       :active-item-key="activeKey"
       :color="color"
       :active-color="activeColor"
-    ></base-tab-bar>
-    <base-drawer
+    ></chat-tab-bar>
+    <chat-drawer
       width="300px"
       :visible.sync="showDrawer"
       :placement="drawerPlacement"
@@ -39,24 +39,24 @@
         :avatarSize="58"
         avatarShape="square"
       ></identity-avatar>
-    </base-drawer>
+    </chat-drawer>
   </div>
 </template>
 
 <script>
-import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import { CHAT_LAYOUT_MIXIN } from "../../../../components/IM/mixins/ChatLayout";
+import ChatDrawer from "../../../../components/IM/layouts/ChatDrawer";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState, mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
 
 export default {
   name: "ChatGroupMember",
-  mixins: [BASE_LAYOUT_MIXIN],
-  components: { IdentityAvatar },
+  mixins: [CHAT_LAYOUT_MIXIN],
+  components: { ChatDrawer, IdentityAvatar },
   data() {
     return {
-      msName: "im",
-      activeTabIndex: 0
+      chatActiveTabIndex: 0
     };
   },
   computed: {

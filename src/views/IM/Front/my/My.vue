@@ -1,6 +1,6 @@
 <template>
   <div class="chat-my-wrap">
-    <!-- <chat-header
+    <!-- <base-header
       style="height: 10rem; max-height: 10rem; background-color: white;"
     >
       <div slot="left">
@@ -12,8 +12,8 @@
         <div class="">聊天号：{{ identity.chatNo }}</div>
       </div>
       <div slot="right"></div>
-    </chat-header> -->
-    <!-- <chat-cell
+    </base-header> -->
+    <!-- <base-cell
       text="图"
       :icon="icon"
       :size="10"
@@ -21,66 +21,72 @@
       rightText="图"
       :rightIcon="icon"
       rightLabel="图图"
-    ></chat-cell> -->
-    <chat-cell
-      arrow
-      :size="9"
-      @click="pushRoute({ path: '/my/identity/info' })"
-    >
-      <div slot="left">
-        <div class="identity-wrap">
-          <identity-avatar
-            :identity="identity"
-            :avatarSize="58"
-            avatarShape="square"
-          ></identity-avatar>
-          <div class="identity-info">
-            <span class="identity-nickname">{{ identity.nickname }}</span>
-            <span class="identity-chatno">聊天号：{{ identity.chatNo }}</span>
+    ></base-cell> -->
+    <base-main>
+      <template slot="main">
+        <base-cell
+          arrow
+          :size="9"
+          @click="pushRoute({ path: '/my/identity/info' })"
+        >
+          <div slot="left">
+            <div class="identity-wrap">
+              <identity-avatar
+                :identity="identity"
+                :avatarSize="58"
+                avatarShape="square"
+              ></identity-avatar>
+              <div class="identity-info">
+                <span class="identity-nickname">{{ identity.nickname }}</span>
+                <span class="identity-chatno"
+                  >聊天号：{{ identity.chatNo }}</span
+                >
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </chat-cell>
-    <chat-cell
-      text="账号安全"
-      arrow
-      @click="pushRoute({ path: '/my/identity/security' })"
-    ></chat-cell>
-    <chat-cell
-      text="隐私"
-      arrow
-      @click="pushRoute({ path: '/my/aboutim' })"
-    ></chat-cell>
-    <chat-cell
-      text="关于IM"
-      arrow
-      @click="pushRoute({ path: '/my/aboutim' })"
-    ></chat-cell>
-    <!-- <chat-main></chat-main> -->
-    <chat-tab-bar
-      :chat-tab-bars="chatTabBars"
+        </base-cell>
+        <base-cell
+          text="账号安全"
+          arrow
+          @click="pushRoute({ path: '/my/identity/security' })"
+        ></base-cell>
+        <base-cell
+          text="隐私"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell>
+        <base-cell
+          text="关于IM"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell>
+      </template>
+    </base-main>
+    <!-- <base-main></base-main> -->
+    <base-tab-bar
+      :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
       :color="color"
       :active-color="activeColor"
-    ></chat-tab-bar>
+    ></base-tab-bar>
   </div>
 </template>
 
 <script>
 // import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
-import { CHAT_LAYOUT_MIXIN } from "../../../../components/IM/mixins/ChatLayout";
-import ChatCell from "../../../../components/IM/ChatCell";
+import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import BaseCell from "../../../../components/Mobile/BaseCell";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 
 export default {
   name: "ChatGroupMember",
-  mixins: [CHAT_LAYOUT_MIXIN],
-  components: { ChatCell, IdentityAvatar },
+  mixins: [BASE_LAYOUT_MIXIN],
+  components: { BaseCell, IdentityAvatar },
   data() {
     return {
-      icon: "Antd_fund",
-      chatActiveTabIndex: 2
+      msName: "im",
+      activeTabIndex: 2
     };
   },
   computed: {
@@ -117,11 +123,11 @@ export default {
   font-weight: bold;
 }
 
-.chat-cell-wrap:first-of-type {
+.base-cell-wrap:first-of-type {
   margin-bottom: 1rem;
 }
 
-.chat-cell-wrap {
+.base-cell-wrap {
   margin-bottom: 0.5rem;
 }
 .chat-drawer-wrap .ant-drawer-content {

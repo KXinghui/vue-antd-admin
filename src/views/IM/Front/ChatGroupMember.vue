@@ -1,7 +1,7 @@
 <template>
   <div class="chat-group-member-wrap">
-    <chat-header></chat-header>
-    <chat-tab-bar :chat-tab-bars="chatTabBars"></chat-tab-bar>
+    <base-header></base-header>
+    <base-tab-bar :chat-tab-bars="chatTabBars"></base-tab-bar>
   </div>
 </template>
 

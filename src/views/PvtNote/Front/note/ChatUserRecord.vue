@@ -14,8 +14,8 @@
           }
         }"
       >
-        <div v-if="isChatGroup">
-          <base-record
+        <div v-if="isChatFriend">
+          <chat-record
             v-for="chatRecord in chatRecords"
             :chat-user="identity"
             :chat-record="chatRecord"
@@ -23,7 +23,7 @@
             :chat-record-ids="chatRecordIds"
             @changeChatRecord="changeChatRecord"
             :key="chatRecord.id"
-          ></base-record>
+          ></chat-record>
         </div>
         <div v-else></div>
       </a-col>
@@ -32,27 +32,26 @@
 </template>
 
 <script>
-import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import { CHAT_RECORD_MIXIN } from "../../../../components/IM/mixins/ChatRecord";
 
 export default {
-  name: "ChatGroupRecord",
-  mixins: [BASE_LAYOUT_MIXIN],
+  name: "ChatUserRecord",
+  mixins: [CHAT_RECORD_MIXIN],
   data() {
     return {
-      msName: "im",
       chatFriend: null,
-      isChatGroup: false
+      isChatFriend: false
     };
   },
   props: {
-    chatGroupId: {
+    chatUserId: {
       type: [String],
       default: "",
       required: true
     }
   },
   beforeMount() {
-    // 检查是否在该群 isChatGroup
+    // 检查该好友是否其好友 isChatFriend
     // 加载聊天记录
     console.log(this.chatUserId);
   },

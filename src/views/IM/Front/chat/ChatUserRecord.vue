@@ -15,7 +15,7 @@
         }"
       >
         <div v-if="isChatFriend">
-          <chat-record
+          <base-record
             v-for="chatRecord in chatRecords"
             :chat-user="identity"
             :chat-record="chatRecord"
@@ -23,7 +23,7 @@
             :chat-record-ids="chatRecordIds"
             @changeChatRecord="changeChatRecord"
             :key="chatRecord.id"
-          ></chat-record>
+          ></base-record>
         </div>
         <div v-else></div>
       </a-col>
@@ -32,13 +32,14 @@
 </template>
 
 <script>
-import { CHAT_RECORD_MIXIN } from "../../../../components/IM/mixins/ChatRecord";
+import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 
 export default {
   name: "ChatUserRecord",
-  mixins: [CHAT_RECORD_MIXIN],
+  mixins: [BASE_LAYOUT_MIXIN],
   data() {
     return {
+      msName: "im",
       chatFriend: null,
       isChatFriend: false
     };
