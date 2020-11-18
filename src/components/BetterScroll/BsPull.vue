@@ -201,12 +201,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bscroll {
   position: relative;
   height: 100%;
-  padding: 0 10px;
-  border: 1px solid #ccc;
   overflow: hidden;
 }
 
