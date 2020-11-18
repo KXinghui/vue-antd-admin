@@ -10,6 +10,9 @@ npm install --save-dev javascript-obfuscator webpack-obfuscator
 
 No module factory available for dependency type: CssDependency
 
+使用mock工具生成数据
+【https://blog.csdn.net/qq_36237810/article/details/109728540】
+
 "yuicompressor": "^2.4.8"
 
 "webpack": "^4.44.2",

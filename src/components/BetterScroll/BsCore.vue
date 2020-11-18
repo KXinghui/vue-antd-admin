@@ -24,13 +24,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .better-scroll-wrap {
   position: relative;
   height: 100%;
-  /* height: 300px; */
-  padding: 0 10px;
-  /* border: 1px solid #ccc; */
   overflow: hidden;
 }
 </style>
