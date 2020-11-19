@@ -3,6 +3,14 @@
     <base-header showDrawerIcon>
       <div slot="left">聊天</div>
       <div slot="right">
+        <icon
+          icon="Antd_menu"
+          @click="
+            () => {
+              this.showDrawerBar = !this.showDrawerBar;
+            }
+          "
+        />
         <icon icon="Antd_search" @click="pushRoute('/search')" />
         <a-popover placement="bottomRight">
           <template slot="content">
@@ -40,6 +48,23 @@
         avatarShape="square"
       ></identity-avatar>
     </base-drawer>
+    <base-drawer-bar
+      topWidth="300px"
+      bottomWidth="300px"
+      :topVisible.sync="showDrawerBar"
+      :bottomVisible.sync="showDrawerBar"
+    >
+      <identity-avatar
+        slot="top"
+        :identity="identity"
+        avatarShape="square"
+      ></identity-avatar>
+      <identity-avatar
+        slot="bottom"
+        :identity="{ name: 'asdfasdf' }"
+        avatarShape="square"
+      ></identity-avatar>
+    </base-drawer-bar>
   </div>
 </template>
 
@@ -56,7 +81,8 @@ export default {
   data() {
     return {
       msName: "im",
-      activeTabIndex: 0
+      activeTabIndex: 0,
+      showDrawerBar: false
     };
   },
   computed: {

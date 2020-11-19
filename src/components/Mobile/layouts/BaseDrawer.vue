@@ -54,18 +54,6 @@ export default {
       validator(value) {
         return ["left", "right"].includes(value);
       }
-    },
-    defaultBack: {
-      type: [Boolean],
-      default: true,
-      required: false
-    },
-    backRoute: {
-      type: [Object],
-      default() {
-        return null;
-      },
-      required: false
     }
   },
   methods: {
@@ -92,9 +80,9 @@ export default {
   top: 0;
   padding: 0 1rem;
 } */
-.base-drawer-left,
-.base-drawer-middle,
-.base-drawer-right {
+.base-drawer-wrap .base-drawer-left,
+.base-drawer-wrap .base-drawer-middle,
+.base-drawer-wrap .base-drawer-right {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -102,27 +90,27 @@ export default {
   border: 1px solid red;
 }
 
-.base-drawer-left {
+.base-drawer-wrap .base-drawer-left {
   justify-content: flex-start;
 }
-.base-drawer-middle {
+.base-drawer-wrap .base-drawer-middle {
   justify-content: space-between;
 }
-.base-drawer-right {
+.base-drawer-wrap .base-drawer-right {
   justify-content: flex-end;
   align-content: flex-end;
   /* flex-direction: row-reverse; */
 }
-.icon {
+.base-drawer-wrap .icon {
   cursor: pointer;
 }
-.base-drawer-left .icon {
+.base-drawer-wrap .base-drawer-left .icon {
   padding: 0rem 1.2rem 0rem 0;
 }
-.base-drawer-right .icon {
+.base-drawer-wrap .base-drawer-right .icon {
   padding-right: 1.2rem;
 }
-.base-drawer-right .icon:last-of-type {
+.base-drawer-wrap .base-drawer-right .icon:last-of-type {
   padding-right: 0;
 }
 </style>

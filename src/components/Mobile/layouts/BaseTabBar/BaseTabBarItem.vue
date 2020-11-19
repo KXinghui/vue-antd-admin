@@ -135,4 +135,10 @@ export default {
   font-size: 0.5rem;
   color: black;
 }
+
+.base-tabbar-item-badge-wrap .ant-badge-count,
+.base-tabbar-item-badge-wrap .ant-badge-dot,
+.base-tabbar-item-badge-wrap .ant-badge .ant-scroll-number-custom-component {
+  transform: translate(30%, 5%);
+}
 </style>
