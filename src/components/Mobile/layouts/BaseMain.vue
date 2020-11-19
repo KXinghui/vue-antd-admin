@@ -11,6 +11,12 @@
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
       >
+        <!-- <div slot="isPullingDown">
+          <slot name="isPullingDown"></slot>
+        </div>
+        <div slot="afterPullDown">
+          <slot name="afterPullDown"></slot>
+        </div> -->
         <slot name="header"></slot>
         <slot name="main"></slot>
         <!-- <b-scroll> </b-scroll> -->

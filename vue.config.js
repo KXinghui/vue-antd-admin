@@ -1,4 +1,4 @@
-// const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 // var WebpackObfuscator = require("webpack-obfuscator");
 
 let proxyObj = {};
@@ -24,6 +24,7 @@ function resolve(dir) {
 
 const configureWebpack = {
   plugins: [
+    new CompressionPlugin()
     // new CompressionPlugin({
     //   algorithm: "gzip", //'brotliCompress'
     //   test: /\.js$|\.html$|\.css/, // + $|\.svg$|\.png$|\.jpg

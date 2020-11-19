@@ -8,16 +8,17 @@
           </div>
           <div v-show="isPullingDown" class="pulling-down">
             <slot name="isPullingDown"
-              ><!-- <span class="pulldown-txt"
-                > --><a-divider><a-icon type="loading" /> Loading...</a-divider
-              ><!-- </span
-              > --></slot
+              ><span class="pulldown-text"
+                ><a-divider
+                  ><a-icon type="loading" /> Loading...</a-divider
+                ></span
+              ></slot
             >
           </div>
           <div v-show="!beforePullDown">
             <div v-show="!isPullingDown" class="after-pull-down">
               <slot name="afterPullDown"
-                ><span class="pulldown-txt">Refresh success</span></slot
+                ><span class="pulldown-text">Refresh success</span></slot
               >
             </div>
           </div>
@@ -31,7 +32,7 @@
           </div>
           <div v-show="isPullingUp" class="pulling-up">
             <slot name="isPullingUp"
-              ><!-- <span class="pullup-txt"
+              ><!-- <span class="pullup-text"
                 > --><a-divider><a-icon type="loading" /> Loading...</a-divider
               ><!-- </span
               > --></slot
@@ -40,7 +41,7 @@
           <div v-show="!beforePullUp">
             <div v-show="!isPullingUp" class="after-pull-up">
               <slot name="afterPullUp"
-                ><span class="pullup-txt">Pull up and load success</span></slot
+                ><span class="pullup-text">Pull up and load success</span></slot
               >
             </div>
           </div>
