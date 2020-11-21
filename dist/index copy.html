@@ -100,19 +100,10 @@
       }
     }
   </style>
+  <link rel="stylesheet/less" type="text/css" href="<%= BASE_URL %>color.less" />
 </head>
 
 <body>
-  <link rel="stylesheet/less" type="text/css" href="<%= BASE_URL %>color.less" />
-  <script>
-    window.less = {
-        async: false,
-        env: true ? 'production' : 'development',
-        javascriptEnabled: true,
-        modifyVars: { },
-    };
-  </script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.js"></script>
   <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
       Please enable it to continue.</strong>
@@ -126,5 +117,17 @@
       <div style="display: flex; justify-content: center; align-items: center;">Vue Antd Admin</div>
     </div>
   </div>
+
+  <script>
+    window.less = {
+        async: false,
+        env: true ? 'production' : 'development',
+        javascriptEnabled: true,
+        modifyVars: {
+            "primary-color": "#db8b12"
+        },
+    };
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.js"></script>
 </body>
 </html>

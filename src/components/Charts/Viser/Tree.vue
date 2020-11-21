@@ -8,6 +8,7 @@
       :layout="graph.layout"
       :modes="graph.modes"
       :defaultNode="graph.defaultNode"
+      :fitView="true"
     >
       <v-node :formatter="node.formatter"></v-node>
       <v-edge :formatter="edge.formatter"></v-edge>
@@ -110,7 +111,7 @@ const graph = {
       return 100;
     },
     getSide() {
-      return "right";
+      return "left";
     }
   }
 };

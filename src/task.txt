@@ -10,6 +10,15 @@ npm install --save-dev javascript-obfuscator webpack-obfuscator
 
 No module factory available for dependency type: CssDependency
 
+动态切换主题 
+antd-theme-webpack-plugin 
+【https://github.com/mzohaibqc/antd-theme-webpack-plugin】
+【示例 https://antd-live-theme.firebaseapp.com/】
+根据less的变量进行less编译
+webpack-theme-color-replacer
+无需进行less编译
+
+
 "yuicompressor": "^2.4.8"
 
 "webpack": "^4.44.2",

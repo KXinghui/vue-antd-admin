@@ -226,66 +226,7 @@ export default {
     }
   }
 };
+/* <style lang="less" src="../styles/layout.less"></style> */
 </script>
 
-<style>
-.ant-layout {
-  height: 100%;
-}
-.base-layout-container {
-  height: 100%;
-  min-height: 100%;
-}
-
-.base-layout {
-  height: 100%;
-}
-
-.base-layout-main {
-  height: 100%;
-  /* position: relative; */
-}
-
-.layout-sider-mask {
-  float: right;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 9;
-  background-color: rgba(0, 0, 0, 0.45);
-}
-
-.splitpanes {
-  background-color: #f8f8f8;
-}
-
-.splitpanes__splitter {
-  background-color: #ccc;
-  position: relative;
-}
-.splitpanes__splitter:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  transition: opacity 0.4s;
-  background-color: rgba(255, 0, 0, 0.3);
-  opacity: 0;
-  z-index: 1;
-}
-.splitpanes__splitter:hover:before {
-  opacity: 1;
-}
-.splitpanes--vertical > .splitpanes__splitter:before {
-  left: -30px;
-  right: -30px;
-  height: 100%;
-}
-.splitpanes--horizontal > .splitpanes__splitter:before {
-  top: -30px;
-  bottom: -30px;
-  width: 100%;
-}
-</style>
+<style lang="less" src="../styles/layout.less"></style>

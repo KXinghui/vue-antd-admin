@@ -40,7 +40,7 @@ export default {
     },
     height: {
       type: [String, Number],
-      default: "",
+      default: "100%",
       required: false
     },
     width: {

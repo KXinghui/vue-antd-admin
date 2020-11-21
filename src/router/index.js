@@ -32,6 +32,13 @@ router.beforeEach((to, from, next) => {
   console.log(next);
   console.log("routes    ", routes);
   // TODO 鉴权 permission responseResultType为json
+  let isLogin = true;
+  if (!isLogin && to.name != "Login") {
+    // 当前只记录未登录时的from和请求
+    next({ path: "/login" });
+  }
+  // TODO 获取未登录时记录的from和
+
   try {
     NProgress.start();
     next();

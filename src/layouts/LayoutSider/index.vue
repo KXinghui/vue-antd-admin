@@ -33,6 +33,7 @@
         theme="dark"
         :inline-collapsed="collapsedSider"
         :inline-indent="10"
+        @openChange="onOpenChange"
       >
         <template v-for="item in menus">
           <a-menu-item v-if="!item.children" :key="item.name">
@@ -107,21 +108,21 @@ export default {
       required: false
     }
   },
-  /* computed: {
-    layoutSiderWrapStyle() {
-      // computed 元素还未渲染
-      this.$nextTick(() => {
-        if (this.isMobile) {
-          console.log(this.$refs[this.layoutSiderRef]);
-          let layoutSiderEle = this.$refs[this.layoutSiderRef].$el;
-          return {
-            left: this.showSider ? "0px" : -layoutSiderEle.offsetWidth + "px"
-          };
-        }
-      });
-      return {};
-    }
-  }, */
+  computed: {
+    // layoutSiderWrapStyle() {
+    //   // computed 元素还未渲染
+    //   this.$nextTick(() => {
+    //     if (this.isMobile) {
+    //       console.log(this.$refs[this.layoutSiderRef]);
+    //       let layoutSiderEle = this.$refs[this.layoutSiderRef].$el;
+    //       return {
+    //         left: this.showSider ? "0px" : -layoutSiderEle.offsetWidth + "px"
+    //       };
+    //     }
+    //   });
+    //   return {};
+    // }
+  },
   updated() {
     console.log("showSiderLogo          " + this.showSiderLogo);
   },
@@ -137,6 +138,16 @@ export default {
         window.addEventListener("click", this.showAndHideSider);
       } else {
         window.removeEventListener("click", this.showAndHideSider);
+      }
+    },
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      );
+      if (this.menus.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     }
     /* watch: {
@@ -189,6 +200,10 @@ aside.layout-sider-wrap-mobile {
 /* .layout-sider .trigger:hover {
   color: #1890ff;
 } */
+.layout-sider-menu {
+  height: 100%;
+  overflow: auto;
+}
 
 .layout-sider-menu li,
 .layout-sider-menu a {
