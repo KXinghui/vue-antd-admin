@@ -41,9 +41,10 @@ const configureWebpack = {
         "@text-color",
         "@text-color-secondary",
         "@heading-color",
+        "@layout-header-background",
         "@layout-body-background",
         "@btn-primary-bg",
-        "@layout-header-background"
+        "@processing-color"
       ],
       generateOnce: false,
       indexFileName: "index.html",

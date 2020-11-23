@@ -25,6 +25,7 @@
           <a-layout class="base-layout-main">
             <splitpanes horizontal>
               <pane style="max-height: 64px;">
+                <!-- style="background: #fff; padding: 0;" -->
                 <a-layout-header style="background: #fff; padding: 0;">
                   <layout-header
                     :is-mobile.sync="isMobile"

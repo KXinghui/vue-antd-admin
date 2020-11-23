@@ -1,20 +1,26 @@
 <template>
-  <a-sub-menu :key="menu.name" v-bind="$props" v-on="$listeners">
+  <a-sub-menu
+    class="layout-sider-menu-item"
+    :key="menu.name"
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <span slot="title">
-      <a-icon :type="menu.icon ? menu.icon : 'menu'" />
-      <span
-        ><router-link :to="menu.path">{{ menu.name }} </router-link></span
+      <router-link :to="menu.path">
+        <icon :icon="menu.icon ? menu.icon : 'Antd_menu'" />
+        <span>{{ menu.name }}</span></router-link
       >
     </span>
 
     <template v-for="item in menu.children">
       <a-menu-item
+        class="layout-sider-menu-item"
         v-if="!item.children || item.children.size == 0"
         :key="item.name"
       >
-        <a-icon :type="item.icon ? item.icon : 'menu'" />
-        <span
-          ><router-link :to="item.path">{{ item.name }}</router-link></span
+        <router-link :to="item.path">
+          <icon :icon="menu.icon ? menu.icon : 'Antd_menu'" />
+          <span>{{ item.name }}</span></router-link
         >
       </a-menu-item>
       <layout-sider-sub-menu v-else :key="item.name" :menu="item" />
@@ -44,5 +50,7 @@ export default {
   methods: {}
 };
 </script>
+
+<style lang="less" src="../../styles/layout.less"></style>
 
 <style></style>

@@ -52,8 +52,10 @@ export default {
 };
 </script>
 
+<style lang="less" src="../../styles/layout.less"></style>
+
 <style>
-.layout-sider-logo-container {
+/* .layout-sider-logo-container {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -69,5 +71,5 @@ export default {
 }
 .logo-title-display {
   display: none;
-}
+} */
 </style>

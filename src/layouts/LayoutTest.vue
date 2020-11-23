@@ -5,7 +5,7 @@
       icon-class="home"
       style="color: yellow;fill: rgba(0, 0, 255, 0.5);"
     />
-    <icon-svg icon-class="log" />
+    <icon-svg icon-class="image-link" />
     <a-icon type="heart" theme="twoTone" two-tone-color="#eb2f96" />
     <a-icon type="usb" theme="twoTone" two-tone-color="blue" />
     <a-icon type="block" theme="twoTone" two-tone-color="blue" />

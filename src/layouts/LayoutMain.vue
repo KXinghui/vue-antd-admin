@@ -26,10 +26,11 @@
       <transition mode="out-in">
         <keep-alive :max="10">
           <router-view />
+          <a-back-top :visibility-height="10" />
         </keep-alive>
       </transition>
     </div>
-    <a-back-top :visibility-height="100" />
+    <!-- <a-back-top :visibility-height="100" /> -->
     <!-- </bs-core> -->
   </div>
 </template>
@@ -108,8 +109,10 @@ export default {
 };
 </script>
 
+<style lang="less" src="../styles/layout.less"></style>
+
 <style>
-.layout-main-container {
+/* .layout-main-container {
   border: 1px solid red;
   margin: 1px 0;
   min-height: none;
@@ -121,6 +124,5 @@ export default {
   height: 100%;
   width: 100%;
   padding: 1rem 0;
-  /* margin: 1rem 0; */
-}
+} */
 </style>

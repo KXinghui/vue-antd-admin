@@ -1,3 +1,5 @@
+import { axiosInstance } from "../axios-config";
+
 class BaseApi {
   // 如：/user
   namespace;
@@ -6,6 +8,9 @@ class BaseApi {
   }
   buildUrl(url) {
     return `${this.namespace}${url}`;
+  }
+  insert(data, config) {
+    return axiosInstance.post(this.buildUrl(""), data, config);
   }
 }
 

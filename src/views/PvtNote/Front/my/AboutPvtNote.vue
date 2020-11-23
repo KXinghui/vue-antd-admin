@@ -6,12 +6,15 @@
       <div slot="main">
         <div class="identity-wrap">
           <identity-avatar
-            :identity="{ name: 'IM' }"
+            :identity="{ name: 'PVTNOTE' }"
             :avatarSize="60"
             avatarShape="square"
           ></identity-avatar>
         </div>
-        <chat-cell text="介绍" label="基于SpringBoot和Vue实现IM"></chat-cell>
+        <chat-cell
+          text="介绍"
+          label="基于SpringBoot和Vue实现私人便签"
+        ></chat-cell>
       </div>
     </chat-main>
   </div>

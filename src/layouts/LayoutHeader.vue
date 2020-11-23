@@ -86,8 +86,10 @@ export default {
 };
 </script>
 
+<style lang="less" src="../styles/layout.less"></style>
+
 <style>
-.layout-header {
+/* .layout-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -109,5 +111,5 @@ export default {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
-}
+} */
 </style>

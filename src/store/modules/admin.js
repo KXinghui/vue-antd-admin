@@ -14,6 +14,18 @@ const state = () => {
       /* IM */
       showDrawer: true,
       drawerPlacement: "left"
+    },
+    // 主题设置
+    themeSetting: {
+      "primary-color": "",
+      "secondary-color": "",
+      "text-color": "",
+      "text-color-secondary": "",
+      "heading-color": "",
+      "layout-header-background": "",
+      "layout-body-background": "",
+      "btn-primary-bg": "",
+      "processing-color": ""
     }
   };
 };
@@ -34,6 +46,13 @@ const mutations = {
       state.layoutSetting = payload;
     } else {
       state.layoutSetting = Object.assign({}, payload);
+    }
+  },
+  [ADMIN_MUTATION_TYPE.SET_THEME_SETTING](state, payload) {
+    if (state.themeSetting === payload) {
+      state.themeSetting = payload;
+    } else {
+      state.themeSetting = Object.assign({}, payload);
     }
   },
   [ADMIN_MUTATION_TYPE.SET_IS_MOBILE](state, payload) {

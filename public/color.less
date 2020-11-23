@@ -2,9 +2,10 @@
 @text-color: fade(@black, 65%);
 @text-color-secondary: fade(@black, 45%);
 @heading-color: fade(#000, 85%);
+@layout-header-background: #001529;
 @layout-body-background: #f0f2f5;
 @btn-primary-bg: #1890ff;
-@layout-header-background: #001529;
+@processing-color: #1890ff;
 html {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
 body {color: @text-color;background-color: #fff;}
 h1,
@@ -82,8 +83,8 @@ html {--antd-wave-shadow-color: @primary-color;}
 .ant-badge-dot {background: #f5222d;border-radius: 100%;box-shadow: 0 0 0 1px #fff;}
 .ant-badge-status-dot {border-radius: 50%;}
 .ant-badge-status-success {background-color: #52c41a;}
-.ant-badge-status-processing {background-color: #1890ff;}
-.ant-badge-status-processing::after {border: 1px solid #1890ff;border-radius: 50%;}
+.ant-badge-status-processing {background-color: @processing-color;}
+.ant-badge-status-processing::after {border: 1px solid @processing-color;border-radius: 50%;}
 .ant-badge-status-default {background-color: #d9d9d9;}
 .ant-badge-status-error {background-color: #f5222d;}
 .ant-badge-status-warning {background-color: #faad14;}
@@ -1046,7 +1047,7 @@ form .ant-upload {background: transparent;}
 .ant-popover-placement-left > .ant-popover-content > .ant-popover-arrow, .ant-popover-placement-leftTop > .ant-popover-content > .ant-popover-arrow, .ant-popover-placement-leftBottom > .ant-popover-content > .ant-popover-arrow {border-top-color: #fff;border-right-color: #fff;border-bottom-color: transparent;border-left-color: transparent;box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);}
 .ant-progress {color: @text-color;}
 .ant-progress-inner {background-color: #f5f5f5;border-radius: 100px;}
-.ant-progress-success-bg, .ant-progress-bg {background-color: #1890ff;border-radius: 100px;}
+.ant-progress-success-bg, .ant-progress-bg {background-color: @processing-color;border-radius: 100px;}
 .ant-progress-success-bg {background-color: #52c41a;}
 .ant-progress-text {color: @text-color-secondary;}
 .ant-progress-status-active .ant-progress-bg::before {background: #fff;border-radius: 10px;}
@@ -1580,10 +1581,17 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .btn {color: #fff;color: #555555;}
 .btn:hover {color: @btn-primary-bg;}
 .btn .logo {background: #ffffff33;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{heading-color}", 9)`)73;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{primary-color}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}
+.layout-main-container {border: 1px solid red;background-color: @layout-body-background;}
+.layout-main {border: 1px solid blue;}
+.layout-footer {color: @text-color;}
+.layout-setting {color: @text-color;}
+.logo-title, .logo-title-display {color: @text-color;}
+.layout-sider-menu li, .layout-sider-menu a {color: rgba(255, 255, 255, 0.65);color: @text-color;}
+.layout-sider-menu li:hover a, .layout-sider-menu a:hover {color: @text-color-secondary;}
 .bezierEasingMixin() {
 @functions: ~`(function() {var NEWTON_ITERATIONS = 4;var NEWTON_MIN_SLOPE = 0.001;var SUBDIVISION_PRECISION = 0.0000001;var SUBDIVISION_MAX_ITERATIONS = 10;var kSplineTableSize = 11;var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);var float32ArraySupported = typeof Float32Array === 'function';function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
   function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
@@ -2178,7 +2186,6 @@ this.tinycolor = tinycolor;})()`;}
 @html-selector: html;
 @info-color: @blue-6;
 @success-color: @green-6;
-@processing-color: @blue-6;
 @error-color: @red-6;
 @highlight-color: @red-6;
 @warning-color: @gold-6;

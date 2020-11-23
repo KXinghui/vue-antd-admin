@@ -17,13 +17,5 @@ export default {
   }
 };
 </script>
-<style>
-.layout-footer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-size: inherit;
-}
-</style>
+
+<style lang="less" src="../styles/layout.less"></style>

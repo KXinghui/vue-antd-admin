@@ -27,19 +27,23 @@
           <a-icon :type="showSider ? 'close' : 'menu'" />
         </a-button>
       </div>
+      <!-- theme="dark" -->
       <a-menu
         class="layout-sider-menu"
         mode="inline"
-        theme="dark"
         :inline-collapsed="collapsedSider"
         :inline-indent="10"
-        @openChange="onOpenChange"
       >
         <template v-for="item in menus">
-          <a-menu-item v-if="!item.children" :key="item.name">
-            <a-icon :type="item.icon ? menu.icon : 'menu'" />
-            <span
-              ><router-link :to="item.path">{{ item.name }}</router-link></span
+          <a-menu-item
+            class="layout-sider-menu-item"
+            v-if="!item.children"
+            :key="item.name"
+            @openChange="onOpenChange"
+          >
+            <router-link :to="item.path">
+              <icon :icon="item.icon ? item.icon : 'Antd_menu'" />
+              <span>{{ item.name }}</span></router-link
             >
           </a-menu-item>
           <layout-sider-sub-menu v-else :key="item.name" :menu="item" />
@@ -141,14 +145,15 @@ export default {
       }
     },
     onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      );
-      if (this.menus.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys;
-      } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
-      }
+      console.log("openKeys      " + openKeys);
+      // const latestOpenKey = openKeys.find(
+      //   key => this.openKeys.indexOf(key) === -1
+      // );
+      // if (this.menus.indexOf(latestOpenKey) === -1) {
+      //   this.openKeys = openKeys;
+      // } else {
+      //   this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      // }
     }
     /* watch: {
       showSider() {
@@ -159,8 +164,10 @@ export default {
 };
 </script>
 
+<style lang="less" src="../../styles/layout.less"></style>
+
 <style>
-aside.layout-sider-wrap {
+/* aside.layout-sider-wrap {
   transition: 0.6s;
   height: 100%;
 }
@@ -197,9 +204,6 @@ aside.layout-sider-wrap-mobile {
   padding: 1rem;
 }
 
-/* .layout-sider .trigger:hover {
-  color: #1890ff;
-} */
 .layout-sider-menu {
   height: 100%;
   overflow: auto;
@@ -214,5 +218,18 @@ aside.layout-sider-wrap-mobile {
 .layout-sider-menu a:hover {
   text-decoration: none;
   color: white;
-}
+} */
+/* .layout-sider-menu
+  .ant-menu-submenu
+  .ant-menu-submenu-title
+  .layout-sider-menu-item:hover,
+.layout-sider-menu .layout-sider-menu-item:hover,
+.layout-sider-menu
+  .layout-sider-menu-item:hover
+  .layout-sider-menu
+  .layout-sider-menu-item
+  a {
+  text-decoration: none;
+  color: #ca11b8;
+} */
 </style>

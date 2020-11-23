@@ -5,17 +5,24 @@
       <a-icon type="cloud-upload" />
       <slot name="toolbar"></slot>
     </div>
-    <div id="editor" :ref="quillWrap">
-      <p>Hello World!</p>
-      <p>Some initial <strong>bold</strong> text</p>
-      <p><br /></p>
-    </div>
+    <div
+      v-viewer="{
+        movable: true,
+        filter: function() {
+          return isView;
+        }
+      }"
+      id="editor"
+      :ref="quillWrap"
+      v-html="html"
+    ></div>
   </div>
 </template>
 
 <script>
 import Quill from "quill";
 import { isString } from "../../../../utils/utils";
+import xss from "xss";
 import "quill/dist/quill.bubble.css";
 import "quill/dist/quill.snow.css";
 
@@ -31,6 +38,16 @@ export default {
     };
   },
   props: {
+    isView: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
+    isXss: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
     theme: {
       type: [String],
       default: "snow",
@@ -73,6 +90,11 @@ export default {
         return [];
       },
       required: false
+    },
+    html: {
+      type: [String],
+      default: "",
+      required: false
     }
   },
   computed: {
@@ -90,7 +112,7 @@ export default {
             toolbar: [
               ["bold", "italic", "underline", "strike"],
               ["blockquote", "code-block"],
-              [{ header: 1 }, { header: 2 }],
+              // [{ header: 1 }, { header: 2 }],
               [{ list: "ordered" }, { list: "bullet" }],
               [{ script: "sub" }, { script: "super" }],
               [{ indent: "-1" }, { indent: "+1" }],
@@ -100,8 +122,8 @@ export default {
               [{ color: [] }, { background: [] }],
               [{ font: [] }],
               [{ align: [] }],
-              ["clean"],
-              ["link", "image", "video"]
+              ["link", "image", "video"],
+              ["clean"]
             ]
           }
         },
@@ -123,15 +145,19 @@ export default {
             "   source   " +
             source
         );
-        vm.$emit("update:html", quill.root.innerHTML);
+        vm.$emit(
+          "update:html",
+          this.isXss ? xss(quill.root.innerHTML) : quill.root.innerHTML
+        );
+        console.log(
+          this.isXss ? xss(quill.root.innerHTML) : quill.root.innerHTML
+        );
         vm.$emit("update:text", quill.getText());
-        console.log(quill.root.innerHTML);
-        console.log(quill.getText());
-        if (source == "api") {
-          console.log("An API call triggered this change.");
-        } else if (source == "user") {
-          console.log("A user action triggered this change.");
-        }
+        // if (source == "api") {
+        //   console.log("An API call triggered this change.");
+        // } else if (source == "user") {
+        //   console.log("A user action triggered this change.");
+        // }
       });
       this.quill = quill;
     },
