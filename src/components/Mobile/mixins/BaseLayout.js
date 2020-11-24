@@ -3,6 +3,8 @@ import BaseTabBar from "../layouts/BaseTabBar";
 import BaseMain from "../layouts/BaseMain.vue";
 import BaseDrawer from "../layouts/BaseDrawer.vue";
 import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
+import BaseCell from "../BaseCell.vue";
+
 import StoreJsAPI from "@utils/store";
 import { pushRoute } from "@utils/router-utils";
 
@@ -73,7 +75,8 @@ export const BASE_LAYOUT_MIXIN = {
     BaseTabBar,
     BaseMain,
     BaseDrawer,
-    BaseDrawerBar
+    BaseDrawerBar,
+    BaseCell
   },
   data() {
     return {

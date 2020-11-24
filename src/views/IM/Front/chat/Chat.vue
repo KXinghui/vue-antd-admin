@@ -31,6 +31,44 @@
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
     </base-header>
+    <base-main>
+      <div slot="main">
+        <base-cell arrow :size="9" @click="pushRoute({ path: '/my/aboutim' })">
+          <div slot="left">
+            <div class="identity-wrap">
+              <identity-avatar
+                :identity="identity"
+                :avatarSize="60"
+                avatarShape="square"
+              ></identity-avatar>
+              <div class="identity-info">
+                <span class="identity-nickname">{{ identity.nickname }}</span>
+                <span class="identity-chatno"
+                  >聊天号：{{ identity.chatNo }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </base-cell>
+        <base-cell
+          text="账号与安全"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell>
+        <base-cell
+          text="隐私"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell>
+        <base-cell
+          v-for="i in 10"
+          :key="i"
+          text="关于IM"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell>
+      </div>
+    </base-main>
     <base-tab-bar
       :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"

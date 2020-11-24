@@ -181,6 +181,7 @@ export default {
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text {
+  font-size: 0.7rem;
   margin-top: 0.3rem;
 }
 
@@ -212,6 +213,6 @@ export default {
   height: 4rem;
   /* border-radius: 20%; */
   border: 0.5rem solid #ffffff;
-  box-shadow: 0 0 0.3rem 0 #e4e3e3;
+  box-shadow: 0 0 0.35rem 0 #e2e1e1;
 }
 </style>

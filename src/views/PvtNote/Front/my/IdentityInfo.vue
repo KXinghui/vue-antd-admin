@@ -58,14 +58,13 @@
 <script>
 // import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
-import BaseCell from "../../../../components/Mobile/BaseCell";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 
 export default {
   name: "ChatGroupMember",
   mixins: [BASE_LAYOUT_MIXIN],
-  components: { BaseCell, IdentityAvatar },
+  components: { IdentityAvatar },
   data() {
     return {
       msName: "pvtnote"
