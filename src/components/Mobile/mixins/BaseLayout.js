@@ -24,7 +24,8 @@ const IM_TABBARS = [
     icon: "Antd_team",
     text: "通讯录",
     route: { path: "/addressbook" },
-    badge: JSON.stringify({ count: 10 })
+    badge: JSON.stringify({ count: 10 }),
+    isCenter: true
   },
   {
     index: 2,
@@ -41,21 +42,24 @@ const PVTNOTE_TABBARS = [
     index: 0,
     icon: "IconFont_note",
     text: "便签",
-    route: { path: "/note" },
+    route: { path: "/pvtnote/note" },
     badge: JSON.stringify({ count: 0 })
   },
   {
     index: 1,
     icon: "Antd_home",
     text: "首页",
-    route: { path: "/home" },
-    badge: JSON.stringify({ count: 10 })
+    route: { path: "/pvtnote/home" },
+    badge: JSON.stringify({ count: 0 }),
+    isCenter: true,
+    // circle square
+    centerShape: "square"
   },
   {
     index: 2,
     icon: "Antd_user",
     text: "我",
-    route: { path: "/my" },
+    route: { path: "/pvtnote/my" },
     badge: JSON.stringify({ count: 10 })
   }
 ];

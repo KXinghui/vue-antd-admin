@@ -2,7 +2,7 @@
   <div class="pvtnote-about-wrap">
     <base-header showBackIcon></base-header>
 
-    <base-main style="margin-bottom:3.25rem;">
+    <base-main baseMainTop="7.25%" baseMainHeight="92.5%">
       <div slot="main">
         <div class="identity-wrap">
           <identity-avatar
@@ -30,7 +30,7 @@ export default {
   components: { BaseCell, IdentityAvatar },
   data() {
     return {
-      msName: "im"
+      msName: "pvtnote"
     };
   },
   computed: {

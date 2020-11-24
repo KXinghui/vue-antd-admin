@@ -1,11 +1,20 @@
 <template>
   <div class="identity-register-wrap">
-    <a-row type="flex" justify="center">
-      <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-        <h1 align="center" style="margin-top: 2rem;">{{ ms }}</h1>
-      </a-col>
-    </a-row>
-    <identity-register :identity-role="identityRole"></identity-register>
+    <base-header showBackIcon></base-header>
+    <base-main
+      baseMainTop="7.25%"
+      baseMainHeight="92.5%"
+      style="background-color: #f5f5f5;"
+    >
+      <template slot="main">
+        <a-row type="flex" justify="center">
+          <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
+            <h1 align="center" style="margin-top: 2rem;">{{ ms }}</h1>
+          </a-col>
+        </a-row>
+        <identity-register :identity-role="identityRole"></identity-register>
+      </template>
+    </base-main>
   </div>
 </template>
 

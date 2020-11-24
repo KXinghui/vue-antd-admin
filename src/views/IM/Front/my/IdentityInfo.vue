@@ -40,6 +40,8 @@
           @click="pushRoute({ path: '/my/aboutim' })"
         ></base-cell>
         <base-cell
+          v-for="i in 10"
+          :key="i"
           text="关于IM"
           arrow
           @click="pushRoute({ path: '/my/aboutim' })"

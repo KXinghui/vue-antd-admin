@@ -32,7 +32,7 @@ export default {
   width: 1.1em;
   height: 1.1em;
   vertical-align: -0.15em;
-  font-size: 1.11rem;
+  font-size: 1.1rem;
   fill: #e6eaff;
   fill: currentColor;
   overflow: hidden;

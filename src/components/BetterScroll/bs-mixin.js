@@ -16,7 +16,7 @@ const DEFAULT_BS_OPTIONS = {
   dblclick: { delay: 300 } || true,
   scrollY: true,
   probeType: 0,
-  scrollbar: { fade: true, interactive: true } || true,
+  scrollbar: { fade: true, interactive: true },
   mouseWheel: {
     speed: 20,
     invert: false,
@@ -76,16 +76,18 @@ export default {
   },
   computed: {
     bsOptions() {
-      return Object.assign(this.options || {}, {
-        scrollY: this.scrollY,
-        scrollX: this.scrollX,
-        probeType: this.probeType
-      });
+      return Object.assign(
+        Object.assign(this.defaultBsOptions, this.options) || {},
+        {
+          scrollY: this.scrollY,
+          scrollX: this.scrollX,
+          probeType: this.probeType
+        }
+      );
     }
   },
   methods: {
     initBscroll() {
-      debugger;
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,
         this.bsOptions

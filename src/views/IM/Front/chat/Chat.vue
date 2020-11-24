@@ -49,8 +49,6 @@
       ></identity-avatar>
     </base-drawer>
     <base-drawer-bar
-      topWidth="300px"
-      bottomWidth="300px"
       :topVisible.sync="showDrawerBar"
       :bottomVisible.sync="showDrawerBar"
     >

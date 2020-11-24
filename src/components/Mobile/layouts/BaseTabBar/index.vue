@@ -101,10 +101,8 @@ export default {
 
 <style>
 .base-tabbar-wrap {
-  height: 3.25rem;
-  max-height: 3.5rem;
-  height: 7.5%;
-  max-height: 7.5%;
+  height: 7.25%;
+  max-height: 7.25%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

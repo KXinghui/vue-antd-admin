@@ -22,7 +22,7 @@
       :rightIcon="icon"
       rightLabel="图图"
     ></base-cell> -->
-    <base-main>
+    <base-main :baseMainTop="0" baseMainHeight="92.75%">
       <template slot="main">
         <base-cell
           arrow
@@ -85,7 +85,7 @@ export default {
   components: { BaseCell, IdentityAvatar },
   data() {
     return {
-      msName: "im",
+      msName: "pvtnote",
       activeTabIndex: 2
     };
   },

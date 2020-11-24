@@ -1,11 +1,20 @@
 <template>
   <div class="identity-login-wrap">
-    <a-row type="flex" justify="center">
-      <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-        <h1 align="center" style="margin-top: 2rem;">{{ ms }}</h1>
-      </a-col>
-    </a-row>
-    <identity-login :identity-role="identityRole"></identity-login>
+    <base-header showBackIcon></base-header>
+    <base-main
+      baseMainTop="7.25%"
+      baseMainHeight="92.5%"
+      style="background-color: #f5f5f5;"
+    >
+      <template slot="main">
+        <a-row type="flex" justify="center">
+          <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
+            <h1 align="center">{{ ms }}</h1>
+          </a-col>
+        </a-row>
+        <identity-login :identity-role="identityRole"></identity-login>
+      </template>
+    </base-main>
   </div>
 </template>
 
@@ -58,6 +67,7 @@ export default {
   text-shadow: 1px 1px black, 2px 2px black, 3px 3px black, 4px 4px black,
     5px 5px black, 6px 6px black, 7px 7px black, 8px 8px black; */
   transition: 0.5s;
+  margin-top: 2%;
 }
 .identity-login-wrap h1:hover {
   /* color: transparent; */

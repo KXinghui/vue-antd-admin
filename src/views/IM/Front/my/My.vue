@@ -1,28 +1,6 @@
 <template>
   <div class="chat-my-wrap">
-    <!-- <base-header
-      style="height: 10rem; max-height: 10rem; background-color: white;"
-    >
-      <div slot="left">
-        <identity-avatar
-          :identity="identity"
-          avatar-shape="square"
-        ></identity-avatar>
-        <div class="">{{ identity.nickname }}</div>
-        <div class="">聊天号：{{ identity.chatNo }}</div>
-      </div>
-      <div slot="right"></div>
-    </base-header> -->
-    <!-- <base-cell
-      text="图"
-      :icon="icon"
-      :size="10"
-      label="图图"
-      rightText="图"
-      :rightIcon="icon"
-      rightLabel="图图"
-    ></base-cell> -->
-    <base-main :baseMainTop="0" baseMainHeight="92%">
+    <base-main :baseMainTop="0" baseMainHeight="92.75%">
       <template slot="main">
         <base-cell
           arrow
@@ -45,6 +23,7 @@
             </div>
           </div>
         </base-cell>
+
         <base-cell
           text="账号安全"
           arrow
@@ -56,6 +35,8 @@
           @click="pushRoute({ path: '/my/aboutim' })"
         ></base-cell>
         <base-cell
+          v-for="i in 10"
+          :key="i"
           text="关于IM"
           arrow
           @click="pushRoute({ path: '/my/aboutim' })"

@@ -9,11 +9,12 @@
       :pullingDownHandler="pullingDownHandler"
       :pullingUpHandler="pullingUpHandler"
     >
-      <bs-pull
+      <!-- <bs-pull
         :isRefresh.sync="isRefresh"
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
-      >
+      > -->
+      <bs-core :options="{ scrollbar: false }">
         <!-- <div slot="isPullingDown">
           <slot name="isPullingDown"></slot>
         </div>
@@ -24,17 +25,18 @@
         <slot name="main"></slot>
         <!-- <b-scroll> </b-scroll> -->
         <slot name="footer"></slot>
-      </bs-pull>
+      </bs-core>
+      <!-- </bs-pull> -->
     </div>
   </div>
 </template>
 
 <script>
-// import BsCore from "../../BetterScroll/BsCore";
-import BsPull from "../../BetterScroll/BsPull";
+import BsCore from "../../BetterScroll/BsCore.vue";
+// import BsPull from "../../BetterScroll/BsPull";
 export default {
   name: "BaseMain",
-  components: { BsPull },
+  components: { /* BsPull, */ BsCore },
   data() {
     return {
       isRefresh: false
@@ -43,31 +45,12 @@ export default {
   props: {
     baseMainTop: {
       type: [String, Number],
-      default: "7%",
+      default: "7.25%",
       required: false
     },
     baseMainHeight: {
       type: [String, Number],
-      default: "84%",
-      required: false
-    },
-    isAutoHeight: {
-      type: [Boolean],
-      default: true,
-      required: false
-    },
-    listenClassWrap: {
-      type: [Array],
-      default: function() {
-        return ["base-header-wrap", "base-tabbar-wrap"];
-      },
-      required: false
-    },
-    listenRef: {
-      type: [Array],
-      default: function() {
-        return [];
-      },
+      default: "85.5%",
       required: false
     },
     pullingDownHandler: {
@@ -84,41 +67,6 @@ export default {
       },
       required: false
     }
-  },
-  computed: {
-    baseMainScrollHeight() {
-      let height = "84%" || this.baseMainHeight;
-      if (this.isAutoHeight) {
-        // TODO 计算滚动容器高度
-      }
-      return height.indexOf("%") != -1 ? height : `${height}px`;
-    }
-  },
-  methods: {
-    resizeBaseMainScrollHeight() {
-      // TODO 计算滚动容器高度
-      let height = 650;
-      if (this.isAutoHeight) {
-        if (this.listenClassWrap) {
-          let windowHeight =
-            window.innerHeight || document.documentElement.clientHeight;
-          let listensHeight = 0;
-          this.listenClassWrap.forEach(classWrap => {
-            listensHeight += document.getElementsByClassName(classWrap)[0];
-          });
-          height = windowHeight - listensHeight;
-        }
-      }
-      return `${height}px`;
-    }
-  },
-  mounted() {
-    this.resizeBaseMainScrollHeight();
-    window.addEventListener("resize", this.resizeBaseMainScrollHeight);
-    console.log(this.baseMainScrollHeight);
-  },
-  destroyed() {
-    window.removeEventListener("resize", this.resizeBaseMainScrollHeight);
   }
 };
 </script>
@@ -139,8 +87,6 @@ export default {
   /* #e1dfde */
   /* padding: 2rem 0.5rem; */
   position: absolute;
-  top: 7%;
-  height: 84%;
 }
 .base-main-scroll {
   width: 100%;

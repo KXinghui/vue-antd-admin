@@ -31,13 +31,9 @@ export default {
 }
 
 .better-scroll-wrap {
-  height: 100%;
-  width: 100%;
   position: relative;
-  overflow: hidden;
-}
-.mouse-wheel-content {
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 </style>

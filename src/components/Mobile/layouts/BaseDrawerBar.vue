@@ -43,7 +43,10 @@
 export default {
   name: "BaseDrawer",
   data() {
-    return {};
+    return {
+      topHeight: "3.5rem",
+      bottomHeight: "3.5rem"
+    };
   },
   props: {
     showClose: {
@@ -66,14 +69,14 @@ export default {
       default: "left",
       required: false
     },
-    topHeight: {
+    topHeightPercent: {
       type: [String],
-      default: "3.5rem",
+      default: "7.25%",
       required: false
     },
-    bottomHeight: {
+    bottomHeightPercent: {
       type: [String],
-      default: "3.5rem",
+      default: "7.25%",
       required: false
     },
     topWidth: {
@@ -121,9 +124,32 @@ export default {
     onClose() {
       this.$emit("update:topVisible", !this.topVisible);
       this.$emit("update:bottomisible", !this.bottomisible);
+    },
+    // 计算抽屉栏高度
+    resizeBaseDrawerBarHeight() {
+      // 网页可见区域高 [https://www.cnblogs.com/geektimi/p/5748664.html]
+      let windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      this.topHeight = windowHeight * parseFloat(this.topHeightPercent) * 0.01;
+      this.bottomHeight =
+        windowHeight * parseFloat(this.bottomHeightPercent) * 0.01;
     }
   },
-  mounted() {}
+  watch: {
+    topHeight() {
+      this.resizeBaseDrawerBarHeight();
+    },
+    bottomHeight() {
+      this.resizeBaseDrawerBarHeight();
+    }
+  },
+  mounted() {
+    this.resizeBaseDrawerBarHeight();
+    window.addEventListener("resize", this.resizeBaseDrawerBarHeight);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resizeBaseDrawerBarHeight);
+  }
 };
 </script>
 

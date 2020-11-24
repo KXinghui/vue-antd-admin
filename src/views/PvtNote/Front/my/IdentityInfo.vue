@@ -68,7 +68,7 @@ export default {
   components: { BaseCell, IdentityAvatar },
   data() {
     return {
-      msName: "im"
+      msName: "pvtnote"
     };
   },
   computed: {

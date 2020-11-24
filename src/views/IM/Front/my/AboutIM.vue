@@ -2,7 +2,7 @@
   <div class="chat-about-im-wrap">
     <base-header showBackIcon></base-header>
 
-    <base-main style="margin-bottom:3.25rem;">
+    <base-main baseMainTop="7.25%" baseMainHeight="92.75%">
       <div slot="main">
         <div class="identity-wrap">
           <identity-avatar
@@ -49,14 +49,11 @@ export default {
   background-color: white;
 }
 
-.chat-main-wrap {
+.chat-about-im-wrap .identity-wrap {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-}
-
-.chat-main-wrap .identity-wrap {
-  display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
 .base-cell-wrap:first-of-type {
@@ -65,5 +62,10 @@ export default {
 
 .base-cell-wrap {
   margin-bottom: 0.5rem;
+}
+
+.chat-about-im-wrap .mouse-wheel-content {
+  display: flex;
+  justify-content: center;
 }
 </style>
