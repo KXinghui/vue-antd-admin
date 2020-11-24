@@ -1,6 +1,6 @@
 <template>
   <div class="better-scroll" v-on="$listeners">
-    <div class="better-scroll-wrap" :style="{ height, width }" :id="bsWrap">
+    <div class="better-scroll-wrap" :id="bsWrap">
       <!-- :ref="bsWrap" -->
       <div class="mouse-wheel-content">
         <slot></slot>
@@ -25,9 +25,19 @@ export default {
 </script>
 
 <style scoped>
-.better-scroll-wrap {
-  position: relative;
+.better-scroll {
   height: 100%;
+  width: 100%;
+}
+
+.better-scroll-wrap {
+  height: 100%;
+  width: 100%;
+  position: relative;
   overflow: hidden;
+}
+.mouse-wheel-content {
+  height: 100%;
+  width: 100%;
 }
 </style>

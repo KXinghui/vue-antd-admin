@@ -10,8 +10,8 @@
       :rightIcon="icon"
       rightLabel="图图"
     ></base-cell> -->
-    <base-main style="">
-      <div slot="main" style="width: 100%">
+    <base-main>
+      <div slot="main">
         <base-cell arrow :size="9" @click="pushRoute({ path: '/my/aboutim' })">
           <div slot="left">
             <div class="identity-wrap">

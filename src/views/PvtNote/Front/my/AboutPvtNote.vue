@@ -1,39 +1,36 @@
 <template>
-  <div class="chat-about-im-wrap">
-    <chat-header showBackIcon></chat-header>
+  <div class="pvtnote-about-wrap">
+    <base-header showBackIcon></base-header>
 
-    <chat-main style="margin-bottom:3.25rem;">
+    <base-main style="margin-bottom:3.25rem;">
       <div slot="main">
         <div class="identity-wrap">
           <identity-avatar
-            :identity="{ name: 'PVTNOTE' }"
+            :identity="{ name: 'IM' }"
             :avatarSize="60"
             avatarShape="square"
           ></identity-avatar>
         </div>
-        <chat-cell
-          text="介绍"
-          label="基于SpringBoot和Vue实现私人便签"
-        ></chat-cell>
+        <base-cell text="介绍" label="基于SpringBoot和Vue实现便签"></base-cell>
       </div>
-    </chat-main>
+    </base-main>
   </div>
 </template>
 
 <script>
 // import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
-import { CHAT_LAYOUT_MIXIN } from "../../../../components/IM/mixins/ChatLayout";
-import ChatCell from "../../../../components/IM/ChatCell";
+import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import BaseCell from "../../../../components/Mobile/BaseCell";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 
 export default {
   name: "ChatGroupMember",
-  mixins: [CHAT_LAYOUT_MIXIN],
-  components: { ChatCell, IdentityAvatar },
+  mixins: [BASE_LAYOUT_MIXIN],
+  components: { BaseCell, IdentityAvatar },
   data() {
     return {
-      icon: "Antd_fund"
+      msName: "im"
     };
   },
   computed: {
@@ -45,7 +42,7 @@ export default {
 </script>
 
 <style>
-.chat-about-im-wrap {
+.pvtnote-about-wrap {
   height: 100%;
   width: 100%;
   background-color: #f5f5f5;
@@ -62,11 +59,11 @@ export default {
   justify-content: center;
 }
 
-.chat-cell-wrap:first-of-type {
+.base-cell-wrap:first-of-type {
   margin-bottom: 1rem;
 }
 
-.chat-cell-wrap {
+.base-cell-wrap {
   margin-bottom: 0.5rem;
 }
 </style>

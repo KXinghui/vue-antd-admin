@@ -127,12 +127,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .base-drawer-bar-wrap .ant-drawer-wrapper-body {
   height: 100%;
 }
 
-.base-drawer-bar-wrap .ant-drawer-body {
+/* .ant-drawer-body, */
+.base-drawer-bar-top-wrap
+  .ant-drawer-content
+  .ant-drawer-wrapper-body
+  .ant-drawer-body,
+.base-drawer-bar-bottom-wrap
+  .ant-drawer-content
+  .ant-drawer-wrapper-body
+  .ant-drawer-body {
   height: 100%;
   padding: 0 1rem;
   display: flex;
@@ -144,7 +152,8 @@ export default {
   cursor: pointer;
 }
 
-.base-drawer-bar-wrap .ant-drawer-body .identity-avatar {
+.base-drawer-bar-top-wrap .identity-avatar,
+.base-drawer-bar-bottom-wrap .identity-avatar {
   padding: 0;
 }
 </style>

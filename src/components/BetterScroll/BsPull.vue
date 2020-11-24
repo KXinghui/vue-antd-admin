@@ -1,6 +1,7 @@
 <template>
   <div class="better-scroll-wrap">
-    <div class="bscroll" :style="{ height, width }" :id="bsWrap" :ref="bsWrap">
+    <!-- :style="{ height, width, 'max-height': height }" -->
+    <div class="bscroll" :id="bsWrap" :ref="bsWrap">
       <div class="pull-scroller">
         <div class="pull-tips">
           <div v-show="beforePullDown" class="before-pull-down">
@@ -84,6 +85,7 @@ export default {
       isPullingDown: false,
       isPullingUp: false,
       defaultBsOptions: {
+        probeType: 2,
         pullDownRefresh: true,
         pullUpLoad: true,
         scrollbar: { fade: true, interactive: true } || true,
@@ -203,6 +205,11 @@ export default {
 </script>
 
 <style scoped>
+.better-scroll-wrap {
+  height: 100%;
+  width: 100%;
+}
+
 .bscroll {
   position: relative;
   height: 100%;

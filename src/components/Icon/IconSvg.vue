@@ -1,5 +1,11 @@
 <template>
-  <svg class="svg-icon" aria-hidden="true">
+  <svg
+    class="svg-icon"
+    aria-hidden="true"
+    style="color: blue;"
+    v-on="$listeners"
+    v-bind="$props"
+  >
     <use :xlink:href="iconName"></use>
   </svg>
 </template>
@@ -26,6 +32,7 @@ export default {
   width: 1.1em;
   height: 1.1em;
   vertical-align: -0.15em;
+  font-size: 1.11rem;
   fill: #e6eaff;
   fill: currentColor;
   overflow: hidden;

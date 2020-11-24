@@ -1,6 +1,7 @@
 import BaseLayout from "@layouts/BaseLayout.vue";
 import { PARENT_ID_VALUES, list2Tree } from "@utils/tree-utils";
 import im from "./module/im";
+import pvtnote from "./module/pvtnote";
 
 export const routes = [
   // ...EDITOR_ROUTES,
@@ -216,7 +217,8 @@ export const routes = [
         /* webpackChunkName: "error-page" */ "@views/Admin/ErrorPage/NotFound.vue"
       )
   },
-  ...im
+  ...im,
+  ...pvtnote
   // {
   //   path: "*",
   //   name: "NotFound",

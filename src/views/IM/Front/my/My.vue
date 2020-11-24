@@ -22,7 +22,7 @@
       :rightIcon="icon"
       rightLabel="图图"
     ></base-cell> -->
-    <base-main>
+    <base-main :baseMainTop="0" baseMainHeight="92%">
       <template slot="main">
         <base-cell
           arrow

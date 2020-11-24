@@ -12,23 +12,6 @@
     ></base-cell> -->
     <base-main>
       <template slot="main">
-        <!-- <base-cell arrow :size="9" @click="pushRoute({ path: '/aboutim' })">
-          <div slot="left">
-            <div class="identity-wrap">
-              <identity-avatar
-                :identity="identity"
-                :avatarSize="60"
-                avatarShape="square"
-              ></identity-avatar>
-              <div class="identity-info">
-                <span class="identity-nickname">{{ identity.nickname }}</span>
-                <span class="identity-chatno"
-                  >聊天号：{{ identity.chatNo }}</span
-                >
-              </div>
-            </div>
-          </div>
-        </base-cell> -->
         <base-cell
           text="账号安全"
           arrow

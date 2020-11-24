@@ -1,7 +1,9 @@
+const MS = "IM";
+
 export default [
   {
     path: "/chatUserRecord/:chatUserId",
-    name: "FrontChatUserRecord",
+    name: `${MS}FrontChatUserRecord`,
     component: () =>
       import(
         /* webpackChunkName: "im" */ "@views/IM/Front/chat/ChatUserRecord.vue"
@@ -10,13 +12,13 @@ export default [
   },
   {
     path: "/chat",
-    name: "FrontChat",
+    name: `${MS}FrontChat`,
     component: () =>
       import(/* webpackChunkName: "im-chat" */ "@views/IM/Front/chat/Chat.vue")
   },
   {
     path: "/addressbook",
-    name: "FrontAddressBook",
+    name: `${MS}FrontAddressBook`,
     component: () =>
       import(
         /* webpackChunkName: "im" */ "@views/IM/Front/addressbook/AddressBook.vue"
@@ -24,13 +26,13 @@ export default [
   },
   {
     path: "/my",
-    name: "FrontMy",
+    name: `${MS}FrontMy`,
     component: () =>
       import(/* webpackChunkName: "im-my" */ "@views/IM/Front/my/My.vue")
   },
   {
     path: "/my/identity/info",
-    name: "FrontMyIdentityInfo",
+    name: `${MS}FrontMyIdentityInfo`,
     component: () =>
       import(
         /* webpackChunkName: "im-my" */ "@views/IM/Front/my/IdentityInfo.vue"
@@ -38,7 +40,7 @@ export default [
   },
   {
     path: "/my/identity/security",
-    name: "FrontMyIdentitySecurity",
+    name: `${MS}FrontMyIdentitySecurity`,
     component: () =>
       import(
         /* webpackChunkName: "im-my" */ "@views/IM/Front/my/IdentitySecurity.vue"
@@ -46,20 +48,20 @@ export default [
   },
   {
     path: "/my/aboutim",
-    name: "FrontMyAboutIM",
+    name: `${MS}FrontMyAboutIM`,
     component: () =>
       import(/* webpackChunkName: "im-my" */ "@views/IM/Front/my/AboutIM.vue")
   },
   {
     path: "/chatUserFriend/:chatUserId",
-    name: "FrontChatUserFriend",
+    name: `${MS}FrontChatUserFriend`,
     component: () =>
       import(/* webpackChunkName: "im" */ "@views/IM/Front/ChatUserFriend.vue"),
     props: true
   },
   {
     path: "/chatUser/login",
-    name: "FrontChatUserLogin",
+    name: `${MS}FrontChatUserLogin`,
     component: () =>
       import(/* webpackChunkName: "im" */ "@views/IM/Front/ChatLogin.vue")
   }

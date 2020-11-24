@@ -38,7 +38,7 @@ export default {
       default: false,
       required: false
     },
-    height: {
+    /* height: {
       type: [String, Number],
       default: "100%",
       required: false
@@ -47,7 +47,7 @@ export default {
       type: [String, Number],
       default: "",
       required: false
-    },
+    }, */
     probeType: {
       type: [Number],
       default: 0,
@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     initBscroll() {
+      debugger;
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,
         this.bsOptions
@@ -128,9 +129,9 @@ export default {
     },
     isRefresh() {
       this.refreshBscroll();
-    },
-    height() {
-      this.refreshBscroll();
     }
+    /* height() {
+      this.refreshBscroll();
+    } */
   }
 };

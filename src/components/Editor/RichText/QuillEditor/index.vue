@@ -1,5 +1,4 @@
 <template>
-  <!-- Create the editor container -->
   <div class="quill-editor-wrap">
     <div :id="toolbarWrap" :ref="toolbarWrap">
       <a-icon type="cloud-upload" />
@@ -136,20 +135,9 @@ export default {
       let quillEle = this.$refs[this.quillWrap];
       let quill = new Quill(quillEle, this.quillOptions);
       let vm = this;
-      quill.on("text-change", function(delta, oldDelta, source) {
-        console.log(
-          "delta   " +
-            delta +
-            "   oldDelta   " +
-            oldDelta +
-            "   source   " +
-            source
-        );
+      quill.on("text-change", function() {
         vm.$emit(
           "update:html",
-          this.isXss ? xss(quill.root.innerHTML) : quill.root.innerHTML
-        );
-        console.log(
           this.isXss ? xss(quill.root.innerHTML) : quill.root.innerHTML
         );
         vm.$emit("update:text", quill.getText());

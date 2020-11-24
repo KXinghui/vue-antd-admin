@@ -39,7 +39,7 @@ MS_TABBARS.set("im", IM_TABBARS);
 const PVTNOTE_TABBARS = [
   {
     index: 0,
-    icon: "Antd_note",
+    icon: "IconFont_note",
     text: "便签",
     route: { path: "/note" },
     badge: JSON.stringify({ count: 0 })

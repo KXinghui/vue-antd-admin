@@ -24,7 +24,7 @@
       :ref="layoutMainRef"
     >
       <transition mode="out-in">
-        <keep-alive :max="10">
+        <keep-alive :target="target" :max="10">
           <router-view />
           <a-back-top :visibility-height="10" />
         </keep-alive>
@@ -78,6 +78,9 @@ export default {
       this.layoutMainStyle = {
         minHeight
       };
+    },
+    target() {
+      return this.$refs[this.layoutMainRef];
     }
   },
   mounted() {

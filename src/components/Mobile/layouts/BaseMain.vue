@@ -1,12 +1,15 @@
 <template>
-  <div class="base-main-wrap" v-on="$listeners">
+  <div
+    class="base-main-wrap"
+    :style="{ top: baseMainTop, height: baseMainHeight }"
+    v-on="$listeners"
+  >
     <div
       class="base-main-scroll"
       :pullingDownHandler="pullingDownHandler"
       :pullingUpHandler="pullingUpHandler"
     >
       <bs-pull
-        :height="chatMainScrollHeight"
         :isRefresh.sync="isRefresh"
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
@@ -38,6 +41,16 @@ export default {
     };
   },
   props: {
+    baseMainTop: {
+      type: [String, Number],
+      default: "7%",
+      required: false
+    },
+    baseMainHeight: {
+      type: [String, Number],
+      default: "84%",
+      required: false
+    },
     isAutoHeight: {
       type: [Boolean],
       default: true,
@@ -73,16 +86,16 @@ export default {
     }
   },
   computed: {
-    chatMainScrollHeight() {
-      let height = 650;
+    baseMainScrollHeight() {
+      let height = "84%" || this.baseMainHeight;
       if (this.isAutoHeight) {
         // TODO 计算滚动容器高度
       }
-      return `${height}px`;
+      return height.indexOf("%") != -1 ? height : `${height}px`;
     }
   },
   methods: {
-    resizeCchatMainScrollHeight() {
+    resizeBaseMainScrollHeight() {
       // TODO 计算滚动容器高度
       let height = 650;
       if (this.isAutoHeight) {
@@ -100,11 +113,12 @@ export default {
     }
   },
   mounted() {
-    this.resizeCchatMainScrollHeight();
-    window.addEventListener("resize", this.resizeCchatMainScrollHeight);
+    this.resizeBaseMainScrollHeight();
+    window.addEventListener("resize", this.resizeBaseMainScrollHeight);
+    console.log(this.baseMainScrollHeight);
   },
   destroyed() {
-    window.removeEventListener("resize", this.resizeCchatMainScrollHeight);
+    window.removeEventListener("resize", this.resizeBaseMainScrollHeight);
   }
 };
 </script>
@@ -125,9 +139,11 @@ export default {
   /* #e1dfde */
   /* padding: 2rem 0.5rem; */
   position: absolute;
-  top: 4rem;
+  top: 7%;
+  height: 84%;
 }
 .base-main-scroll {
   width: 100%;
+  height: 100%;
 }
 </style>

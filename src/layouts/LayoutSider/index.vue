@@ -127,9 +127,6 @@ export default {
     //   return {};
     // }
   },
-  updated() {
-    console.log("showSiderLogo          " + this.showSiderLogo);
-  },
   methods: {
     toggleCollapsedSider() {
       this.$emit("update:collapsedSider", !this.collapsedSider);

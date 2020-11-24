@@ -123,6 +123,31 @@
         <!-- 扫码注册 -->
       </a-col>
     </a-row>
+    <a-row>
+      <a-col
+        :xs="24"
+        :sm="20"
+        :md="20"
+        :lg="10"
+        :xl="10"
+        v-viewer="{
+          movable: true,
+          filter: function() {
+            return !isBatch;
+          }
+        }"
+      >
+        <chat-record
+          v-for="chatRecord in chatRecords"
+          :chat-user="identity"
+          :chat-record="chatRecord"
+          :is-batch="isBatch"
+          :chat-record-ids="chatRecordIds"
+          @changeChatRecord="changeChatRecord"
+          :key="chatRecord.id"
+        ></chat-record>
+      </a-col>
+    </a-row>
   </div>
 </template>
 

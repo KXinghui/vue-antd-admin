@@ -1,10 +1,18 @@
 <template>
   <div class="chat-wrap">
-    <chat-header showDrawerIcon>
+    <base-header showDrawerIcon>
       <div slot="left">便签</div>
       <div slot="right">
-        <icon icon="Antd_search" @click="pushRoute('/note/search')" />
-        <a-popover placement="bottomRight">
+        <icon
+          icon="IconFont_batch-op"
+          @click="
+            () => {
+              this.showDrawerBar = !this.showDrawerBar;
+            }
+          "
+        />
+        <icon icon="Antd_search" @click="pushRoute('/search')" />
+        <!-- <a-popover placement="bottomRight">
           <template slot="content">
             <a-menu>
               <a-menu-item>
@@ -19,17 +27,17 @@
             </a-menu>
           </template>
           <icon icon="Antd_plus-circle" />
-        </a-popover>
+        </a-popover> -->
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
-    </chat-header>
-    <chat-tab-bar
-      :chat-tab-bars="chatTabBars"
+    </base-header>
+    <base-tab-bar
+      :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
       :color="color"
       :active-color="activeColor"
-    ></chat-tab-bar>
-    <chat-drawer
+    ></base-tab-bar>
+    <base-drawer
       width="300px"
       :visible.sync="showDrawer"
       :placement="drawerPlacement"
@@ -39,24 +47,42 @@
         :avatarSize="58"
         avatarShape="square"
       ></identity-avatar>
-    </chat-drawer>
+    </base-drawer>
+    <base-drawer-bar
+      topWidth="300px"
+      bottomWidth="300px"
+      :topVisible.sync="showDrawerBar"
+      :bottomVisible.sync="showDrawerBar"
+    >
+      <identity-avatar
+        slot="top"
+        :identity="identity"
+        avatarShape="square"
+      ></identity-avatar>
+      <identity-avatar
+        slot="bottom"
+        :identity="{ name: 'asdfasdf' }"
+        avatarShape="square"
+      ></identity-avatar>
+    </base-drawer-bar>
   </div>
 </template>
 
 <script>
-import { CHAT_LAYOUT_MIXIN } from "../../../../components/IM/mixins/ChatLayout";
-import ChatDrawer from "../../../../components/IM/layouts/ChatDrawer";
+import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState, mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
 
 export default {
-  name: "ChatGroupMember",
-  mixins: [CHAT_LAYOUT_MIXIN],
-  components: { ChatDrawer, IdentityAvatar },
+  name: "Note",
+  mixins: [BASE_LAYOUT_MIXIN],
+  components: { IdentityAvatar },
   data() {
     return {
-      chatActiveTabIndex: 0
+      msName: "pvtnote",
+      activeTabIndex: 0,
+      showDrawerBar: false
     };
   },
   computed: {

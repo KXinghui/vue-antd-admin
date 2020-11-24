@@ -1,2 +1,7 @@
 data选项要直接定义，不使用箭头函数也无法获取Vue实例
 目前类型为函数的都单独出来定义，
+
+
+[Vue warn]: Error in nextTick: "RangeError: Maximum call stack size exceeded
+
+组件引用名称重复

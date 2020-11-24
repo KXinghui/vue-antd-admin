@@ -1,5 +1,6 @@
 <template>
   <div class="base-tabbar-wrap">
+    <!-- <bs-core :options="{ scrollbar: false }"> -->
     <slot name="baseTabBarItem">
       <!-- <bs-core
         :options="{ scrollY: false, scrollX: true, scrollbar: false }"
@@ -17,6 +18,7 @@
       ></base-tab-bar-item>
       <!-- </bs-core> -->
     </slot>
+    <!-- </bs-core> -->
   </div>
 </template>
 
@@ -33,8 +35,21 @@ export default {
     };
   },
   props: {
-    color: { type: [String], default: "", required: false },
-    activeColor: { type: [String], default: "", required: false },
+    showTextOnActive: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    color: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    activeColor: {
+      type: [String],
+      default: "",
+      required: false
+    },
     activeItemKey: {
       type: [String, Number],
       default: "",
@@ -88,6 +103,8 @@ export default {
 .base-tabbar-wrap {
   height: 3.25rem;
   max-height: 3.5rem;
+  height: 7.5%;
+  max-height: 7.5%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

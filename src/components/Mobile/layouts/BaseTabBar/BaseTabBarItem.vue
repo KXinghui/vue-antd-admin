@@ -32,7 +32,15 @@
             ></icon
           ></slot>
         </div>
-        <div class="base-tabbar-item-text">
+        <div
+          :class="[
+            'base-tabbar-item-text',
+            'animate__animated',
+            !isActive && showTextOnActive
+              ? 'animate__zoomOut base-tabbar-item-text-unactive'
+              : ''
+          ]"
+        >
           <slot name="text"
             ><span
               v-text="item.text"
@@ -52,8 +60,21 @@ export default {
     return {};
   },
   props: {
-    color: { type: [String], default: "", required: false },
-    activeColor: { type: [String], default: "", required: false },
+    showTextOnActive: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    color: {
+      type: [String],
+      default: "",
+      required: false
+    },
+    activeColor: {
+      type: [String],
+      default: "",
+      required: false
+    },
     itemKey: {
       type: [String, Number],
       default: "",
@@ -134,6 +155,10 @@ export default {
 .base-tabbar-item-wrap .base-tabbar-item-text {
   font-size: 0.5rem;
   color: black;
+}
+
+.base-tabbar-item-wrap .base-tabbar-item-text-unactive {
+  display: none;
 }
 
 .base-tabbar-item-badge-wrap .ant-badge-count,

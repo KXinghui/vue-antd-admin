@@ -135,6 +135,8 @@ export default {
 .base-header-wrap {
   height: 3.25rem;
   max-height: 3.5rem;
+  height: 7.5%;
+  max-height: 7.5%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -180,12 +182,14 @@ export default {
   cursor: pointer;
 }
 .base-header-left .icon {
-  padding: 0rem 1.2rem 0rem 0;
+  padding: 0 1.2rem 0 0;
 }
-.base-header-right .icon {
-  padding-right: 1.2rem;
+.base-header-right > .icon {
+  /* padding-right: 1.2rem; */
+  padding: 0 1.2rem 0 1.2rem;
+  margin-right: 1.2rem;
 }
-.base-header-right .icon:last-of-type {
+.base-header-right > .icon:last-of-type {
   padding-right: 0;
 }
 </style>
