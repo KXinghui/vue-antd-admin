@@ -1,7 +1,7 @@
 <template>
   <div class="better-scroll-wrap">
-    <div class="bscroll" :id="bsWrap" style="refStyle">
-      <div class="mouse-wheel-content" style="contentStyle">
+    <div class="['bscroll', scrollXWrapClass]" :id="bsWrap">
+      <div :class="['mouse-wheel-content', scrollXContentClass]">
         <slot></slot>
       </div>
     </div>
@@ -38,5 +38,11 @@ export default {
   padding: 0 10px;
   border: 1px solid #ccc;
   overflow: hidden;
+}
+.bscroll .scroll-x-wrap {
+  white-space: nowrap;
+}
+.bscroll .scroll-x-content {
+  display: inline-block;
 }
 </style>

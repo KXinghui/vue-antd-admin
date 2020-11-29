@@ -12,7 +12,7 @@
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
       > -->
-      <bs-core>
+      <bs-core :options="{ scrollbar: false }">
         <!-- <div slot="isPullingDown">
           <slot name="isPullingDown"></slot>
         </div>

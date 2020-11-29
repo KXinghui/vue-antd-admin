@@ -1,7 +1,7 @@
 <template>
   <div class="better-scroll-wrap">
     <!-- :style="{ height, width, 'max-height': height }" -->
-    <div class="bscroll" :id="bsWrap" :ref="bsWrap" style="refStyle">
+    <div :class="['bscroll', scrollXWrapClass]" :id="bsWrap" :ref="bsWrap">
       <div class="pull-scroller">
         <div class="pull-tips">
           <div v-show="beforePullDown" class="before-pull-down">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <div class="pull-list" style="cotentStyle">
+        <div :class="['pull-list', scrollXContentClass]">
           <slot></slot>
         </div>
         <div class="pullup-tips">
@@ -162,15 +162,17 @@ export default {
     },
     async finishPullDown() {
       await new Promise(resolve => {
-        setTimeout(() => {
+        let timer = setTimeout(() => {
           this.bscroll.finishPullDown();
           resolve();
           this.isPullingDown = false;
+          clearTimeout(timer);
         }, TIME_STOP);
       });
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         this.beforePullDown = true;
         this.bscroll.refresh();
+        clearTimeout(timer);
       }, TIME_BOUNCE);
     },
     async pullingUp() {
@@ -186,15 +188,17 @@ export default {
     },
     async finishPullUp() {
       await new Promise(resolve => {
-        setTimeout(() => {
+        let timer = setTimeout(() => {
           this.bscroll.finishPullUp();
           resolve();
           this.isPullingUp = false;
+          clearTimeout(timer);
         }, TIME_STOP);
       });
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         this.beforePullUp = true;
         this.bscroll.refresh();
+        clearTimeout(timer);
       }, TIME_BOUNCE);
     }
   },
@@ -208,6 +212,13 @@ export default {
 .better-scroll-wrap {
   height: 100%;
   width: 100%;
+}
+
+.better-scroll-wrap .scroll-x-wrap {
+  white-space: nowrap;
+}
+.better-scroll-wrap .scroll-x-content {
+  display: inline-block;
 }
 
 .bscroll {

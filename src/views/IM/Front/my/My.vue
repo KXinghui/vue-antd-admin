@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoed>
 .chat-my-wrap {
   height: 100%;
   width: 100%;
@@ -101,10 +101,6 @@ export default {
   font-size: 1.3rem;
   color: black;
   font-weight: bold;
-}
-
-.base-cell-wrap:first-of-type {
-  margin-bottom: 1rem;
 }
 
 .base-cell-wrap {

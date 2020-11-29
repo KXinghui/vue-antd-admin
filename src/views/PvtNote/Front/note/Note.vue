@@ -3,15 +3,7 @@
     <base-header showDrawerIcon>
       <div slot="left">便签</div>
       <div slot="right">
-        <icon
-          icon="IconFont_batch-op"
-          @click="
-            () => {
-              this.management.batch = !this.management.batch;
-              this.showDrawerBar = true;
-            }
-          "
-        />
+        <icon icon="IconFont_batch-op" @click="openBatchDrawerBar" />
         <icon icon="Antd_search" @click="pushRoute('/search')" />
         <!-- <a-popover placement="bottomRight">
           <template slot="content">
@@ -50,8 +42,10 @@
       ></identity-avatar>
     </base-drawer>
     <base-drawer-bar
-      :topVisible.sync="showDrawerBar"
-      :bottomVisible.sync="showDrawerBar"
+      :topVisible.sync="topDrawerBarVisible"
+      :bottomVisible.sync="bottomDrawerBarVisible"
+      :topHeightPercent="topDrawerBarHeightPercent"
+      :bottomHeightPercent="bottomDrawerBarHeightPercent"
     >
       <template slot="top">
         <template v-if="operation.batch">
@@ -169,10 +163,18 @@ export default {
       let isBatch = this.management.batch;
       if (isBatch) {
         this.management.batch = !this.management.batch;
-        this.showDrawerBar = false;
+        this.hideDrawerBar();
       }
     },
-    moveNote() {},
+    openBatchDrawerBar() {
+      this.management.batch = !this.management.batch;
+      this.resetDrawerBar();
+      this.showDrawerBar();
+    },
+    moveNote() {
+      this.hideDrawerBar();
+      this.showBottomDrawerBar("50%");
+    },
     topNote() {
       if (this.isTopOnBatch) {
         // 置顶

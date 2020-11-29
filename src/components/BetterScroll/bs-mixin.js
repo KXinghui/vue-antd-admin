@@ -86,19 +86,11 @@ export default {
         }
       );
     },
-    refStyle() {
-      if (this.bsOptions.startX) {
-        return {
-          "white-space": "nowrap"
-        };
-      }
+    scrollXWrapClass() {
+      return this.bsOptions.scrollX ? "scroll-x-wrap" : "";
     },
-    contentStyle() {
-      if (this.bsOptions.startX) {
-        return {
-          display: "inline-block"
-        };
-      }
+    scrollXContentClass() {
+      return this.bsOptions.scrollX ? "scroll-x-content" : "";
     }
   },
   methods: {

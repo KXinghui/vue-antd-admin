@@ -8,6 +8,7 @@ export function pushRoute(route) {
     return;
   }
   if (route && router.currentRoute && router.currentRoute.path == route.path) {
+    debugger;
     msg(
       "reload" in this && this.reload()
         ? { code: "1", msg: "刷新页面" }

@@ -136,10 +136,10 @@ export default {
     }
   },
   watch: {
-    topHeight() {
+    topHeightPercent() {
       this.resizeBaseDrawerBarHeight();
     },
-    bottomHeight() {
+    bottomHeightPercent() {
       this.resizeBaseDrawerBarHeight();
     }
   },

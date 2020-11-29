@@ -1,8 +1,8 @@
 <template>
   <div class="better-scroll" v-on="$listeners">
-    <div class="better-scroll-wrap" :id="bsWrap" :style="refStyle">
+    <div :class="['better-scroll-wrap', scrollXWrapClass]" :id="bsWrap">
       <!-- :ref="bsWrap" -->
-      <div class="mouse-wheel-content" style="contentStyle">
+      <div :class="['mouse-wheel-content', scrollXContentClass]">
         <slot></slot>
       </div>
     </div>
@@ -28,6 +28,13 @@ export default {
 .better-scroll {
   height: 100%;
   width: 100%;
+}
+
+.better-scroll .scroll-x-wrap {
+  white-space: nowrap;
+}
+.better-scroll .scroll-x-content {
+  display: inline-block;
 }
 
 .better-scroll-wrap {

@@ -44,8 +44,7 @@ const IM_TABBARS = [
     icon: "Antd_team",
     text: "通讯录",
     route: { path: "/addressbook" },
-    badge: JSON.stringify({ count: 10 }),
-    isCenter: true
+    badge: JSON.stringify({ count: 10 })
   },
   {
     index: 4,
@@ -141,6 +140,8 @@ export const BASE_LAYOUT_MIXIN = {
       baseTabBars: [],
       topDrawerBarVisible: false,
       bottomDrawerBarVisible: false,
+      resetTopDrawerBarHeightPercent: "7.25%",
+      resetBottomDrawerBarHeightPercent: "7.25%",
       topDrawerBarHeightPercent: "7.25%",
       bottomDrawerBarHeightPercent: "7.25%"
     };
@@ -179,6 +180,10 @@ export const BASE_LAYOUT_MIXIN = {
         this.activeKey = StoreJsAPI.get(this.activeTabActiveKey);
       } */
     },
+    resetDrawerBar() {
+      this.topDrawerBarHeightPercent = this.resetTopDrawerBarHeightPercent;
+      this.bottomDrawerBarHeightPercent = this.resetBottomDrawerBarHeightPercent;
+    },
     showDrawerBar() {
       this.topDrawerBarVisible = true;
       this.bottomDrawerBarVisible = true;
@@ -186,16 +191,23 @@ export const BASE_LAYOUT_MIXIN = {
     hideDrawerBar() {
       this.topDrawerBarVisible = false;
       this.bottomDrawerBarVisible = false;
+      this.resetDrawerBar();
     },
-    showTopDrawerBar(height) {
+    showTopDrawerBar(heightPercent) {
       this.hideDrawerBar();
-      this.topDrawerBarVisible = true;
-      this.topDrawerBarHeightPercent = height;
+      let timer = setTimeout(() => {
+        this.topDrawerBarHeightPercent = heightPercent;
+        this.topDrawerBarVisible = true;
+        clearTimeout(timer);
+      }, 150);
     },
-    showBottomDrawerBar(height) {
+    showBottomDrawerBar(heightPercent) {
       this.hideDrawerBar();
-      this.bottomDrawerBarVisible = true;
-      this.bottomDrawerBarHeightPercent = height;
+      let timer = setTimeout(() => {
+        this.bottomDrawerBarHeightPercent = heightPercent;
+        this.bottomDrawerBarVisible = true;
+        clearTimeout(timer);
+      }, 150);
     }
   },
   beforeMount() {
