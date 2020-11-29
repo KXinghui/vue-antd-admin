@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     initBscroll() {
-      debugger;
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,
         this.bsOptions
