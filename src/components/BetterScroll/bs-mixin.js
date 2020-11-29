@@ -14,8 +14,9 @@ BScroll.use(ScrollBar);
 const DEFAULT_BS_OPTIONS = {
   click: true,
   dblclick: { delay: 300 } || true,
+  scrollX: false,
   scrollY: true,
-  probeType: 0,
+  probeType: 3,
   scrollbar: { fade: true, interactive: true },
   mouseWheel: {
     speed: 20,
@@ -84,10 +85,25 @@ export default {
           probeType: this.probeType
         }
       );
+    },
+    refStyle() {
+      if (this.bsOptions.startX) {
+        return {
+          "white-space": "nowrap"
+        };
+      }
+    },
+    contentStyle() {
+      if (this.bsOptions.startX) {
+        return {
+          display: "inline-block"
+        };
+      }
     }
   },
   methods: {
     initBscroll() {
+      debugger;
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,
         this.bsOptions
@@ -101,7 +117,7 @@ export default {
         this.$emit("update:isRefresh", !this.isRefresh);
       }
     },
-    destoryBscroll() {
+    destroyBscroll() {
       let bscroll = this.bscroll;
       bscroll && bscroll.destroy();
     }
@@ -123,7 +139,7 @@ export default {
     this.initBscroll();
   },
   beforeDestroy() {
-    this.destoryBscroll();
+    this.destroyBscroll();
   },
   watch: {
     bsOptions() {

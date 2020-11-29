@@ -9,7 +9,7 @@
 <script>
 import {
   initEditor,
-  destoryEditor,
+  destroyEditor,
   EDITOR_NAME,
   EDITOR_MENU_NAME,
   DEFAULT_EDITOR_CONFIG,
@@ -109,7 +109,7 @@ export default {
     this.createEditor();
   },
   destroyed() {
-    destoryEditor(this);
+    destroyEditor(this);
   }
 };
 </script>

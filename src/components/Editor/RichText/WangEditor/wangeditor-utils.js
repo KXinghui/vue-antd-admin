@@ -240,10 +240,10 @@ export function initEditor(vm, wangEditor) {
  * 销毁编辑器
  * @param {*} vm
  */
-export function destoryEditor(vm) {
+export function destroyEditor(vm) {
   if (vm.editor) {
     debugger;
-    "destory" in vm.editor && vm.editor.destory();
+    "destroy" in vm.editor && vm.editor.destroy();
     vm.editor = null;
   }
 }

@@ -108,22 +108,33 @@ export default {
             container: `#${this.toolbarWrap}` // Selector for toolbar container
           } */
           modules: {
-            toolbar: [
-              ["bold", "italic", "underline", "strike"],
-              ["blockquote", "code-block"],
-              // [{ header: 1 }, { header: 2 }],
-              [{ list: "ordered" }, { list: "bullet" }],
-              [{ script: "sub" }, { script: "super" }],
-              [{ indent: "-1" }, { indent: "+1" }],
-              [{ direction: "rtl" }],
-              [{ size: ["small", false, "large", "huge"] }],
-              [{ header: [1, 2, 3, 4, 5, 6, false] }],
-              [{ color: [] }, { background: [] }],
-              [{ font: [] }],
-              [{ align: [] }],
-              ["link", "image", "video"],
-              ["clean"]
-            ]
+            toolbar: {
+              container: [
+                ["bold", "italic", "underline", "strike"],
+                ["blockquote", "code-block"],
+                // [{ header: 1 }, { header: 2 }],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ script: "sub" }, { script: "super" }],
+                [{ indent: "-1" }, { indent: "+1" }],
+                [{ direction: "rtl" }],
+                [{ size: ["small", false, "large", "huge"] }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                [{ color: [] }, { background: [] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ["link", "image", "video"],
+                ["clean"]
+              ],
+              handlers: {
+                image: function(value) {
+                  if (value) {
+                    alert("自定义图片");
+                  } else {
+                    this.quill.format("image", false);
+                  }
+                }
+              }
+            }
           }
         },
         this.options
@@ -149,7 +160,7 @@ export default {
       });
       this.quill = quill;
     },
-    destory() {}
+    destroy() {}
   },
   mounted() {
     this.init();

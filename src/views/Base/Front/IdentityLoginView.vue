@@ -9,7 +9,7 @@
       <template slot="main">
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <h1 align="center">{{ ms }}</h1>
+            <h1 class="typing-text" align="center">{{ ms }}</h1>
           </a-col>
         </a-row>
         <identity-login :identity-role="identityRole"></identity-login>

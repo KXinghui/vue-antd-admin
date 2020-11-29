@@ -1,6 +1,13 @@
 <template>
   <div class="test">
-    <a-button class="btn" @click="test">
+    <a-button
+      class="btn"
+      v-html2canvas="{
+        htmlElement: '.test',
+        filename: 'cut-image.png'
+      }"
+    >
+      <!-- @click="test" -->
       测试
     </a-button>
 

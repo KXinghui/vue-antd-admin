@@ -32,7 +32,7 @@ export function init(vm) {
   let editorEle = vm.$refs[vm.editorRef];
   if (!vm.editor || isDiffEditor != isDiff) {
     // 编辑器未创建或编辑器模式修改 需要先销毁后创建
-    destory(vm);
+    destroy(vm);
     vm.editor = isDiff
       ? monaco.editor.createDiffEditor(editorEle, editorOptions)
       : monaco.editor.create(editorEle, editorOptions);
@@ -119,7 +119,7 @@ export function format(vm) {
   }
 }
 
-export function destory(vm) {
+export function destroy(vm) {
   if (vm.editor) {
     vm.editor.dispose();
   }

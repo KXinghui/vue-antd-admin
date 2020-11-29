@@ -42,7 +42,10 @@
                 ></layout-tag-bar>
               </pane>
               <pane style="overflow: auto; height: 100%">
-                <layout-main :menu="menu"></layout-main>
+                <layout-main
+                  :menu="menu"
+                  :showMainBreadcrumbBar="layoutSetting.showMainBreadcrumbBar"
+                ></layout-main>
               </pane>
               <!-- </a-layout-content> -->
               <pane style="max-height: 64px;">

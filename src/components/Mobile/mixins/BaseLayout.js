@@ -5,6 +5,9 @@ import BaseDrawer from "../layouts/BaseDrawer.vue";
 import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
 import BaseCell from "../BaseCell.vue";
 
+import { mapState, mapMutations } from "vuex";
+import { ADMIN_MUTATION_TYPE } from "../../../store/mutation-type";
+
 import StoreJsAPI from "@utils/store";
 import { pushRoute } from "@utils/router-utils";
 
@@ -35,7 +38,57 @@ const IM_TABBARS = [
     text: "我",
     route: { path: "/my" },
     badge: JSON.stringify({ count: 10 })
-  }
+  } /* ,
+  {
+    index: 3,
+    icon: "Antd_team",
+    text: "通讯录",
+    route: { path: "/addressbook" },
+    badge: JSON.stringify({ count: 10 }),
+    isCenter: true
+  },
+  {
+    index: 4,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  },
+  {
+    index: 5,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  },
+  {
+    index: 6,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  },
+  {
+    index: 7,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  },
+  {
+    index: 8,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  },
+  {
+    index: 9,
+    icon: "Antd_user",
+    text: "我",
+    route: { path: "/my" },
+    badge: JSON.stringify({ count: 10 })
+  } */
 ];
 MS_TABBARS.set("im", IM_TABBARS);
 
@@ -85,15 +138,38 @@ export const BASE_LAYOUT_MIXIN = {
       color: COLOR,
       activeColor: ACTIVE_COLOR,
       activeKey: "",
-      baseTabBars: []
+      baseTabBars: [],
+      topDrawerBarVisible: false,
+      bottomDrawerBarVisible: false,
+      topDrawerBarHeightPercent: "7.25%",
+      bottomDrawerBarHeightPercent: "7.25%"
     };
   },
   computed: {
     activeTabActiveKey() {
       return `${this.msName}-${BASE_ACTIVE_TAB_STORE_KEY}`;
-    }
+    },
+    showDrawer: {
+      // getter
+      get: function() {
+        // Do not mutate vuex store state outside mutation handlers
+        return this.$store.state.admin.layoutSetting.showDrawer;
+      },
+      // setter
+      set: function(newValue) {
+        this[ADMIN_MUTATION_TYPE.SHOW_DRAWER](newValue);
+      }
+    },
+    ...mapState({
+      // showDrawer: state => state.admin.layoutSetting.showDrawer,
+      drawerPlacement: state => state.admin.layoutSetting.drawerPlacement
+    })
   },
   methods: {
+    ...mapMutations("admin", [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      ADMIN_MUTATION_TYPE.SHOW_DRAWER
+    ]),
     pushRoute,
     changeActiveTab(key) {
       if (key | (key == 0)) {
@@ -102,6 +178,24 @@ export const BASE_LAYOUT_MIXIN = {
       } /* else {
         this.activeKey = StoreJsAPI.get(this.activeTabActiveKey);
       } */
+    },
+    showDrawerBar() {
+      this.topDrawerBarVisible = true;
+      this.bottomDrawerBarVisible = true;
+    },
+    hideDrawerBar() {
+      this.topDrawerBarVisible = false;
+      this.bottomDrawerBarVisible = false;
+    },
+    showTopDrawerBar(height) {
+      this.hideDrawerBar();
+      this.topDrawerBarVisible = true;
+      this.topDrawerBarHeightPercent = height;
+    },
+    showBottomDrawerBar(height) {
+      this.hideDrawerBar();
+      this.bottomDrawerBarVisible = true;
+      this.bottomDrawerBarHeightPercent = height;
     }
   },
   beforeMount() {

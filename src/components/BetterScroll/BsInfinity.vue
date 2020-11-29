@@ -1,7 +1,7 @@
 <template>
   <div class="better-scroll-wrap">
-    <div class="bscroll" :id="bsWrap">
-      <div class="mouse-wheel-content">
+    <div class="bscroll" :id="bsWrap" style="refStyle">
+      <div class="mouse-wheel-content" style="contentStyle">
         <slot></slot>
       </div>
     </div>

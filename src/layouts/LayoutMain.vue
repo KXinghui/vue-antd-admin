@@ -2,7 +2,7 @@
   <!-- class="layout-main-container" -->
   <div class="layout-main-container" :style="layoutMainStyle">
     <!-- 面包屑导航 -->
-    <a-row>
+    <a-row v-show="showMainBreadcrumbBar">
       <a-col :xs="0" :sm="24" :md="24" :lg="24" :xl="24">
         <a-breadcrumb>
           <a-breadcrumb-item
@@ -54,6 +54,11 @@ export default {
     };
   },
   props: {
+    showMainBreadcrumbBar: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
     menu: {
       type: [Array, Object],
       default() {

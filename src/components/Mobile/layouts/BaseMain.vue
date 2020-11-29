@@ -4,17 +4,15 @@
     :style="{ top: baseMainTop, height: baseMainHeight }"
     v-on="$listeners"
   >
-    <div
-      class="base-main-scroll"
-      :pullingDownHandler="pullingDownHandler"
-      :pullingUpHandler="pullingUpHandler"
-    >
+    <div class="base-main-scroll">
+      <!-- :pullingDownHandler="pullingDownHandler"
+      :pullingUpHandler="pullingUpHandler" -->
       <!-- <bs-pull
         :isRefresh.sync="isRefresh"
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
       > -->
-      <bs-core :options="{ scrollbar: false }">
+      <bs-core>
         <!-- <div slot="isPullingDown">
           <slot name="isPullingDown"></slot>
         </div>
@@ -80,12 +78,7 @@ export default {
   align-items: center;
   /* background-color: #e1dfde; */
   background-color: white;
-  /* position: absolute; */
   width: 100%;
-  /* top: 0;
-  padding: 0 1rem; */
-  /* #e1dfde */
-  /* padding: 2rem 0.5rem; */
   position: absolute;
 }
 .base-main-scroll {

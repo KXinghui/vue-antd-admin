@@ -33,6 +33,11 @@ Object.keys(filters).forEach(moduleKey => {
   });
 });
 
+/* 指令 */
+import Html2Canvas from "./directives/Html2Canvas";
+Vue.directive("html2canvas", Html2Canvas);
+// Vue.directive("hasPermi", hasPermi);
+
 Vue.use(animated);
 
 Vue.use(Viewer);

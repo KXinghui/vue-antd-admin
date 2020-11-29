@@ -110,10 +110,6 @@ export default {
   font-weight: bold;
 }
 
-.base-cell-wrap:first-of-type {
-  margin-bottom: 1rem;
-}
-
 .base-cell-wrap {
   margin-bottom: 0.5rem;
 }

@@ -81,7 +81,8 @@ export default {
           .toString()
           .substr(2),
       // menus: [...EDITOR_ROUTES, ...FORM_ROUTES],
-      menus: [...BASE_LAYOUT_MENUS, ...BASE_MENUS]
+      menus: [...BASE_LAYOUT_MENUS, ...BASE_MENUS],
+      isRefresh: false
       /* colla.psed: false */
     };
   },

@@ -19,3 +19,8 @@ export class ChatGroupResourceEnum extends BaseEnum {
   static QR_CODE = this.enums(2, "QR_CODE", "QRCode");
   static BIZ_CARD = this.enums(3, "BIZ_CARD", "BizCard");
 }
+
+export class ChatSubjectTypeEnum extends BaseEnum {
+  static CHAT_USER = this.enums(0, "CHAT_USER", "ChatUser");
+  static CHAT_GROUP = this.enums(1, "CHAT_GROUP", "ChatGroup");
+}

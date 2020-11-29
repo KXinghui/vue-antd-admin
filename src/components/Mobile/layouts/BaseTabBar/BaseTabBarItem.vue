@@ -1,74 +1,77 @@
 <template>
-  <router-link :to="item.route">
-    <a-badge
+  <!-- <router-link tag="div" :to="item.route"> -->
+  <a-badge
+    v-if="true"
+    :class="[
+      isCenter
+        ? 'base-tabbar-center-item-badge-wrap'
+        : 'base-tabbar-item-badge-wrap',
+      'animate__animated',
+      isActive ? 'animate__zoomIn' : ''
+    ]"
+    :style="{
+      '--animate-duration': '.35s',
+      'animation-fill-mode': 'forwards'
+    }"
+    :color="badge.color"
+    :count="badge.count"
+    :overflow-count="badge.overflowCount"
+    :dot="badge.dot"
+    @click="clickTabBar"
+  >
+    <div
       :class="[
-        isCenter
-          ? 'base-tabbar-center-item-badge-wrap'
-          : 'base-tabbar-item-badge-wrap',
-        'animate__animated',
-        isActive ? 'animate__zoomIn' : ''
+        isCenter ? 'base-tabbar-center-item-wrap' : 'base-tabbar-item-wrap',
+        isActive
+          ? 'base-tabbar-item-wrap-active'
+          : 'base-tabbar-item-wrap-unactive'
       ]"
-      :style="{
-        '--animate-duration': '.35s',
-        'animation-fill-mode': 'forwards'
-      }"
-      :color="badge.color"
-      :count="badge.count"
-      :overflow-count="badge.overflowCount"
-      :dot="badge.dot"
-      @click="clickTabBar"
     >
       <div
+        class="base-tabbar-item-icon"
+        :style="
+          isCenter
+            ? {
+                'background-color': activeColor,
+                'border-radius':
+                  !item.centerShape || item.centerShape == 'circle'
+                    ? '50%'
+                    : '15%'
+              }
+            : {}
+        "
+      >
+        <slot name="icon"
+          ><icon
+            :icon="item.icon"
+            :color="isActive && !isCenter ? activeColor : color"
+          ></icon
+        ></slot>
+      </div>
+      <div
         :class="[
-          isCenter ? 'base-tabbar-center-item-wrap' : 'base-tabbar-item-wrap',
-          isActive
-            ? 'base-tabbar-item-wrap-active'
-            : 'base-tabbar-item-wrap-unactive'
+          'base-tabbar-item-text',
+          'animate__animated',
+          !isActive && showTextOnActive
+            ? 'animate__zoomOut base-tabbar-item-text-unactive'
+            : ''
         ]"
       >
-        <div
-          class="base-tabbar-item-icon"
-          :style="
-            isCenter
-              ? {
-                  'background-color': activeColor,
-                  'border-radius':
-                    !item.centerShape || item.centerShape == 'circle'
-                      ? '50%'
-                      : '15%'
-                }
-              : {}
-          "
-        >
-          <slot name="icon"
-            ><icon
-              :icon="item.icon"
-              :color="isActive && !isCenter ? activeColor : color"
-            ></icon
-          ></slot>
-        </div>
-        <div
-          :class="[
-            'base-tabbar-item-text',
-            'animate__animated',
-            !isActive && showTextOnActive
-              ? 'animate__zoomOut base-tabbar-item-text-unactive'
-              : ''
-          ]"
-        >
-          <slot name="text"
-            ><span
-              v-text="item.text"
-              :style="{ color: isActive ? activeColor : color }"
-            ></span
-          ></slot>
-        </div>
+        <slot name="text"
+          ><span
+            v-text="item.text"
+            :style="{ color: isActive ? activeColor : color }"
+          ></span
+        ></slot>
       </div>
-    </a-badge>
-  </router-link>
+    </div>
+  </a-badge>
+  <!-- </router-link> -->
 </template>
 
 <script>
+import { pushRoute } from "../../../../utils/router-utils";
+
 export default {
   name: "BaseTabBarItem",
   data() {
@@ -94,12 +97,12 @@ export default {
     itemKey: {
       type: [String, Number],
       default: "",
-      required: true
+      required: false
     },
     activeItemKey: {
       type: [String, Number],
       default: "",
-      required: true
+      required: false
     },
     item: {
       type: [Object],
@@ -119,7 +122,8 @@ export default {
   },
   computed: {
     badge() {
-      return JSON.parse(this.item.badge);
+      let badge = this.item.badge;
+      return badge ? JSON.parse(badge) : { count: 0 };
     },
     isActive() {
       let activeItemKey = this.activeItemKey;
@@ -130,9 +134,14 @@ export default {
     }
   },
   methods: {
+    pushRoute,
     clickTabBar() {
       this.$emit("click", this.itemKey);
       this.$emit("change", this.itemKey);
+      let route = this.item.route;
+      if (route) {
+        this.pushRoute(this.item.route);
+      }
     }
   }
 };
@@ -214,5 +223,6 @@ export default {
   /* border-radius: 20%; */
   border: 0.5rem solid #ffffff;
   box-shadow: 0 0 0.35rem 0 #e2e1e1;
+  box-shadow: 0 0 6px rgba(180, 160, 120, 0.8);
 }
 </style>

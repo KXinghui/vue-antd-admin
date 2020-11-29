@@ -1,8 +1,8 @@
 <template>
   <div class="better-scroll" v-on="$listeners">
-    <div class="better-scroll-wrap" :id="bsWrap">
+    <div class="better-scroll-wrap" :id="bsWrap" :style="refStyle">
       <!-- :ref="bsWrap" -->
-      <div class="mouse-wheel-content">
+      <div class="mouse-wheel-content" style="contentStyle">
         <slot></slot>
       </div>
     </div>
@@ -36,4 +36,8 @@ export default {
   width: 100%;
   overflow: hidden;
 }
+/* .mouse-wheel-content {
+  height: 100%;
+  width: 100%;
+} */
 </style>

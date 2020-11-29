@@ -1,11 +1,7 @@
 <template>
   <div class="base-tabbar-wrap">
-    <!-- <bs-core :options="{ scrollbar: false }"> -->
+    <!-- <bs-core :scrollY="false" :scrollX="true" :options="{ scrollbar: false }"> -->
     <slot name="baseTabBarItem">
-      <!-- <bs-core
-        :options="{ scrollY: false, scrollX: true, scrollbar: false }"
-        width="100%"
-      > -->
       <base-tab-bar-item
         v-for="(baseTabBar, index) in baseTabBars"
         :item="baseTabBar"
@@ -16,7 +12,6 @@
         @change="changeTabBar(index)"
         v-bind="$props"
       ></base-tab-bar-item>
-      <!-- </bs-core> -->
     </slot>
     <!-- </bs-core> -->
   </div>
@@ -113,4 +108,10 @@ export default {
   width: 100%;
   bottom: 0;
 }
+/* .base-tabbar-wrap .mouse-wheel-content {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  padding: 0 0.466667rem;
+} */
 </style>

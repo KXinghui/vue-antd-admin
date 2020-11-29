@@ -1,7 +1,7 @@
 <template>
   <div class="better-scroll-wrap">
     <!-- :style="{ height, width, 'max-height': height }" -->
-    <div class="bscroll" :id="bsWrap" :ref="bsWrap">
+    <div class="bscroll" :id="bsWrap" :ref="bsWrap" style="refStyle">
       <div class="pull-scroller">
         <div class="pull-tips">
           <div v-show="beforePullDown" class="before-pull-down">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <div class="pull-list">
+        <div class="pull-list" style="cotentStyle">
           <slot></slot>
         </div>
         <div class="pullup-tips">

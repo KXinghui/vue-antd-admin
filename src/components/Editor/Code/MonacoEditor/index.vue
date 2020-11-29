@@ -9,7 +9,7 @@ import {
   SUPPORT_THEMES,
   init,
   format,
-  destory
+  destroy
 } from "./monacoeditor-utils";
 
 export default {
@@ -122,7 +122,7 @@ export default {
     init(this);
   },
   destroyed() {
-    destory(this);
+    destroy(this);
   }
 };
 </script>

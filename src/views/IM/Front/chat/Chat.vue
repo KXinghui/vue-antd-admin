@@ -3,14 +3,7 @@
     <base-header showDrawerIcon>
       <div slot="left">聊天</div>
       <div slot="right">
-        <icon
-          icon="Antd_menu"
-          @click="
-            () => {
-              this.showDrawerBar = !this.showDrawerBar;
-            }
-          "
-        />
+        <icon icon="Antd_menu" @click="showDrawerBar" />
         <icon icon="Antd_search" @click="pushRoute('/search')" />
         <a-popover placement="bottomRight">
           <template slot="content">
@@ -33,40 +26,37 @@
     </base-header>
     <base-main>
       <div slot="main">
-        <base-cell arrow :size="9" @click="pushRoute({ path: '/my/aboutim' })">
+        <base-cell
+          v-for="chatingIdentity in chatingIdentities"
+          :key="chatingIdentity.id"
+          arrow
+          @click="pushRoute({ path: '/my/identity/info' })"
+        >
           <div slot="left">
             <div class="identity-wrap">
               <identity-avatar
-                :identity="identity"
-                :avatarSize="60"
+                :identity="chatingIdentity"
                 avatarShape="square"
               ></identity-avatar>
               <div class="identity-info">
-                <span class="identity-nickname">{{ identity.nickname }}</span>
-                <span class="identity-chatno"
-                  >聊天号：{{ identity.chatNo }}</span
+                <span class="identity-nickname">{{
+                  chatingIdentity.nickname
+                }}</span>
+                <span class="identity-record">
+                  <span
+                    class="identity-at-record"
+                    v-show="chatingIdentity.isAtMe"
+                    >[有人@我]</span
+                  >
+                  {{ chatingIdentity.record }}</span
                 >
               </div>
             </div>
           </div>
+          <div slot="right">
+            <span v-text="chatingIdentity.createDate"></span>
+          </div>
         </base-cell>
-        <base-cell
-          text="账号与安全"
-          arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
-        <base-cell
-          text="隐私"
-          arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
-        <base-cell
-          v-for="i in 10"
-          :key="i"
-          text="关于IM"
-          arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
       </div>
     </base-main>
     <base-tab-bar
@@ -82,13 +72,15 @@
     >
       <identity-avatar
         :identity="identity"
-        :avatarSize="58"
         avatarShape="square"
       ></identity-avatar>
     </base-drawer>
     <base-drawer-bar
-      :topVisible.sync="showDrawerBar"
-      :bottomVisible.sync="showDrawerBar"
+      :showClose="true"
+      :topVisible.sync="topDrawerBarVisible"
+      :bottomVisible.sync="bottomDrawerBarVisible"
+      :topHeightPercent="topDrawerBarHeightPercent"
+      :bottomHeightPercent="bottomDrawerBarHeightPercent"
     >
       <identity-avatar
         slot="top"
@@ -107,8 +99,9 @@
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
-import { mapState, mapMutations } from "vuex";
-import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
+import { mapState /* , mapMutations */ } from "vuex";
+// import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
+// import { ChatSubjectTypeEnum } from "../../../../consts/im";
 
 export default {
   name: "ChatGroupMember",
@@ -118,32 +111,25 @@ export default {
     return {
       msName: "im",
       activeTabIndex: 0,
-      showDrawerBar: false
+      chatingIdentities: [
+        {
+          id: "4545",
+          chatSubjectTypeEnum: ""
+        }
+      ]
     };
   },
   computed: {
-    showDrawer: {
-      // getter
-      get: function() {
-        // Do not mutate vuex store state outside mutation handlers
-        return this.$store.state.admin.layoutSetting.showDrawer;
-      },
-      // setter
-      set: function(newValue) {
-        this[ADMIN_MUTATION_TYPE.SHOW_DRAWER](newValue);
-      }
-    },
     ...mapState({
       // showDrawer: state => state.admin.layoutSetting.showDrawer,
-      identity: state => state.identity.identity,
-      drawerPlacement: state => state.admin.layoutSetting.drawerPlacement
+      identity: state => state.identity.identity
     })
   },
   methods: {
-    ...mapMutations("admin", [
-      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      ADMIN_MUTATION_TYPE.SHOW_DRAWER
-    ])
+    // ...mapMutations("admin", [
+    //   // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+    //   ADMIN_MUTATION_TYPE.SHOW_DRAWER
+    // ])
   }
 };
 </script>
