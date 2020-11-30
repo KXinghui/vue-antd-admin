@@ -2,7 +2,7 @@ import BaseHeader from "../layouts/BaseHeader";
 import BaseTabBar from "../layouts/BaseTabBar";
 import BaseMain from "../layouts/BaseMain.vue";
 import BaseDrawer from "../layouts/BaseDrawer.vue";
-import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
+// import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
 import BaseCell from "../BaseCell.vue";
 
 import { mapState, mapMutations } from "vuex";
@@ -119,6 +119,8 @@ const PVTNOTE_TABBARS = [
 ];
 MS_TABBARS.set("pvtnote", PVTNOTE_TABBARS);
 
+// const DRAWER_BAR_DELAY = 180;
+
 export const BASE_LAYOUT_MIXIN = {
   // 刷新
   inject: ["reload"],
@@ -127,7 +129,7 @@ export const BASE_LAYOUT_MIXIN = {
     BaseTabBar,
     BaseMain,
     BaseDrawer,
-    BaseDrawerBar,
+    // BaseDrawerBar,
     BaseCell
   },
   data() {
@@ -137,13 +139,13 @@ export const BASE_LAYOUT_MIXIN = {
       color: COLOR,
       activeColor: ACTIVE_COLOR,
       activeKey: "",
-      baseTabBars: [],
-      topDrawerBarVisible: false,
-      bottomDrawerBarVisible: false,
-      resetTopDrawerBarHeightPercent: "7.25%",
-      resetBottomDrawerBarHeightPercent: "7.25%",
-      topDrawerBarHeightPercent: "7.25%",
-      bottomDrawerBarHeightPercent: "7.25%"
+      baseTabBars: []
+      // topDrawerBarVisible: false,
+      // bottomDrawerBarVisible: false,
+      // resetTopDrawerBarHeightPercent: "7.25%",
+      // resetBottomDrawerBarHeightPercent: "7.25%",
+      // topDrawerBarHeightPercent: "7.25%",
+      // bottomDrawerBarHeightPercent: "7.25%"
     };
   },
   computed: {
@@ -179,36 +181,40 @@ export const BASE_LAYOUT_MIXIN = {
       } /* else {
         this.activeKey = StoreJsAPI.get(this.activeTabActiveKey);
       } */
-    },
-    resetDrawerBar() {
-      this.topDrawerBarHeightPercent = this.resetTopDrawerBarHeightPercent;
-      this.bottomDrawerBarHeightPercent = this.resetBottomDrawerBarHeightPercent;
-    },
-    showDrawerBar() {
-      this.topDrawerBarVisible = true;
-      this.bottomDrawerBarVisible = true;
-    },
-    hideDrawerBar() {
-      this.topDrawerBarVisible = false;
-      this.bottomDrawerBarVisible = false;
-      this.resetDrawerBar();
-    },
-    showTopDrawerBar(heightPercent) {
-      this.hideDrawerBar();
-      let timer = setTimeout(() => {
-        this.topDrawerBarHeightPercent = heightPercent;
-        this.topDrawerBarVisible = true;
-        clearTimeout(timer);
-      }, 150);
-    },
-    showBottomDrawerBar(heightPercent) {
-      this.hideDrawerBar();
-      let timer = setTimeout(() => {
-        this.bottomDrawerBarHeightPercent = heightPercent;
-        this.bottomDrawerBarVisible = true;
-        clearTimeout(timer);
-      }, 150);
     }
+    // resetDrawerBar() {
+    //   this.topDrawerBarHeightPercent = this.resetTopDrawerBarHeightPercent;
+    //   this.bottomDrawerBarHeightPercent = this.resetBottomDrawerBarHeightPercent;
+    // },
+    // showDrawerBar() {
+    //   this.hideDrawerBar();
+    //   let timer = setTimeout(() => {
+    //     this.topDrawerBarVisible = true;
+    //     this.bottomDrawerBarVisible = true;
+    //     clearTimeout(timer);
+    //   }, DRAWER_BAR_DELAY);
+    // },
+    // hideDrawerBar() {
+    //   this.topDrawerBarVisible = false;
+    //   this.bottomDrawerBarVisible = false;
+    //   this.resetDrawerBar();
+    // },
+    // showTopDrawerBar(heightPercent) {
+    //   this.hideDrawerBar();
+    //   let timer = setTimeout(() => {
+    //     this.topDrawerBarHeightPercent = heightPercent;
+    //     this.topDrawerBarVisible = true;
+    //     clearTimeout(timer);
+    //   }, DRAWER_BAR_DELAY);
+    // },
+    // showBottomDrawerBar(heightPercent) {
+    //   this.hideDrawerBar();
+    //   let timer = setTimeout(() => {
+    //     this.bottomDrawerBarHeightPercent = heightPercent;
+    //     this.bottomDrawerBarVisible = true;
+    //     clearTimeout(timer);
+    //   }, DRAWER_BAR_DELAY);
+    // }
   },
   beforeMount() {
     this.changeActiveTab(this.activeTabIndex);

@@ -48,7 +48,7 @@
       :bottomHeightPercent="bottomDrawerBarHeightPercent"
     >
       <template slot="top">
-        <template v-if="operation.batch">
+        <template v-if="management.batch">
           <span @click="closeDrawerBar">取消</span>
           <span
             >已选择<span
@@ -61,7 +61,7 @@
         </template>
       </template>
       <template slot="bottom">
-        <template v-if="operation.batch">
+        <template v-if="management.batch && !operation.currentOp">
           <base-tab-bar-item
             :item="{
               index: 'move',
@@ -92,6 +92,9 @@
             @click="deleteNote"
           ></base-tab-bar-item>
         </template>
+        <template v-if="operation.currentOp == 'batch-move'">
+          移动便签
+        </template>
       </template>
     </base-drawer-bar>
   </div>
@@ -99,14 +102,16 @@
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState, mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
+import { confirm } from "../../../../utils/antd-utils";
 
 export default {
   name: "Note",
-  mixins: [BASE_LAYOUT_MIXIN],
+  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN],
   components: { IdentityAvatar, BaseTabBarItem },
   data() {
     return {
@@ -116,6 +121,7 @@ export default {
         batch: false
       },
       operation: {
+        currentOp: "",
         batch: ["delete", "move", "top", "cancelTop", "selectAll"]
       },
       notes: [],
@@ -137,7 +143,8 @@ export default {
             topNum++;
           }
         });
-        if (topNum == selectedNoteIds.length) {
+        let selectedNoteLen = selectedNoteIds.length;
+        if (selectedNoteLen != 0 && topNum == selectedNoteLen) {
           isTopOnBatch = false;
         }
       }
@@ -167,13 +174,15 @@ export default {
       }
     },
     openBatchDrawerBar() {
-      this.management.batch = !this.management.batch;
-      this.resetDrawerBar();
+      this.hideDrawerBar();
+      this.management.batch = true;
+      this.operation.currentOp = "";
       this.showDrawerBar();
     },
     moveNote() {
+      this.operation.currentOp = "batch-move";
       this.hideDrawerBar();
-      this.showBottomDrawerBar("50%");
+      this.showBottomDrawerBar("80%");
     },
     topNote() {
       if (this.isTopOnBatch) {
@@ -181,8 +190,40 @@ export default {
       } else {
         // 取消置顶
       }
+      let isTopOnBatch = this.isTopOnBatch;
+      let title = isTopOnBatch ? "置顶" : "取消置顶";
+      confirm({
+        title,
+        // content: () => <div style="color:red;">确定要title所选便签？</div>,
+        content: function(h) {
+          // h == createElement
+          return h("div", {
+            style: { color: "red" },
+            text: `确定要${title}所选便签？`
+          });
+        },
+        cancelText: "取消",
+        okText: title,
+        // okType: "primary",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {}
+      });
     },
-    deleteNote() {}
+    deleteNote() {
+      confirm({
+        title: "删除便签",
+        content: () => <div style="color:red;">确定要删除所选便签？</div>,
+        cancelText: "取消",
+        okText: "删除",
+        okType: "danger",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {}
+      });
+    }
   }
 };
 </script>

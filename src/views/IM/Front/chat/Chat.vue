@@ -98,6 +98,7 @@
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState /* , mapMutations */ } from "vuex";
 // import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
@@ -105,7 +106,7 @@ import { mapState /* , mapMutations */ } from "vuex";
 
 export default {
   name: "ChatGroupMember",
-  mixins: [BASE_LAYOUT_MIXIN],
+  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN],
   components: { IdentityAvatar },
   data() {
     return {

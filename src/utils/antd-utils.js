@@ -1,4 +1,4 @@
-import { message, notification } from "ant-design-vue";
+import { message, notification, Modal } from "ant-design-vue";
 
 const MSG_DURATION = 3;
 
@@ -17,6 +17,10 @@ export function msg(responseResult) {
   } else if (responseResultCode == "2" || responseResultCode == "3") {
     message.info(msg, MSG_DURATION, onClose);
   }
+}
+
+export function confirm(modalOptions) {
+  Modal.confirm(Object.assign({ centered: true }, modalOptions));
 }
 
 export function notify(responseResult) {
