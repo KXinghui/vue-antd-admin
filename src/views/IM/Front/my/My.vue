@@ -34,13 +34,20 @@
           arrow
           @click="pushRoute({ path: '/my/aboutim' })"
         ></base-cell>
-        <base-cell
+        <!-- <base-cell
+          v-for="i in 5"
+          :key="i"
+          text="关于IM"
+          arrow
+          @click="pushRoute({ path: '/my/aboutim' })"
+        ></base-cell> -->
+        <base-swipe-cell
           v-for="i in 10"
           :key="i"
           text="关于IM"
           arrow
           @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
+        ></base-swipe-cell>
       </template>
     </base-main>
     <!-- <base-main></base-main> -->
@@ -58,11 +65,12 @@
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
+import BaseSwipeCell from "../../../../components/Mobile/BaseSwipeCell";
 
 export default {
   name: "ChatGroupMember",
   mixins: [BASE_LAYOUT_MIXIN],
-  components: { IdentityAvatar },
+  components: { IdentityAvatar, BaseSwipeCell },
   data() {
     return {
       msName: "im",

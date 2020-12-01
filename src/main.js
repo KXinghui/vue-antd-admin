@@ -8,13 +8,14 @@ import * as filters from "./filters";
 import Viewer from "v-viewer";
 import Viser from "viser-vue";
 import VueLazyload from "vue-lazyload";
+import VueDraggableResizable from "vue-draggable-resizable";
 
 import "normalize.css/normalize.css";
 // https://animate.style/
 import animated from "animate.css";
 import "ant-design-vue/dist/antd.less";
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 import "viewerjs/dist/viewer.css";
+import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 import "./styles/global.less";
 
 import "./icons";
@@ -50,6 +51,8 @@ Vue.use(VueLazyload, {
   loading: "/lazy/load.gif",
   attempt: 1
 });
+
+Vue.component("vue-draggable-resizable", VueDraggableResizable);
 
 Vue.component("form-item", {
   mixins: [],

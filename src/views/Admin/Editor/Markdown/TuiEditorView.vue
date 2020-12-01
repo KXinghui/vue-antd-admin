@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      html: `<p><img src="https://bkimg.cdn.bcebos.com/pic/cdbf6c81800a19d8b28d248b3afa828ba71e46b5?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxNTA=,g_7,xp_5,yp_5" alt="eva"></p>反对反对`,
+      html: ``,
       html2: `<pre><code>console.log('foo')
 </code></pre><pre><code>console.log('bar')
 </code></pre><pre><code>&lt;div id="editor"&gt;&lt;span&gt;baz&lt;/span&gt;&lt;/div&gt;

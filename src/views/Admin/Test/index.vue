@@ -1,10 +1,10 @@
 <template>
-  <div class="test">
+  <div ref="test">
     <a-button
       class="btn"
       v-html2canvas="{
-        htmlElement: '.test',
-        filename: 'cut-image.png'
+        htmlRef,
+        filename: 'cut-image.jpeg'
       }"
     >
       <!-- @click="test" -->
@@ -29,17 +29,26 @@
       </p>
     </a-upload-dragger>
     <!-- <cropper></cropper> -->
+    <a-input v-model="text"></a-input>
+    <qr-code :text="text"></qr-code>
   </div>
 </template>
 
 <script>
 import { fileToBase64 } from "@utils/utils";
 import { md5, hashFile } from "@utils/spark-md5-utils";
+import QRCode from "../../../components/QRCode";
 // import Cropper from "../../../components/Cropper";
 
 export default {
   name: "Test",
-  // components: { Cropper },
+  components: { "qr-code": QRCode },
+  data() {
+    return {
+      htmlRef: this.$refs["test"],
+      text: "https://webqr.com/create.html"
+    };
+  },
   methods: {
     handleChange(info) {
       const status = info.file.status;
@@ -58,6 +67,9 @@ export default {
     test() {
       md5("asdasdf");
     }
+  },
+  mounted() {
+    this.htmlRef = this.$refs["test"].$el;
   }
 };
 </script>

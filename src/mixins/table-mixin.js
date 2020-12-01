@@ -64,6 +64,7 @@ export const TABLE_MIXIN = {
       columns: [],
       /* 伸缩列 */
       draggingMap: {},
+      contextmenuId: `contextmenu${this._uid}`,
       contextmenuRecord: {},
       contextmenuVisible: false,
       contextmenuStyle: {
@@ -120,16 +121,27 @@ export const TABLE_MIXIN = {
             }
           }
         };
-      }
+      },
+      currentRecord: null
     };
+  },
+  props: {
+    /* contextmenuRecord: {
+      type: [Object],
+      default() {
+        return {};
+      },
+      require: false
+    } */
   },
   methods: {
     ableBatchOp() {
       this.isBatch = !this.isBatch;
     },
+    // eslint-disable-next-line no-unused-vars
     customRowFunc: function(event, record) {
-      console.log("事件 " + JSON.stringify(event.type));
-      console.log("记录 " + JSON.stringify(record));
+      // console.log("事件 " + JSON.stringify(event.type));
+      // console.log("记录 " + JSON.stringify(record));
     },
     // 单击行
     clickRow: function(event, record) {
@@ -152,12 +164,32 @@ export const TABLE_MIXIN = {
     // 右键行
     // 右键行菜单【https://www.jb51.net/article/174741.htm】
     contextmenuRow: function(event, record) {
+      debugger;
       this.customRowFunc(event, record);
-      event.preventDefault();
+      let contextmenu = document.getElementById(this.contextmenuId);
       this.contextmenuVisible = true;
+      let contextmenuWidth = contextmenu
+        ? contextmenu.clientWidth || contextmenu.offsetWidth
+        : 0;
+      let contextmenuHeight = contextmenu
+        ? contextmenu.clientHeight || contextmenu.offsetHeight
+        : 0;
+      event.preventDefault();
+      let windowWidth =
+        window.innerWidth || document.documentElement.clientWidth;
+      let windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
       this.contextmenuRecord = record;
-      this.contextmenuStyle.top = event.clientY + "px";
-      this.contextmenuStyle.left = event.clientX + "px";
+      let eventClientX = event.clientX;
+      let eventClientY = event.clientY;
+      this.contextmenuStyle.top =
+        (eventClientY + contextmenuHeight > windowHeight
+          ? eventClientY - contextmenuHeight
+          : eventClientY) + "px";
+      this.contextmenuStyle.left =
+        (eventClientX + contextmenuWidth > windowWidth
+          ? eventClientX - contextmenuWidth
+          : eventClientX) + "px";
       document.addEventListener("click", this.cancelContextmenu);
     },
     //取消行右键菜单

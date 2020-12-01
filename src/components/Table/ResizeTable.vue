@@ -12,6 +12,7 @@
       </template> -->
     </a-table>
     <a-menu
+      :id="contextmenuId"
       class="contextmenustyle"
       :style="contextmenuStyle"
       v-if="contextmenuVisible"

@@ -13,11 +13,44 @@
       :components="tableComponents"
       :data-source="data"
     >
-      <template v-slot:action>
+      <!-- <template v-slot:action>
         <a href="javascript:;">Delete</a>
         <a href="javascript:;">Add</a>
+      </template> -->
+      <template v-for="(index, name) in $scopedSlots" v-slot:[name]="slotProps">
+        <slot :name="name" v-bind="{ slotProps }"></slot>
       </template>
+      <!-- <template
+        v-for="column in columns"
+        :slot="column.scopedSlots ? column.scopedSlots.customRender : ''"
+        slot-scope="text, record"
+      >
+        <slot
+          :name="column.scopedSlots ? column.scopedSlots.customRender : ''"
+          v-bind="record"
+        ></slot>
+      </template> -->
     </a-table>
+    <!-- class="contextmenustyle" -->
+    <a-menu
+      :id="contextmenuId"
+      :style="contextmenuStyle"
+      v-if="contextmenuVisible"
+    >
+      <!-- Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "contextmenuRecord" -->
+      <!-- v-bind:record="record" 让插槽内容访问子组件中才有的数据 -->
+      <slot name="contextmenu" v-bind:record="contextmenuRecord">
+        <a-menu-item key="1">
+          1st menu item
+        </a-menu-item>
+        <a-menu-item key="2">
+          2nd menu item
+        </a-menu-item>
+        <a-menu-item key="3">
+          3rd menu item
+        </a-menu-item>
+      </slot>
+    </a-menu>
     <a-modal
       v-model="settingModalVisible"
       title="Vertically centered modal dialog"
@@ -117,15 +150,12 @@ const table = {
         // 事件
         click: event => {
           this.clickRow(event, record);
-          console.log(event.target, record);
         },
         dblclick: event => {
           this.dblclickRow(event, record);
-          console.log(event.target, record);
         },
         contextmenu: event => {
           this.contextmenuRow(event, record);
-          console.log(event.target, record);
         } /* ,
         mouseenter: event => {
           this.mouseenterRow(event, record);
@@ -407,6 +437,7 @@ export default {
     };
     // var vm = this;
     return {
+      text: "asdfasdf",
       table,
       data,
       columns,
@@ -420,15 +451,12 @@ export default {
             // 事件
             click: event => {
               this.clickRow(event, record);
-              console.log(event.target, record);
             },
             dblclick: event => {
               this.dblclickRow(event, record);
-              console.log(event.target, record);
             },
             contextmenu: event => {
               this.contextmenuRow(event, record);
-              console.log(event.target, record);
             } /* ,
         mouseenter: event => {
           this.mouseenterRow(event, record);
