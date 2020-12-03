@@ -1,13 +1,6 @@
 <template>
   <div ref="test">
-    <a-button
-      class="btn"
-      v-html2canvas="{
-        htmlRef,
-        filename: 'cut-image.jpeg'
-      }"
-    >
-      <!-- @click="test" -->
+    <a-button class="btn" @click="test">
       测试
     </a-button>
 
@@ -38,6 +31,7 @@
 import { fileToBase64 } from "@utils/utils";
 import { md5, hashFile } from "@utils/spark-md5-utils";
 import QRCode from "../../../components/QRCode";
+import { screenshot } from "../../../utils/file-utils";
 // import Cropper from "../../../components/Cropper";
 
 export default {
@@ -45,7 +39,7 @@ export default {
   components: { "qr-code": QRCode },
   data() {
     return {
-      htmlRef: this.$refs["test"],
+      htmlRef: this.$refs.test,
       text: "https://webqr.com/create.html"
     };
   },
@@ -66,6 +60,13 @@ export default {
     },
     test() {
       md5("asdasdf");
+      screenshot(
+        document.getElementsByClassName("qrcode-wrap")[0] || this.$refs["test"],
+        {},
+        "screenshot.jpeg"
+      ).then(res => {
+        console.log(res);
+      });
     }
   },
   mounted() {

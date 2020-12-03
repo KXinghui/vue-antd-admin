@@ -32,10 +32,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-import VueDraggableResizable from "vue-draggable-resizable";
-Vue.component("vue-draggable-resizable", VueDraggableResizable);
-
 import { TABLE_MIXIN } from "@mixins/table-mixin";
 
 const columns = [
@@ -115,7 +111,7 @@ export default {
 };
 </script>
 <style lang="less">
-.resize-table-th {
+/* .resize-table-th {
   position: relative;
   .table-draggable-handle {
     height: 100% !important;
@@ -128,5 +124,5 @@ export default {
   .vdr {
     border: none;
   }
-}
+} */
 </style>

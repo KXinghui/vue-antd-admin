@@ -1,4 +1,8 @@
 import { axiosInstance } from "../api/axios-config";
+// http://html2canvas.hertzen.com/configuration/
+// https://juejin.cn/post/6844904034701180942
+// https://blog.csdn.net/luviawu/article/details/96995058
+import html2canvas from "html2canvas";
 /**
  * TODO FileDownLoader downloadByUrl downloadByBase64
  */
@@ -35,6 +39,37 @@ export async function download(config, fileName) {
 export function downloadByBase64(base64, fileName) {
   let blob = base64ToBlob(base64);
   return downloadFile(blob, fileName);
+}
+
+/**
+ * 截图
+ * @param {*} ele
+ * @param {*} options
+ * @param {*} fileName
+ */
+export async function screenshot(ele, options, fileName) {
+  debugger;
+  let isDownload = false;
+  await html2canvas(
+    ele || document.body,
+    Object.assign(
+      {
+        logging: true, // 启用日志记录以进行调试 (发现加上对去白边有帮助)
+        backgroundColor: null, // 解决生成的图片有白边
+        useCORS: true, // 跨域
+        allowTaint: true // 允许跨源图像污染画布
+        // scale: 2, //图片清晰度的保证
+        // taintTest: false
+      },
+      options
+    )
+  ).then(canvas => {
+    isDownload = downloadByBase64(
+      canvas.toDataURL("image/jpeg"),
+      fileName || ""
+    );
+  });
+  return isDownload;
 }
 
 /**

@@ -1,10 +1,13 @@
 <template>
   <div class="base-table-wrap">
+    <div class="base-table-header-wrap">
+      <slot name="header"></slot>
+    </div>
     <a-table
       bordered
       :row-selection="{
         selectedRowKeys: rowSelection.selectedRowKeys,
-        onChange: rowSelection.onSelectChange
+        onChange: rowSelection.onChange
       }"
       :row-key="table.rowKey"
       :custom-row="customRow"
@@ -77,7 +80,7 @@
 </template>
 
 <script>
-import { TABLE_MIXIN } from "@mixins/table-mixin";
+import { TABLE_MIXIN } from "../../mixins/table-mixin";
 
 // eslint-disable-next-line no-unused-vars
 const table = {
@@ -307,12 +310,14 @@ const columns = [
   },
   {
     title: "Action",
+    dataIndex: "action",
     key: "action",
-    scopedSlots: { customRender: "action" },
+    // scopedSlots: { customRender: "action" },
+    width: 200,
     isResize: true,
     minWidth: 100,
-    maxWidth: 300,
-    fixed: "right"
+    maxWidth: 300
+    // fixed: "right"
   }
 ];
 
@@ -388,12 +393,13 @@ columns.forEach(col => {
     draggingMap[col.dataIndex] = col;
   }
 });
+
 export default {
   name: "BaseTable",
   mixins: [TABLE_MIXIN],
   data() {
     // 表格可伸缩列 不使用JSX【https://www.jianshu.com/p/89b8ccd1eca0】
-    this.tableComponents = {
+    this.tableComponents3 = {
       header: {
         cell: (h, props, children) => {
           const { key, ...restProps } = props;
@@ -467,7 +473,7 @@ export default {
           }
         };
       },
-      rowSelection: {
+      rowSelection2: {
         columnTitle: "选择",
         // 把选择框列固定在左边	boolean	-
         fixed: true,
@@ -529,8 +535,8 @@ export default {
   }
 };
 </script>
-<style lang="less">
-.resize-table-th {
+<style lang="less" scoped>
+/* .resize-table-th {
   position: relative;
   .table-draggable-handle {
     height: 100% !important;
@@ -543,5 +549,29 @@ export default {
   .vdr {
     border: none;
   }
+} */
+.base-table-wrap {
+  .resize-table-th {
+    position: relative;
+    .table-draggable-handle {
+      border: 1px solid red;
+      position: absolute;
+      height: 100% !important;
+      left: auto !important;
+      right: -5px;
+      transform: none !important;
+      bottom: 0;
+      cursor: col-resize;
+      touch-action: none;
+    }
+  }
+}
+.base-table-header-wrap {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  padding: 0 1rem;
 }
 </style>

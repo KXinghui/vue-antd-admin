@@ -151,6 +151,17 @@ export const routes = [
         name: "Model",
         component: () =>
           import(/* webpackChunkName: "about" */ "@views/Admin/Model")
+      },
+      {
+        path: "/tableTest",
+        name: "TableTest",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(
+            /* webpackChunkName: "table" */ "../views/Admin/Test/table.vue"
+          )
       }
     ]
   },
@@ -191,14 +202,19 @@ export const routes = [
         /* webpackChunkName: "table" */ "@components/Table/ResizeTable.vue"
       )
   },
+  /* 视频 */
   {
-    path: "/tableTest",
-    name: "TableTest",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "table" */ "../views/Admin/Test/table.vue")
+    path: "/video",
+    name: "Video",
+    component: BaseLayout,
+    children: [
+      {
+        path: "video",
+        name: "Video",
+        component: () =>
+          import(/* webpackChunkName: "video" */ "@views/Admin/Video/VideoView")
+      }
+    ]
   },
   {
     path: "/login",

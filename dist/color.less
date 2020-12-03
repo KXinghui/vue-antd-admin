@@ -1581,17 +1581,26 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .btn {color: #fff;color: #555555;}
 .btn:hover {color: @btn-primary-bg;}
 .btn .logo {background: #ffffff33;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{primary-color}", 9)`)73;}
+.typing-text {border-right: 1px solid transparent;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{btn-primary-bg}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}
+.layout-header {color: @heading-color;background-color: #fff;background-color: @layout-header-background;}
+.layout-header .btn {color: @heading-color;}
+.layout-header:hover, .layout-header .btn:hover {color: @primary-color;}
 .layout-main-container {border: 1px solid red;background-color: @layout-body-background;}
 .layout-main {border: 1px solid blue;}
 .layout-footer {color: @text-color;}
 .layout-setting {color: @text-color;}
 .logo-title, .logo-title-display {color: @text-color;}
-.layout-sider-menu li, .layout-sider-menu a {color: rgba(255, 255, 255, 0.65);color: @text-color;}
-.layout-sider-menu li:hover a, .layout-sider-menu a:hover {color: @text-color-secondary;}
+.logo-title:hover, .logo-title-display:hover {color: @primary-color;}
+.layout-sider-menu {color: @heading-color;background-color: @layout-header-background;}
+.layout-sider-menu .ant-menu {background-color: @layout-header-background;}
+.layout-sider-menu .layout-sider-menu-item {background-color: @layout-header-background;}
+.layout-sider-menu .ant-menu-submenu .ant-menu-submenu-title .layout-sider-menu-item, .layout-sider-menu .layout-sider-menu-item, .layout-sider-menu .layout-sider-menu-item a {color: @heading-color;}
+.layout-sider-menu .ant-menu-submenu .ant-menu-submenu-title .layout-sider-menu-item:hover, .layout-sider-menu .layout-sider-menu-item:hover .layout-sider-menu .layout-sider-menu-item a {color: @heading-color dark;}
+.layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::before, .layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::after {color: @heading-color;background-color: @heading-color;}
 .bezierEasingMixin() {
 @functions: ~`(function() {var NEWTON_ITERATIONS = 4;var NEWTON_MIN_SLOPE = 0.001;var SUBDIVISION_PRECISION = 0.0000001;var SUBDIVISION_MAX_ITERATIONS = 10;var kSplineTableSize = 11;var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);var float32ArraySupported = typeof Float32Array === 'function';function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
   function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }

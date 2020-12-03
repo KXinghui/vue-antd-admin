@@ -1,6 +1,7 @@
 import BScroll from "@better-scroll/core";
 import MouseWheel from "@better-scroll/mouse-wheel";
 import ScrollBar from "@better-scroll/scroll-bar";
+import NestedScroll from "@better-scroll/nested-scroll";
 
 import PullDown from "@better-scroll/pull-down";
 import Pullup from "@better-scroll/pull-up";
@@ -95,6 +96,9 @@ export default {
   },
   methods: {
     initBscroll() {
+      if (this.bsOptions.nestedScroll) {
+        BScroll.use(NestedScroll);
+      }
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,
         this.bsOptions

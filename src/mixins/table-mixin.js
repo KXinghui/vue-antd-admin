@@ -11,56 +11,57 @@
 export const TABLE_MIXIN = {
   data() {
     let vm = this;
+    // this.tableComponents = {
+    //   header: {
+    //     cell: (h, props, children) => {
+    //       const { key, ...restProps } = props;
+    //       const col = this.columns.find(col => {
+    //         const k = col.dataIndex || col.key;
+    //         return col.isResize && k === key;
+    //       });
+    //       // const col = draggingMap[key];
+    //       if (!col || !col.width) {
+    //         return h("th", { ...restProps }, [...children]);
+    //       }
+    //       const dragProps = {
+    //         key: col.dataIndex || col.key,
+    //         class: "table-draggable-handle",
+    //         attrs: {
+    //           w: 10,
+    //           x: col.width,
+    //           z: 1,
+    //           axis: "x",
+    //           draggable: true,
+    //           resizable: false
+    //         },
+    //         on: {
+    //           dragging: x => {
+    //             debugger;
+    //             let colWidth = Math.max(x, 1);
+    //             if (col.minWidth && col.minWidth > colWidth) {
+    //               col.width = col.minWidth;
+    //               return;
+    //             }
+    //             if (col.maxWidth && col.maxWidth < colWidth) {
+    //               col.width = col.maxWidth;
+    //               return;
+    //             }
+    //             col.width = colWidth;
+    //           }
+    //         }
+    //       };
+    //       const drag = h("vue-draggable-resizable", { ...dragProps });
+    //       return h("th", { ...restProps, class: "resize-table-th" }, [
+    //         ...children,
+    //         drag
+    //       ]);
+    //     }
+    //   }
+    // };
     return {
       // 设置对话框
       settingModalVisible: false,
       isBatch: false,
-      tableComponents: {
-        header: {
-          cell: (h, props, children) => {
-            const { key, ...restProps } = props;
-            const col = this.columns.find(col => {
-              const k = col.dataIndex || col.key;
-              return col.isResize && k === key;
-            });
-            // const col = draggingMap[key];
-            if (!col || !col.width) {
-              return h("th", { ...restProps }, [...children]);
-            }
-            const dragProps = {
-              key: col.dataIndex || col.key,
-              class: "table-draggable-handle",
-              attrs: {
-                w: 10,
-                x: col.width,
-                z: 1,
-                axis: "x",
-                draggable: true,
-                resizable: false
-              },
-              on: {
-                dragging: x => {
-                  let colWidth = Math.max(x, 1);
-                  if (col.minWidth && col.minWidth > colWidth) {
-                    col.width = col.minWidth;
-                    return;
-                  }
-                  if (col.maxWidth && col.maxWidth < colWidth) {
-                    col.width = col.maxWidth;
-                    return;
-                  }
-                  col.width = colWidth;
-                }
-              }
-            };
-            const drag = h("vue-draggable-resizable", { ...dragProps });
-            return h("th", { ...restProps, class: "resize-table-th" }, [
-              ...children,
-              drag
-            ]);
-          }
-        }
-      },
       columns: [],
       /* 伸缩列 */
       draggingMap: {},
@@ -99,29 +100,6 @@ export const TABLE_MIXIN = {
           }
         }
       }),
-      customRow2: record => {
-        return {
-          props: {},
-          on: {
-            // 事件
-            click: event => {
-              vm.clickRow(event, record);
-            },
-            dblclick: event => {
-              vm.dblclickRow(event, record);
-            },
-            contextmenu: event => {
-              vm.contextmenuRow(event, record);
-            },
-            mouseenter: event => {
-              vm.mouseenterRow(event, record);
-            },
-            mouseleave: event => {
-              vm.mouseleaveRow(event, record);
-            }
-          }
-        };
-      },
       currentRecord: null
     };
   },
@@ -133,6 +111,94 @@ export const TABLE_MIXIN = {
       },
       require: false
     } */
+  },
+  computed: {
+    tableComponents() {
+      return {
+        header: {
+          cell: (h, props, children) => {
+            const { key, ...restProps } = props;
+            const col = this.columns.find(col => {
+              const k = col.dataIndex || col.key;
+              return col.isResize && k === key;
+            });
+            // const col = draggingMap[key];
+            if (!col || !col.width) {
+              return h("th", { ...restProps }, [...children]);
+            }
+            const dragProps = {
+              key: col.dataIndex || col.key,
+              class: "table-draggable-handle",
+              attrs: {
+                w: 10,
+                x: col.width,
+                z: 1,
+                axis: "x",
+                draggable: true,
+                resizable: false
+              },
+              on: {
+                dragging: x => {
+                  debugger;
+                  let colWidth = Math.max(x, 1);
+                  if (col.minWidth && col.minWidth > colWidth) {
+                    col.width = col.minWidth;
+                    return;
+                  }
+                  if (col.maxWidth && col.maxWidth < colWidth) {
+                    col.width = col.maxWidth;
+                    return;
+                  }
+                  col.width = colWidth;
+                }
+              }
+            };
+            const drag = h("vue-draggable-resizable", { ...dragProps });
+            return h("th", { ...restProps, class: "resize-table-th" }, [
+              ...children,
+              drag
+            ]);
+          }
+        }
+      };
+    },
+    rowSelection() {
+      return {
+        columnTitle: "选择",
+        // 把选择框列固定在左边	boolean	-
+        fixed: true,
+        // 选择框的默认属性配置	Function(record)	-
+        // eslint-disable-next-line no-unused-vars
+        getCheckboxProps: record => {},
+        // 去掉『全选』『反选』两个默认选项	boolean	false
+        hideDefaultSelections: true,
+        // 指定选中项的 key 数组，需要和 onChange 进行配合	string[]	[]
+        selectedRowKeys: [],
+        // 自定义选择配置项, 设为 true 时使用默认选择项	object[]|boolean	true
+        selections: true,
+        // 多选/单选，checkbox or radio	string	checkbox
+        type: "checkbox",
+        // 选中项发生变化时的回调	Function(selectedRowKeys, selectedRows)	-
+        // eslint-disable-next-line no-unused-vars
+        onChange: (selectedRowKeys, selectedRows) => {
+          this.rowSelection.selectedRowKeys = selectedRowKeys;
+        },
+        // 用户手动选择/取消选择某列的回调	Function(record, selected, selectedRows, nativeEvent)	-
+        // eslint-disable-next-line no-unused-vars
+        onSelect: (record, selected, selectedRows, nativeEvent) => {},
+        // 用户手动选择/取消选择所有列的回调	Function(selected, selectedRows, changeRows)	-
+        // eslint-disable-next-line no-unused-vars
+        onSelectAll: (selected, selectedRows, changeRows) => {},
+        // 用户手动选择反选的回调	Function(selectedRows)	-
+        // eslint-disable-next-line no-unused-vars
+        onSelectInvert: selectedRows => {},
+        onSelectChange: selectedRowKeys => {
+          console.log(typeof selectedRowKeys);
+          console.log("selectedRowKeys changed: ", selectedRowKeys);
+          this.rowSelection.selectedRowKeys = selectedRowKeys;
+        }
+      };
+    }
   },
   methods: {
     ableBatchOp() {

@@ -162,6 +162,13 @@ export default {
     },
     destroy() {}
   },
+  watch: {
+    html() {
+      this.init();
+      // this.quill && this.quill.pasteHTML(this.html);
+      // this.quill && this.quill.update();
+    }
+  },
   mounted() {
     this.init();
   },

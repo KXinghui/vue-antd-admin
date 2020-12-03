@@ -9,25 +9,43 @@
       <template slot="main">
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <h1 class="typing-text" align="center">{{ ms }}</h1>
+            <h1 align="center">{{ ms }}</h1>
           </a-col>
         </a-row>
-        <identity-login :identity-role="identityRole"></identity-login>
+        <a-row type="flex" justify="center">
+          <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
+            <identity-login identity-role="user"></identity-login>
+          </a-col>
+        </a-row>
       </template>
     </base-main>
+    <base-modal :modalVisible="true" :anchors="anchors">
+      <identity-login
+        id="base-form"
+        :identity-role="identityRole"
+      ></identity-login>
+      <identity-login identity-role="user"></identity-login>
+      <identity-login id="base-form2" identity-role="chatUser"></identity-login>
+    </base-modal>
   </div>
 </template>
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
 import IdentityLogin from "../../../components/Identity/IdentityLogin";
+import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 
 export default {
   name: "IdentityLoginView",
   mixins: [BASE_LAYOUT_MIXIN],
-  components: { IdentityLogin },
+  components: { IdentityLogin, BaseModal },
   data() {
-    return {};
+    return {
+      anchors: [
+        { href: "#base-form", title: "Base Form" },
+        { href: "#base-form2", title: "Base Form2" }
+      ]
+    };
   },
   props: {
     ms: {
