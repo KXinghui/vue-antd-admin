@@ -20,13 +20,14 @@
           }
         ], -->
     {{ publicPath + "oceans.mp4" }}
+    <a-input :value="src" @change="changeSrc"></a-input>
   </div>
 </template>
 
 <script>
 import VideoPlayer from "../../../components/Video";
 const publicPath = process.env.BASE_URL;
-const src = `${publicPath}胡彦斌 月光.mp3`;
+const src = `${publicPath}林子祥 长路漫漫伴你闯.m4a`;
 
 export default {
   name: "",
@@ -34,8 +35,15 @@ export default {
   data() {
     return {
       src,
-      publicPath
+      publicPath,
+      srcPath: ""
     };
+  },
+  methods: {
+    changeSrc(e) {
+      this.srcPath = e.target.value;
+      this.src = this.srcPath;
+    }
   }
 };
 </script>

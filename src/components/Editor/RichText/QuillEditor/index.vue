@@ -13,8 +13,8 @@
       }"
       id="editor"
       :ref="quillWrap"
-      v-html="html"
     ></div>
+    <!-- v-html="html" -->
   </div>
 </template>
 
@@ -159,12 +159,27 @@ export default {
         // }
       });
       this.quill = quill;
+      debugger;
+      let html = this.html;
+      if (html) {
+        this.quill.pasteHTML(html);
+      } else {
+        this.quill.setText("");
+      }
     },
     destroy() {}
   },
   watch: {
-    html() {
-      this.init();
+    html(newVal) {
+      debugger;
+      if (!this.quill || !newVal) {
+        return;
+      }
+      if (newVal) {
+        this.quill.pasteHTML(newVal);
+      } else {
+        this.quill.setText("");
+      }
       // this.quill && this.quill.pasteHTML(this.html);
       // this.quill && this.quill.update();
     }

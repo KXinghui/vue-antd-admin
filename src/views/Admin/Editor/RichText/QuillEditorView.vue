@@ -12,9 +12,14 @@
     <a-button type="primary" @click="html2md('csdn')">
       CSDN
     </a-button>
-    <a-textarea :value="html" placeholder="HTML" :rows="1" />
+    <a-textarea
+      :value="html"
+      placeholder="HTML"
+      :rows="1"
+      @change="changeTextArea"
+    />
     <a-textarea :value="md" placeholder="Markdown" :rows="1" />
-    <quill-editor :html="html"></quill-editor>
+    <quill-editor :html.sync="html"></quill-editor>
   </div>
 </template>
 
@@ -299,6 +304,9 @@ export default {
     html2md(platform) {
       debugger;
       this.md = htmlTomd(this.html, platform);
+    },
+    changeTextArea(e) {
+      this.html = e.target.value;
     }
   }
 };

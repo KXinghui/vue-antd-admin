@@ -80,7 +80,12 @@ export default {
     }
   },
   watch: {
-    src() {}
+    src() {
+      if (this.player) {
+        debugger;
+        this.player.src({ type: this.type, src: this.src });
+      }
+    }
   },
   mounted() {
     this.player = videojs(
