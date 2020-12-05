@@ -27,7 +27,7 @@
           <a-icon :type="showSider ? 'close' : 'menu'" />
         </a-button>
       </div>
-      <!-- theme="dark" -->
+      <!-- theme="dark"  -->
       <a-menu
         class="layout-sider-menu"
         mode="inline"

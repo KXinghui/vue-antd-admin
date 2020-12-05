@@ -213,15 +213,15 @@ export default {
     }
   },
   mounted() {
-    this.themeSettingVar = this.themeSettingVars[0];
-    let themeSetting = {};
-    this.themeSettingVars.forEach(varName => {
-      let themeSettingColor = this.themeSetting[varName];
-      if (themeSettingColor) {
-        themeSetting[varName] = themeSettingColor;
-      }
-    });
-    window.less && window.less.modifyVars(themeSetting);
+    // this.themeSettingVar = this.themeSettingVars[0];
+    // let themeSetting = {};
+    // this.themeSettingVars.forEach(varName => {
+    //   let themeSettingColor = this.themeSetting[varName];
+    //   if (themeSettingColor) {
+    //     themeSetting[varName] = themeSettingColor;
+    //   }
+    // });
+    // window.less && window.less.modifyVars(themeSetting);
   }
 };
 </script>

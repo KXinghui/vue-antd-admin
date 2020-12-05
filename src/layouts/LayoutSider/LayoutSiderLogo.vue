@@ -17,10 +17,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "LayoutSiderLogo",
   data() {
-    return {
-      // logoUrl: logoUrl || require("../assets/logo.png"),
-      // logoTitle: "vue-antd-admin"
-    };
+    return {};
   },
   props: {
     collapsed: {
@@ -44,10 +41,7 @@ export default {
       "layoutSideerCollapsed",
       "anotherGetter"
       // ...
-    ]),
-    doneTodosCount() {
-      return this.$store.getters.doneTodosCount;
-    }
+    ])
   }
 };
 </script>

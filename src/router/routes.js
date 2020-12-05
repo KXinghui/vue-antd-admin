@@ -209,7 +209,7 @@ export const routes = [
     component: BaseLayout,
     children: [
       {
-        path: "video",
+        path: "/video",
         name: "Video",
         component: () =>
           import(/* webpackChunkName: "video" */ "@views/Admin/Video/VideoView")

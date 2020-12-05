@@ -135,7 +135,8 @@ export const MODEL_MENUS = [{ path: "/model", name: "Model" }];
 export const BASE_LAYOUT_MENUS = [
   ...EDITOR_MENUS,
   ...FORM_MODEL_MENUS,
-  ...CHART_MENUS
+  ...CHART_MENUS,
+  { path: "/video", name: "Video" }
 ];
 
 export const BASE_MENUS = [
