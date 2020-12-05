@@ -1,5 +1,5 @@
 <template>
-  <div class="note-wrap">
+  <div class="chat-wrap">
     <base-header showDrawerIcon>
       <div slot="left">便签</div>
       <div slot="right">
@@ -93,10 +93,7 @@
           ></base-tab-bar-item>
         </template>
         <template v-if="operation.currentOp == 'batch-move'">
-          <div class="operaton-btn-wrap"></div>
-          <template v-if="operation.currentOp == 'batch-move'">
-            移动便签
-          </template>
+          移动便签
         </template>
       </template>
     </base-drawer-bar>
@@ -111,8 +108,6 @@ import { mapState, mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
 import { confirm } from "../../../../utils/antd-utils";
-import noteApi from "../../../../api/pvtnote/Note";
-import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
 
 export default {
   name: "Note",
@@ -120,7 +115,7 @@ export default {
   components: { IdentityAvatar, BaseTabBarItem },
   data() {
     return {
-      msName: "pvtnote",
+      msName: "pvtbook",
       activeTabIndex: 0,
       management: {
         batch: false
@@ -184,24 +179,10 @@ export default {
       this.operation.currentOp = "";
       this.showDrawerBar();
     },
-    listNotes() {
-      if (this.noteGroupId) {
-        noteApi.listByNoteGroup(this.noteGroupId).then(res => {
-          this.notes = res.data;
-        });
-      } else {
-        noteApi.listAll().then(res => {
-          this.notes = res.data;
-        });
-      }
-    },
     moveNote() {
       this.operation.currentOp = "batch-move";
       this.hideDrawerBar();
-      noteGroupApi.listAll().then(res => {
-        this.noteGroups = res.data;
-        this.showBottomDrawerBar("80%");
-      });
+      this.showBottomDrawerBar("80%");
     },
     topNote() {
       if (this.isTopOnBatch) {
@@ -226,7 +207,6 @@ export default {
         // okType: "primary",
         onOk() {
           console.log("OK");
-          noteApi.topNotes(this.selectedNoteIds, isTopOnBatch);
         },
         onCancel() {}
       });
@@ -244,15 +224,12 @@ export default {
         onCancel() {}
       });
     }
-  },
-  mounted() {
-    this.listNotes();
   }
 };
 </script>
 
 <style>
-.note-wrap {
+.chat-wrap {
   height: 100%;
   background-color: #f5f5f5;
 }

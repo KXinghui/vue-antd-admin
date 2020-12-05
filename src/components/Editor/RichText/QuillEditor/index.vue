@@ -159,7 +159,6 @@ export default {
         // }
       });
       this.quill = quill;
-      debugger;
       let html = this.html;
       if (html) {
         this.quill.pasteHTML(html);
@@ -171,7 +170,6 @@ export default {
   },
   watch: {
     html(newVal) {
-      debugger;
       if (!this.quill || !newVal) {
         return;
       }

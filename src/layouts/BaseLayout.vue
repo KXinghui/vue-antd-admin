@@ -42,10 +42,17 @@
                 ></layout-tag-bar>
               </pane>
               <pane style="overflow: auto; height: 100%">
-                <layout-main
-                  :menu="menu"
-                  :showMainBreadcrumbBar="layoutSetting.showMainBreadcrumbBar"
-                ></layout-main>
+                <a-spin
+                  class="base-layout-spin-container"
+                  :spinning="loading.isLoad"
+                  :tip="loading.text"
+                  size="large"
+                >
+                  <layout-main
+                    :menu="menu"
+                    :showMainBreadcrumbBar="layoutSetting.showMainBreadcrumbBar"
+                  ></layout-main>
+                </a-spin>
               </pane>
               <!-- </a-layout-content> -->
               <pane style="max-height: 64px;">
@@ -137,7 +144,8 @@ export default {
     ...mapState({
       isMobile: state => state.admin.isMobile,
       // 传字符串参数 'count' 等同于 `state => state.count`
-      layoutSetting: state => state.admin.layoutSetting
+      layoutSetting: state => state.admin.layoutSetting,
+      loading: state => state.admin.loading
     }),
     mobileLayoutSiderWidth() {
       // computed 元素还未渲染
@@ -146,12 +154,10 @@ export default {
         layoutSiderRef && "$el" in layoutSiderRef ? layoutSiderRef.$el : null;
       let floatSider = this.layoutSetting.floatSider;
       if (layoutSiderEle) {
-        console.log(!floatSider && this.showSider);
         return !floatSider && this.showSider
           ? layoutSiderEle.offsetWidth + "px"
           : "0px";
       }
-      console.log(!floatSider && this.showSider);
       return !floatSider && this.showSider ? "200px" : "0px";
     },
     mobileLayoutSiderLeft() {

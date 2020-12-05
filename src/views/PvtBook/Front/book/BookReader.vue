@@ -1,7 +1,7 @@
 <template>
-  <div class="note-wrap">
+  <div class="pvtbook-wrap">
     <base-header showDrawerIcon>
-      <div slot="left">便签</div>
+      <div slot="left">电子书</div>
       <div slot="right">
         <icon icon="IconFont_batch-op" @click="openBatchDrawerBar" />
         <icon icon="Antd_search" @click="pushRoute('/search')" />
@@ -93,10 +93,17 @@
           ></base-tab-bar-item>
         </template>
         <template v-if="operation.currentOp == 'batch-move'">
-          <div class="operaton-btn-wrap"></div>
-          <template v-if="operation.currentOp == 'batch-move'">
-            移动便签
-          </template>
+          移动便签
+        </template>
+        <template v-if="operation.currentOp == 'batch-move'">
+          <a-icon :style="{ color: preColor }" type="frown-o" />
+          <a-slider
+            :min="8"
+            :max="24"
+            :value="fontSize"
+            @change="changeFontSize"
+          />
+          <a-icon :style="{ color: nextColor }" type="smile-o" />
         </template>
       </template>
     </base-drawer-bar>
@@ -111,8 +118,6 @@ import { mapState, mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
 import { confirm } from "../../../../utils/antd-utils";
-import noteApi from "../../../../api/pvtnote/Note";
-import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
 
 export default {
   name: "Note",
@@ -120,7 +125,7 @@ export default {
   components: { IdentityAvatar, BaseTabBarItem },
   data() {
     return {
-      msName: "pvtnote",
+      msName: "pvtbook",
       activeTabIndex: 0,
       management: {
         batch: false
@@ -157,16 +162,6 @@ export default {
     }
   },
   methods: {
-    getSelectedNotes() {
-      let selectedNotes = [];
-      let selectedNoteIds = this.selectedNoteIds;
-      this.notes.forEach(note => {
-        if (selectedNoteIds.inclued(note.id)) {
-          selectedNotes.push(Object.assign({}, note));
-        }
-      });
-      return selectedNotes;
-    },
     ...mapMutations("admin", [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       ADMIN_MUTATION_TYPE.SHOW_DRAWER
@@ -184,24 +179,10 @@ export default {
       this.operation.currentOp = "";
       this.showDrawerBar();
     },
-    listNotes() {
-      if (this.noteGroupId) {
-        noteApi.listByNoteGroup(this.noteGroupId).then(res => {
-          this.notes = res.data;
-        });
-      } else {
-        noteApi.listAll().then(res => {
-          this.notes = res.data;
-        });
-      }
-    },
     moveNote() {
       this.operation.currentOp = "batch-move";
       this.hideDrawerBar();
-      noteGroupApi.listAll().then(res => {
-        this.noteGroups = res.data;
-        this.showBottomDrawerBar("80%");
-      });
+      this.showBottomDrawerBar("80%");
     },
     topNote() {
       if (this.isTopOnBatch) {
@@ -226,7 +207,6 @@ export default {
         // okType: "primary",
         onOk() {
           console.log("OK");
-          noteApi.topNotes(this.selectedNoteIds, isTopOnBatch);
         },
         onCancel() {}
       });
@@ -243,16 +223,16 @@ export default {
         },
         onCancel() {}
       });
+    },
+    changeFontSize(value) {
+      this.fontSize = value;
     }
-  },
-  mounted() {
-    this.listNotes();
   }
 };
 </script>
 
 <style>
-.note-wrap {
+.pvtbook-wrap {
   height: 100%;
   background-color: #f5f5f5;
 }

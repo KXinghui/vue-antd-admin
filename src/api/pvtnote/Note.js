@@ -1,15 +1,19 @@
-import BaseApi from "./BaseApi";
+import BaseApi from "../base/BaseApi";
 import { axiosInstance } from "../axios-config";
 
 class NoteApi extends BaseApi {
-  loginByLocalAccount(data, config) {
-    let url = "/login/localaccount";
-    return axiosInstance.post(this.buildUrl(url), data, config);
+  listAll() {
+    let url = `/notes`;
+    return axiosInstance.post(url);
   }
-  loginByMail(data, config) {
-    let url = "/login/mail";
-    return axiosInstance.post(this.buildUrl(url), data, config);
+  listByNoteGroup(noteGroupId) {
+    let url = `/noteGroup/${noteGroupId}/note`;
+    return axiosInstance.post(url);
+  }
+  topNotes(noteIds, isTop) {
+    let url = `/top`;
+    return axiosInstance.post(url, { noteIds, isTop: isTop ? 1 : 0 });
   }
 }
-
-export default NoteApi;
+const noteApi = new NoteApi("/note");
+export default noteApi;

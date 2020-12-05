@@ -19,7 +19,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
-  strict: true,
+  strict: process.env.NODE_ENV === "production" ? false : true,
   state: {},
   mutations: {},
   actions: {},

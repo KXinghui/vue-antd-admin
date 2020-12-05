@@ -9,6 +9,7 @@ export function hash(alg, message) {
 }
 
 export function str2Base64(str) {
+  debugger;
   return CryptoJS.enc.Base64.stringify(str);
 }
 

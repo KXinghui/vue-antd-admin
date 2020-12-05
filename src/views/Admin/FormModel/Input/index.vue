@@ -93,6 +93,48 @@
       </a-dropdown>
     </a-input>
     <antd-input input-type="textarea" :value="testValue"></antd-input>
+    <a-input-number
+      v-model="inputNum"
+      :min="1"
+      :max="10"
+      @change="changeInputNum"
+    />
+    <a-radio-group name="radioGroup" :default-value="1">
+      <a-radio :value="1">
+        A
+      </a-radio>
+      <a-radio :value="2">
+        B
+      </a-radio>
+      <a-radio :value="3">
+        C
+      </a-radio>
+      <a-radio :value="4">
+        D
+      </a-radio>
+    </a-radio-group>
+    <a-switch
+      checked-children="激活成功"
+      un-checked-children="激活失败"
+      default-checked
+    />
+    <a-rate v-model="rate" :tooltips="rateDesc" :count="6" />
+
+    <a-rate v-model="rate" :tooltips="rateDesc" :count="6" allow-half />
+
+    <a-slider :default-value="100" />
+
+    <a-switch default-checked>
+      <a-icon slot="checkedChildren" type="check" />
+      <a-icon slot="unCheckedChildren" type="close" />
+    </a-switch>
+    <a-progress :percent="50" status="active" />
+    <a-progress
+      type="circle"
+      :percent="50"
+      status="active"
+      :format="percent => `${percent} Days`"
+    />
     <a-button @click="consoleLog"></a-button>
   </div>
 </template>
@@ -126,9 +168,20 @@ export default {
     return {
       testValue: "afsdfad",
       userName: "",
-      value: ""
+      value: "",
+      inputNum: 1,
+      rate: 3,
+      rateDesc: [
+        "terrible",
+        "bad",
+        "normal",
+        "good",
+        "wonderful",
+        "wwwonderful"
+      ]
     };
   },
+  computed: {},
   methods: {
     consoleLog() {
       console.log(this.testValue);
@@ -152,6 +205,9 @@ export default {
       if (value.charAt(value.length - 1) === "." || value === "-") {
         onChange({ value: value.slice(0, -1) });
       }
+    },
+    changeInputNum(value) {
+      this.inputNum = value;
     }
   }
 };

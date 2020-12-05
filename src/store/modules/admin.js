@@ -3,6 +3,10 @@ import { ADMIN_MUTATION_TYPE } from "../mutation-type";
 const state = () => {
   return {
     isMobile: true,
+    loading: {
+      isLoad: false,
+      text: "加载中..."
+    },
     // 布局设置
     layoutSetting: {
       showSider: true,
@@ -40,6 +44,13 @@ const getters = {
 const mutations = {
   [ADMIN_MUTATION_TYPE.SHOW_DRAWER](state, payload) {
     state.layoutSetting.showDrawer = payload;
+  },
+  [ADMIN_MUTATION_TYPE.LOADING](state, payload) {
+    if (state.loading === payload) {
+      state.loading = payload;
+    } else {
+      state.loading = Object.assign({}, payload);
+    }
   },
   [ADMIN_MUTATION_TYPE.SET_LAYOUT_SETTING](state, payload) {
     if (state.layoutSetting === payload) {

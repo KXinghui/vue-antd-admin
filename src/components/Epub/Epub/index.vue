@@ -113,8 +113,8 @@ export default {
       required: false
     },
     fontSize: {
-      type: [String],
-      default: "16px",
+      type: [Number],
+      default: 16,
       required: false
     },
     progress: {}
@@ -161,7 +161,7 @@ export default {
         themes.register(bookTheme.name, bookTheme.style);
       });
       themes.select(this.bookTheme);
-      themes.fontSize(this.fontSize);
+      themes.fontSize(`${this.fontSize}px`);
       rendition.display();
     },
     destroyEpub() {

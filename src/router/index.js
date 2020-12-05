@@ -4,6 +4,10 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { routes } from "./routes";
 
+import { loading } from "../utils/store-utils";
+
+// import { mapMutations } from "vuex";
+
 // import { msg, notify } from "@utils/antd-utils";
 
 // import { EDITOR_ROUTES, FORM_ROUTES } from "./admin-routes";
@@ -27,6 +31,7 @@ const router = new VueRouter({
 
 /* 全局前置守卫 */
 router.beforeEach((to, from, next) => {
+  loading({ isLoad: true });
   console.log(to);
   console.log(from);
   console.log(next);
@@ -66,6 +71,7 @@ router.beforeEach((to, from, next) => {
 
 // 全局后置钩子
 router.afterEach((to, from) => {
+  loading({ isLoad: false });
   console.log(to);
   console.log(from);
   NProgress.done();
