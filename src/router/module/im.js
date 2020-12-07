@@ -1,6 +1,10 @@
+// import BaseLayout from "@layouts/BaseLayout.vue";
 const MS = "IM";
 
+const ADMIN = [];
+
 export default [
+  ...ADMIN,
   {
     path: "/chatUserRecord/:chatUserId",
     name: `${MS}FrontChatUserRecord`,

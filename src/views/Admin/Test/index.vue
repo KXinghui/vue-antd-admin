@@ -60,11 +60,7 @@ export default {
     },
     test() {
       md5("asdasdf");
-      screenshot(
-        document.getElementsByClassName("qrcode-wrap")[0] || this.$refs["test"],
-        {},
-        "screenshot.jpeg"
-      ).then(res => {
+      screenshot(null, {}, "screenshot.jpeg").then(res => {
         console.log(res);
       });
     }

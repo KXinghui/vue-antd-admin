@@ -1,6 +1,26 @@
+import BaseLayout from "@layouts/BaseLayout.vue";
 const MS = "Pvtnote";
 
+const ADMIN = [
+  {
+    path: "/pvtnote",
+    name: "PvtNote",
+    component: BaseLayout,
+    children: [
+      {
+        path: "table/note",
+        name: "NoteTableView",
+        component: () =>
+          import(
+            /* webpackChunkName: "note" */ "../../views/PvtNote/Admin/Note/table/index.vue"
+          )
+      }
+    ]
+  }
+];
+
 export default [
+  ...ADMIN,
   {
     path: "/pvtnote/note",
     name: `${MS}FrontNote`,

@@ -113,7 +113,8 @@ const configureWebpack = {
       "@configs": resolve("src/configs"),
       "@components": resolve("src/components"),
       "@router": resolve("src/router"),
-      "@mixins": resolve("src/mixins")
+      "@mixins": resolve("src/mixins"),
+      "@store": resolve("src/store")
     }
   }
 };

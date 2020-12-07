@@ -1,5 +1,5 @@
 import { isJson, isBoolean } from "./utils";
-
+// 使用 secure-ls 加密数据
 var store = require("store");
 // 使用插件:
 var expirePlugin = require("store/plugins/expire");

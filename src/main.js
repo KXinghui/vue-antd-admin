@@ -35,7 +35,10 @@ Object.keys(filters).forEach(moduleKey => {
 });
 
 /* 指令 */
-// Vue.directive("hasPermi", hasPermi);
+import hasPmsn from "./directives/hasPmsn";
+Vue.directive("has-pmsn", hasPmsn);
+import hasRole from "./directives/hasRole";
+Vue.directive("has-role", hasRole);
 
 Vue.use(animated);
 
