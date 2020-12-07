@@ -1,17 +1,19 @@
 <template>
   <div class="editor">
-    <a-button type="primary" @click="html2md('wechat')">
-      微信
-    </a-button>
-    <a-button type="primary" @click="html2md('juejin')">
-      掘金
-    </a-button>
-    <a-button type="primary" @click="html2md('zhihu')">
-      知乎
-    </a-button>
-    <a-button type="primary" @click="html2md('csdn')">
-      CSDN
-    </a-button>
+    <a-space :size="10">
+      <a-button type="primary" @click="html2md('wechat')">
+        微信
+      </a-button>
+      <a-button type="primary" @click="html2md('juejin')">
+        掘金
+      </a-button>
+      <a-button type="primary" @click="html2md('zhihu')">
+        知乎
+      </a-button>
+      <a-button type="primary" @click="html2md('csdn')">
+        CSDN
+      </a-button>
+    </a-space>
     <a-textarea
       :value="html"
       placeholder="HTML"

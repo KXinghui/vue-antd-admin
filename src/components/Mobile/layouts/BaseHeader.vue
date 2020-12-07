@@ -52,7 +52,6 @@ export default {
       // setter
       set: function(newValue) {
         this[ADMIN_MUTATION_TYPE.SHOW_DRAWER](newValue);
-        console.log(this.$store.state.admin.layoutSetting.showDrawer);
       }
     }
   },

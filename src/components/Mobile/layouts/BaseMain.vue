@@ -7,34 +7,39 @@
     <div class="base-main-scroll">
       <!-- :pullingDownHandler="pullingDownHandler"
       :pullingUpHandler="pullingUpHandler" -->
-      <!-- <bs-pull
+      <bs-pull
+        v-if="isScrollPull"
         :isRefresh.sync="isRefresh"
         :pullingDownHandler="pullingDownHandler"
         :pullingUpHandler="pullingUpHandler"
-      > -->
-      <bs-core :options="{ scrollbar: false, nestedScroll: true }">
-        <!-- <div slot="isPullingDown">
+      >
+        <div slot="isPullingDown">
           <slot name="isPullingDown"></slot>
         </div>
+        <slot name="header"></slot>
+        <slot name="main"></slot>
+        <!-- <b-scroll> </b-scroll> -->
+        <slot name="footer"></slot>
         <div slot="afterPullDown">
           <slot name="afterPullDown"></slot>
-        </div> -->
+        </div>
+      </bs-pull>
+      <bs-core v-else :options="{ scrollbar: false, nestedScroll: true }">
         <slot name="header"></slot>
         <slot name="main"></slot>
         <!-- <b-scroll> </b-scroll> -->
         <slot name="footer"></slot>
       </bs-core>
-      <!-- </bs-pull> -->
     </div>
   </div>
 </template>
 
 <script>
 import BsCore from "../../BetterScroll/BsCore.vue";
-// import BsPull from "../../BetterScroll/BsPull";
+import BsPull from "../../BetterScroll/BsPull";
 export default {
   name: "BaseMain",
-  components: { /* BsPull, */ BsCore },
+  components: { BsPull, BsCore },
   data() {
     return {
       isRefresh: false
@@ -49,6 +54,11 @@ export default {
     baseMainHeight: {
       type: [String, Number],
       default: "85.5%",
+      required: false
+    },
+    isScrollPull: {
+      type: [Boolean],
+      default: true,
       required: false
     },
     pullingDownHandler: {

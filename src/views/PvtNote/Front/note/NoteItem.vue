@@ -1,12 +1,38 @@
 <template>
-  <div class="note-item-wrap"></div>
+  <a-skeleton
+    class="note-item-skeleton"
+    :loading="skeleton"
+    active
+    :title="true"
+    :avatar="{ size: 60, shape: 'square' }"
+    :paragraph="{ rows: 2 }"
+  >
+    <div class="note-item-wrap" @click="clickNote(note.id)">
+      <div class="note-item-left">
+        <div v-show="note.coverUrl" class="note-item-cover">
+          <img class="note-cover-img" v-lazy="note.coverUrl" />
+        </div>
+        <div class="note-item-info">
+          <span class="note-title" @click="pushRoute">{{ note.title }}</span>
+          <span class="note-sub-title">{{ note.subTitle }}</span>
+          <span class="note-date">{{
+            note.updateDate || note.createDate
+          }}</span>
+        </div>
+      </div>
+      <div class="note-item-right">
+        <div v-show="isSelect" class="note-op">
+          <!-- @change="selectNote" 冒泡 -->
+          <a-checkbox :value="selectValue" :checked="isSelected"></a-checkbox>
+        </div>
+      </div>
+      <div v-show="note.isTop == 1" class="tag-bottom note-top-tag"></div>
+    </div>
+  </a-skeleton>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { ADMIN_MUTATION_TYPE } from "../../../../store/mutation-type";
-import { confirm } from "../../../../utils/antd-utils";
-import noteApi from "../../../../api/pvtnote/Note";
+import { pushRoute } from "../../../../utils/router-utils";
 
 export default {
   name: "NoteItem",
@@ -14,135 +40,162 @@ export default {
     return {};
   },
   props: {
+    skeleton: {
+      type: [Boolean],
+      default: false,
+      require: true
+    },
     note: {
       type: [Object],
       default() {
         return {};
       },
       require: true
+    },
+    isSelected: {
+      type: [Boolean],
+      default: false,
+      require: true
+    },
+    isSelect: {
+      type: [Boolean],
+      default: false,
+      require: true
+    },
+    selectKey: {
+      type: [String],
+      default: "id",
+      require: true
     }
   },
   computed: {
-    ...mapState({
-      // showDrawer: state => state.admin.layoutSetting.showDrawer,
-      identity: state => state.identity.identity
-    }),
-    isTopOnBatch() {
-      let isTopOnBatch = true;
-      if (this.management.batch) {
-        let topNum = 0;
-        let selectedNoteIds = this.selectedNoteIds;
-        this.notes.forEach(note => {
-          if (selectedNoteIds.inclued(note.id) && note.isTop == 1) {
-            topNum++;
-          }
-        });
-        let selectedNoteLen = selectedNoteIds.length;
-        if (selectedNoteLen != 0 && topNum == selectedNoteLen) {
-          isTopOnBatch = false;
-        }
-      }
-      return isTopOnBatch;
+    selectValue() {
+      return this.note[this.selectKey];
     }
   },
   methods: {
-    getSelectedNotes() {
-      let selectedNotes = [];
-      let selectedNoteIds = this.selectedNoteIds;
-      this.notes.forEach(note => {
-        if (selectedNoteIds.inclued(note.id)) {
-          selectedNotes.push(Object.assign({}, note));
-        }
-      });
-      return selectedNotes;
-    },
-    ...mapMutations("admin", [
-      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      ADMIN_MUTATION_TYPE.SHOW_DRAWER
-    ]),
-    closeDrawerBar() {
-      let isBatch = this.management.batch;
-      if (isBatch) {
-        this.management.batch = !this.management.batch;
-        this.hideDrawerBar();
+    pushRoute() {
+      if (!this.isSelect) {
+        pushRoute({ path: `/pvtnote/note/${this.note.id}` });
       }
     },
-    openBatchDrawerBar() {
-      this.hideDrawerBar();
-      this.management.batch = true;
-      this.operation.currentOp = "";
-      this.showDrawerBar();
-    },
-    listNotes() {
-      if (this.noteGroupId) {
-        noteApi.listByNoteGroup(this.noteGroupId).then(res => {
-          this.notes = res.data;
-        });
-      } else {
-        noteApi.listAll().then(res => {
-          this.notes = res.data;
-        });
+    clickNote(noteId) {
+      if (!this.isSelect) {
+        return;
       }
+      this.$emit("selectNote", noteId, !this.isSelected);
     },
-    moveNote() {
-      this.operation.currentOp = "batch-move";
-      this.hideDrawerBar();
-      this.showBottomDrawerBar("80%");
-    },
-    topNote() {
-      if (this.isTopOnBatch) {
-        // 置顶
-      } else {
-        // 取消置顶
+    selectNote(e) {
+      if (!e || !e.target || !this.isSelect) {
+        return;
       }
-      let isTopOnBatch = this.isTopOnBatch;
-      let title = isTopOnBatch ? "置顶" : "取消置顶";
-      confirm({
-        title,
-        // content: () => <div style="color:red;">确定要title所选便签？</div>,
-        content: function(h) {
-          // h == createElement
-          return h("div", {
-            style: { color: "red" },
-            text: `确定要${title}所选便签？`
-          });
-        },
-        cancelText: "取消",
-        okText: title,
-        // okType: "primary",
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {}
-      });
-    },
-    deleteNote() {
-      confirm({
-        title: "删除便签",
-        content: () => <div style="color:red;">确定要删除所选便签？</div>,
-        cancelText: "取消",
-        okText: "删除",
-        okType: "danger",
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {}
-      });
+      this.$emit("selectNote", e.target.value, e.target.checked);
     }
-  },
-  mounted() {
-    this.listNotes();
   }
 };
 </script>
 
-<style>
+<style scoped>
 .note-item-wrap {
+  position: relative;
+  border: 1px solid red;
   height: 100%;
-  background-color: #f5f5f5;
+  height: 7.5rem;
+  /* background-color: #f5f5f5; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  margin: 0 0.6rem;
 }
-.selected-num {
+
+/* .note-item-skeleton + .note-item-skeleton, */
+.note-item-wrap + .note-item-wrap {
+  margin-top: 0.5rem;
+}
+
+.note-item-skeleton {
+  display: flex;
+  align-items: center;
+  /* padding: 0 1rem; */
+  margin: 0 0.6rem;
+}
+
+.note-item-left {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.note-item-cover {
+  max-width: 30%;
+  width: 5.5rem;
+  height: 5.5rem;
+  display: flex;
+  align-items: center;
+  padding-right: 0.8rem;
+}
+.note-cover-img {
+  width: 100%;
+  border-radius: 5%;
+}
+.note-item-info {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.note-title {
+  width: 100%;
   font-size: 1rem;
-  padding: 0 0.3rem;
+  font-weight: bold;
+  /* 自动换行 */
+  /* word-wrap: break-word;
+  word-break: normal; */
+  /* 强制不换行，省略号 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-sub-title {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: light;
+  /* 强制不换行，省略号 */
+  /* 强制不换行，省略号 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-date {
+  font-size: 0.8rem;
+}
+.note-item-right {
+  width: 10%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.note-top-tag {
+  /* width: 118px;
+  height: 28px; */
+  width: 0.8rem;
+  height: 0.9rem;
+  background-size: contain;
+  font-size: 1rem;
+  font-weight: 400;
+  top: 0;
+  right: 1rem;
+}
+.note-top-tag:after {
+  border-width: 0.4rem;
+  left: 0;
+  bottom: -0.45rem;
+  /* border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent; */
 }
 </style>

@@ -62,6 +62,7 @@ const actions = {
 };
 
 const identity = {
+  namespaced: true,
   state,
   getters,
   mutations

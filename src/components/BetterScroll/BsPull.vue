@@ -16,7 +16,7 @@
               ></slot
             >
           </div>
-          <div v-show="!beforePullDown">
+          <div v-show="afterPullDown || !beforePullDown">
             <div v-show="!isPullingDown" class="after-pull-down">
               <slot name="afterPullDown"
                 ><span class="pulldown-text">Refresh success</span></slot
@@ -39,7 +39,7 @@
               > --></slot
             >
           </div>
-          <div v-show="!beforePullUp">
+          <div v-show="afterPullUp || !beforePullUp">
             <div v-show="!isPullingUp" class="after-pull-up">
               <slot name="afterPullUp"
                 ><span class="pullup-text">Pull up and load success</span></slot
@@ -99,6 +99,16 @@ export default {
   },
   props: {
     isScrollEnd: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    afterPullDown: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    afterPullUp: {
       type: [Boolean],
       default: false,
       required: false

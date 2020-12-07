@@ -10,6 +10,15 @@ export default [
       )
   },
   {
+    path: "/pvtnote/note/:noteId",
+    name: `${MS}FrontNoteDetail`,
+    component: () =>
+      import(
+        /* webpackChunkName: "pvtnote-note" */ "@views/PvtNote/Front/note/NoteDetail.vue"
+      ),
+    props: true
+  },
+  {
     path: "/pvtnote/my",
     name: `${MS}FrontMy`,
     component: () =>

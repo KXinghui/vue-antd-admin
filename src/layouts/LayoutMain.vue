@@ -26,7 +26,10 @@
       <transition mode="out-in">
         <keep-alive :target="target" :max="10">
           <router-view />
-          <a-back-top :visibility-height="10" />
+          <a-back-top
+            :visibility-height="10"
+            :target="() => this.$refs[this.layoutMainRef]"
+          />
         </keep-alive>
       </transition>
     </div>

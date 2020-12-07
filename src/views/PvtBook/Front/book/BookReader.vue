@@ -149,7 +149,7 @@ export default {
         let topNum = 0;
         let selectedNoteIds = this.selectedNoteIds;
         this.notes.forEach(note => {
-          if (selectedNoteIds.inclued(note.id) && note.isTop == 1) {
+          if (selectedNoteIds.includes(note.id) && note.isTop == 1) {
             topNum++;
           }
         });
