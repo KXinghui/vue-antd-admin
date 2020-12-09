@@ -3,61 +3,68 @@
     :bodyStyle="{
       height: modalHeight
     }"
-    v-model="modalVisible"
+    v-model="visible"
     :title="modalTitle"
     :centered="modalCentered"
     ok-text="确认"
     cancel-text="取消"
     v-bind="$props"
+    @cancel="cancelModal"
   >
-    <!-- @ok="hideModal" -->
-    <a-anchor
-      v-show="showAnchor"
-      :affix="true"
-      @click="handleAnchorClick"
-      @change="handleAnchorChange"
-      style="position: absolute; z-index: 10; left: 5rem;"
-    >
-      <!-- :getContainer="anchorContainer" -->
-      <a-anchor-link
-        v-for="anchor in anchors"
-        :key="anchor.href"
-        :href="anchor.href"
-        :title="anchor.title"
-      />
-    </a-anchor>
-    <div>
-      <span class="modal-btn-span">
-        <icon
-          class="modal-btn"
-          v-show="anchors"
-          :icon="showAnchor ? 'Antd_close' : 'IconFont_anchor'"
-          @click="toggleAnchor"
-        ></icon>
-      </span>
-    </div>
-    <bs-core
-      :options="{
-        nestedScroll: true,
-        bounce: {
-          top: false,
-          bottom: false
-        }
-      }"
-    >
+    <a-spin :spinning="modalLoading">
+      <!-- @ok="hideModal" -->
+      <a-anchor
+        v-show="showAnchor"
+        :affix="true"
+        @click="handleAnchorClick"
+        @change="handleAnchorChange"
+        style="position: absolute; z-index: 10; left: 5rem;"
+      >
+        <!-- :getContainer="anchorContainer" -->
+        <a-anchor-link
+          v-for="anchor in anchors"
+          :key="anchor.href"
+          :href="anchor.href"
+          :title="anchor.title"
+        />
+      </a-anchor>
+      <div>
+        <span class="modal-btn-span">
+          <icon
+            v-show="showAnchor"
+            class="modal-btn"
+            :icon="showAnchor ? 'Antd_close' : 'IconFont_anchor'"
+            @click="toggleAnchor"
+          ></icon>
+        </span>
+      </div>
+
+      <!-- <bs-core
+        :options="{
+          nestedScroll: true,
+          bounce: {
+            top: false,
+            bottom: false
+          }
+        }"
+        :isRefresh.sync="modalRefresh"
+      > -->
       <div :ref="modalRef"><slot></slot></div>
-    </bs-core>
+      <!-- </bs-core> -->
+    </a-spin>
     <template slot="footer">
-      <slot name="footer"></slot>
+      <a-spin :spinning="modalLoading">
+        <slot name="footer"></slot>
+      </a-spin>
     </template>
   </a-modal>
 </template>
 
 <script>
-import BsCore from "../../BetterScroll/BsCore.vue";
+// import BsCore from "../../BetterScroll/BsCore.vue";
 export default {
   components: {
-    BsCore
+    /*  BsCore */
   },
   name: "BaseModal",
   data() {
@@ -66,10 +73,21 @@ export default {
       anchorContainer: () =>
         this.$refs[this.modalRef] || this.$refs[this.modalRef].$el,
       showAnchor: false,
-      modalHeight: 0
+      modalHeight: 0,
+      visible: false
     };
   },
   props: {
+    modalRefresh: {
+      type: [Boolean],
+      default: false,
+      require: false
+    },
+    modalLoading: {
+      type: [Boolean],
+      default: false,
+      require: false
+    },
     modalHeightPercent: {
       type: [String],
       default: "80%",
@@ -131,11 +149,17 @@ export default {
         window.innerHeight || document.documentElement.clientHeight;
       this.modalHeight =
         windowHeight * parseFloat(this.modalHeightPercent) * 0.01 + "px";
+    },
+    cancelModal() {
+      this.$emit("update:modalVisible", false);
     }
   },
   watch: {
     modalHeightPercent() {
       this.resizeModalHeight();
+    },
+    modalVisible() {
+      this.visible = this.modalVisible;
     }
   },
   mounted() {

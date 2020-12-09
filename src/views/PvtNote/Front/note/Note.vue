@@ -24,12 +24,13 @@
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
     </base-header>
-    <base-main>
+    <base-main style="background-color: #e5e2e2;">
       <template slot="main">
         <note-item
           v-for="note in notes"
           :key="note.id"
           :note="note"
+          :skeleton="skeleton"
           @selectNote="selectNote"
           :isSelect="management.batch"
           :isSelected="selectedNoteIds.includes(note.id)"
@@ -43,6 +44,7 @@
       :active-color="activeColor"
     ></base-tab-bar>
     <base-drawer
+      class="note-drawer"
       width="300px"
       :visible.sync="showDrawer"
       :placement="drawerPlacement"
@@ -51,6 +53,11 @@
         :identity="identity"
         :avatarSize="58"
         avatarShape="square"
+        @click="
+          () => {
+            pushRoute('/pvtnote/my');
+          }
+        "
       ></identity-avatar>
       <div class="note-group-wrap">
         <bs-core :isRefresh.sync="isRefresh">
@@ -81,7 +88,9 @@
             ></span
             >项</span
           >
-          <span @click="selectAllNotes">全选</span>
+          <span @click="selectAllNotes">{{
+            isSelectedAll ? "反选" : "全选"
+          }}</span>
         </template>
       </template>
       <template slot="bottom">
@@ -133,7 +142,7 @@ import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixi
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
-import { confirm } from "../../../../utils/antd-utils";
+import { msg, destroyMsg, confirm } from "../../../../utils/antd-utils";
 import noteApi from "../../../../api/pvtnote/Note";
 // import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
 import NoteItem from "./NoteItem";
@@ -174,6 +183,7 @@ export default {
           isTop: 0
         }
       ],
+      skeleton: false,
       selectedNoteIds: [],
       noteGroupId: "",
       isRefresh: false
@@ -201,6 +211,18 @@ export default {
         }
       }
       return isTopOnBatch;
+    },
+    isSelected() {
+      let isSelected = this.selectedNoteIds && this.selectedNoteIds.length > 0;
+      if (isSelected) {
+        destroyMsg();
+      }
+      return isSelected;
+    },
+    isSelectedAll() {
+      return (
+        this.selectedNoteIds && this.selectedNoteIds.length == this.notes.length
+      );
     }
   },
   methods: {
@@ -213,9 +235,13 @@ export default {
       }
     },
     selectAllNotes() {
+      if (this.isSelectedAll) {
+        this.selectedNoteIds = [];
+        return;
+      }
+      let selectedNoteIds = this.selectedNoteIds;
       this.notes.forEach(note => {
         let noteId = note.id;
-        let selectedNoteIds = this.selectedNoteIds;
         if (!selectedNoteIds.includes(noteId)) {
           selectedNoteIds.push(noteId);
         }
@@ -246,18 +272,29 @@ export default {
       this.showDrawerBar();
     },
     listNotes() {
+      this.skeleton = true;
       if (this.noteGroupId) {
         // noteApi.listByNoteGroup(this.noteGroupId).then(res => {
         //   this.notes = res.data;
         // });
+        noteApi.list().then(res => {
+          console.log(res);
+        });
       } else {
         // noteApi.listAll().then(res => {
         //   this.notes = res.data;
         // });
       }
+      setTimeout(() => {
+        this.skeleton = false;
+      }, 3000);
     },
     sortNotes() {},
     moveNote() {
+      if (!this.isSelected) {
+        msg({ code: -1, msg: "请至少选择一个" });
+        return;
+      }
       this.operation.currentOp = "batch-move";
       this.hideDrawerBar();
       // noteGroupApi.listAll().then(res => {
@@ -266,6 +303,10 @@ export default {
       // });
     },
     topNote() {
+      if (!this.isSelected) {
+        msg({ code: -1, msg: "请至少选择一个" });
+        return;
+      }
       if (this.isTopOnBatch) {
         // 置顶
       } else {
@@ -294,9 +335,17 @@ export default {
       });
     },
     deleteNote() {
+      if (!this.isSelected) {
+        msg({ code: -1, msg: "请至少选择一个" });
+        return;
+      }
       confirm({
         title: "删除便签",
-        content: () => <div style="color:red;">确定要删除所选便签？</div>,
+        content: () => (
+          <div>
+            <span style="color:red;">确定要删除所选便签？</span>可在回收站撤回
+          </div>
+        ),
         cancelText: "取消",
         okText: "删除",
         okType: "danger",
@@ -321,22 +370,35 @@ export default {
   background-color: #f5f5f5;
 }
 
-.ant-drawer-wrapper-body .ant-drawer-body {
-  height: 90%;
+.note-drawer .ant-drawer-wrapper-body .ant-drawer-body {
+  height: 100%;
+  width: 100%;
+  padding: 1.8rem 1rem;
 }
 .selected-num {
   font-size: 1rem;
   padding: 0 0.3rem;
 }
-.note-group-wrap {
-  border: 1px solid red;
-  height: 100%;
+
+.note-drawer .ant-drawer-wrapper-body .ant-drawer-body .identity-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
-.note-groupo-item {
+
+.note-drawer .ant-drawer-wrapper-body .ant-drawer-body .note-group-wrap {
+  /* border: 1px solid red; */
+  height: 80%;
+}
+.note-drawer
+  .ant-drawer-wrapper-body
+  .ant-drawer-body
+  .note-group-wrap
+  .note-groupo-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0.5rem 0.8rem;
 }
 </style>

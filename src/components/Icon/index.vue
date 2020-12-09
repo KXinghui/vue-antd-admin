@@ -129,8 +129,8 @@ export default {
 
 <style>
 .icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
 }
 .icon svg {
   color: inherit;

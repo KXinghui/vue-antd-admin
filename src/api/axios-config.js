@@ -11,9 +11,9 @@ const instance = axios.create({
   timeout: DEFAULT_TIMEOUT,
   // 跨域【https://segmentfault.com/q/1010000008671922】
   headers: {
-    /* "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
-    "Access-Control-Allow-Methods": "*" */
+    "Access-Control-Allow-Methods": "*"
   } /*,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false

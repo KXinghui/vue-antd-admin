@@ -1,6 +1,6 @@
 <template>
   <div class="note-detail-wrap">
-    <base-header showDrawerIcon>
+    <base-header showBackIcon>
       <div slot="left"></div>
       <div slot="middle">
         <span class="note-title" v-text="note.title"></span>
@@ -38,15 +38,15 @@
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
     </base-header>
-    <base-main :isScrollPull="true">
+    <base-main :isScrollPull="true" baseMainHeight="92.75%">
       <template slot="main"> </template>
     </base-main>
-    <base-tab-bar
+    <!-- <base-tab-bar
       :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
       :color="color"
       :active-color="activeColor"
-    ></base-tab-bar>
+    ></base-tab-bar> -->
     <base-drawer
       width="300px"
       :visible.sync="showDrawer"

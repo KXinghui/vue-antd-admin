@@ -7,13 +7,19 @@ export function pushRoute(route) {
   if (!route) {
     return;
   }
-  if (route && router.currentRoute && router.currentRoute.path == route.path) {
-    debugger;
-    msg(
-      "reload" in this && this.reload()
-        ? { code: "1", msg: "刷新页面" }
-        : { code: "-1", msg: "刷新页面" }
-    );
+  debugger;
+  console.log(router.currentRoute.path);
+  console.log(route.path);
+  console.log(router.currentRoute.path == route.path);
+  let isRouteEqual = router.currentRoute.path == route.path;
+  if (route && router.currentRoute && isRouteEqual) {
+    if (this) {
+      msg(
+        "reload" in this && this.reload()
+          ? { code: "1", msg: "刷新页面" }
+          : { code: "-1", msg: "刷新页面" }
+      );
+    }
     return;
   }
   router.push(route);

@@ -19,8 +19,16 @@ export function msg(responseResult) {
   }
 }
 
+export function destroyMsg() {
+  message.destroy();
+}
+
 export function confirm(modalOptions) {
   Modal.confirm(Object.assign({ centered: true }, modalOptions));
+}
+
+export function destroyModal() {
+  Modal.destroyAll();
 }
 
 export function notify(responseResult) {
@@ -51,4 +59,8 @@ export function notify(responseResult) {
   } else if (responseResultCode == "2" || responseResultCode == "3") {
     notification.info(notificationConfig);
   }
+}
+
+export function destroyNotify() {
+  notification.destroy();
 }

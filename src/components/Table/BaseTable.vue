@@ -1,29 +1,40 @@
 <template>
-  <div class="base-table-wrap">
-    <div class="base-table-header-wrap">
-      <slot name="header"></slot>
-    </div>
-    <a-table
-      bordered
-      :row-selection="{
+  <bs-core :scrollX="true" :isRefres="isScrollRefresh">
+    <div class="base-table-wrap" :ref="baseTableRef" :id="baseTableRef">
+      <div class="base-table-header-wrap">
+        <slot name="header"></slot>
+      </div>
+      <!-- :row-selection="{
+        type: rowSelection.type,
         selectedRowKeys: rowSelection.selectedRowKeys,
-        onChange: rowSelection.onChange
-      }"
-      :row-key="table.rowKey"
-      :custom-row="customRow"
-      :columns="columns"
-      :pagination="pagination"
-      :components="tableComponents"
-      :data-source="data"
-    >
-      <!-- <template v-slot:action>
+        selections: rowSelection.selections,
+        onChange: rowSelection.onChange,
+        onSelectAll: rowSelection.onSelectAll,
+        onSelectInvert: rowSelection.onSelectInvert
+      }" -->
+      <a-table
+        class="base-table"
+        bordered
+        :loading="loading"
+        :row-key="rowKey"
+        :columns="columns"
+        :data-source="data"
+        :pagination="pagination"
+        :row-selection="rowSelection"
+        :custom-row="customRow"
+        :components="tableComponents"
+      >
+        <!-- <template v-slot:action>
         <a href="javascript:;">Delete</a>
         <a href="javascript:;">Add</a>
       </template> -->
-      <template v-for="(index, name) in $scopedSlots" v-slot:[name]="slotProps">
-        <slot :name="name" v-bind="{ slotProps }"></slot>
-      </template>
-      <!-- <template
+        <template
+          v-for="(index, name) in $scopedSlots"
+          v-slot:[name]="slotProps"
+        >
+          <slot :name="name" v-bind="{ slotProps }"></slot>
+        </template>
+        <!-- <template
         v-for="column in columns"
         :slot="column.scopedSlots ? column.scopedSlots.customRender : ''"
         slot-scope="text, record"
@@ -33,54 +44,54 @@
           v-bind="record"
         ></slot>
       </template> -->
-    </a-table>
-    <!-- class="contextmenustyle" -->
-    <a-menu
-      :id="contextmenuId"
-      :style="contextmenuStyle"
-      v-if="contextmenuVisible"
-    >
-      <!-- Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "contextmenuRecord" -->
-      <!-- v-bind:record="record" 让插槽内容访问子组件中才有的数据 -->
-      <slot name="contextmenu" v-bind:record="contextmenuRecord">
-        <a-menu-item key="1">
-          1st menu item
-        </a-menu-item>
-        <a-menu-item key="2">
-          2nd menu item
-        </a-menu-item>
-        <a-menu-item key="3">
-          3rd menu item
-        </a-menu-item>
-      </slot>
-    </a-menu>
-    <a-modal
-      v-model="settingModalVisible"
-      title="Vertically centered modal dialog"
-      centered
-      @ok="() => (settingModalVisible = false)"
-    >
-      <a-collapse accordion>
-        <a-collapse-panel key="1" header="This is panel header 1">
-          <p>{{ text }}</p>
-        </a-collapse-panel>
-        <a-collapse-panel
-          key="2"
-          header="This is panel header 2"
-          :disabled="false"
-        >
-          <p>{{ text }}</p>
-        </a-collapse-panel>
-        <a-collapse-panel key="3" header="This is panel header 3">
-          <p>{{ text }}</p>
-        </a-collapse-panel>
-      </a-collapse>
-    </a-modal>
-  </div>
+      </a-table>
+      <!-- class="contextmenustyle" -->
+      <a-menu
+        :id="contextmenuId"
+        :style="contextmenuStyle"
+        v-if="contextmenuVisible"
+      >
+        <slot name="contextmenu">
+          <a-menu-item key="1">
+            1st menu item
+          </a-menu-item>
+          <a-menu-item key="2">
+            2nd menu item
+          </a-menu-item>
+          <a-menu-item key="3">
+            3rd menu item
+          </a-menu-item>
+        </slot>
+      </a-menu>
+      <a-modal
+        v-model="settingModalVisible"
+        title="Vertically centered modal dialog"
+        centered
+        @ok="() => (settingModalVisible = false)"
+      >
+        <a-collapse accordion>
+          <a-collapse-panel key="1" header="This is panel header 1">
+            <p>{{ text }}</p>
+          </a-collapse-panel>
+          <a-collapse-panel
+            key="2"
+            header="This is panel header 2"
+            :disabled="false"
+          >
+            <p>{{ text }}</p>
+          </a-collapse-panel>
+          <a-collapse-panel key="3" header="This is panel header 3">
+            <p>{{ text }}</p>
+          </a-collapse-panel>
+        </a-collapse>
+      </a-modal>
+    </div>
+  </bs-core>
 </template>
 
 <script>
 import { TABLE_MIXIN } from "../../mixins/table-mixin";
+import BsCore from "../BetterScroll/BsCore.vue";
 
 // eslint-disable-next-line no-unused-vars
 const table = {
@@ -229,285 +240,84 @@ const column = {
 };
 
 // eslint-disable-next-line no-unused-vars
-const rowSelection = {
-  // 自定义列表选择框宽度	string|number	-
-  columnWidth: "",
-  // 自定义列表选择框标题	string|VNode	-
-  columnTitle: "选择",
-  // 把选择框列固定在左边	boolean	-
-  fixed: true,
-  // 选择框的默认属性配置	Function(record)	-
-  // eslint-disable-next-line no-unused-vars
-  getCheckboxProps: record => {},
-  // 去掉『全选』『反选』两个默认选项	boolean	false
-  hideDefaultSelections: true,
-  // 指定选中项的 key 数组，需要和 onChange 进行配合	string[]	[]
-  selectedRowKeys: [],
-  // 自定义选择配置项, 设为 true 时使用默认选择项	object[]|boolean	true
-  selections: true,
-  // 多选/单选，checkbox or radio	string	checkbox
-  type: "checkbox",
-  // 选中项发生变化时的回调	Function(selectedRowKeys, selectedRows)	-
-  // eslint-disable-next-line no-unused-vars
-  onChange: (selectedRowKeys, selectedRows) => {},
-  // 用户手动选择/取消选择某列的回调	Function(record, selected, selectedRows, nativeEvent)	-
-  // eslint-disable-next-line no-unused-vars
-  onSelect: (record, selected, selectedRows, nativeEvent) => {},
-  // 用户手动选择/取消选择所有列的回调	Function(selected, selectedRows, changeRows)	-
-  // eslint-disable-next-line no-unused-vars
-  onSelectAll: (selected, selectedRows, changeRows) => {},
-  // 用户手动选择反选的回调	Function(selectedRows)	-
-  // eslint-disable-next-line no-unused-vars
-  onSelectInvert: selectedRows => {}
-};
+// const rowSelection = {
+//   // 自定义列表选择框宽度	string|number	-
+//   columnWidth: "",
+//   // 自定义列表选择框标题	string|VNode	-
+//   columnTitle: "选择",
+//   // 把选择框列固定在左边	boolean	-
+//   fixed: true,
+//   // 选择框的默认属性配置	Function(record)	-
+//   // eslint-disable-next-line no-unused-vars
+//   getCheckboxProps: record => {},
+//   // 去掉『全选』『反选』两个默认选项	boolean	false
+//   hideDefaultSelections: true,
+//   // 指定选中项的 key 数组，需要和 onChange 进行配合	string[]	[]
+//   selectedRowKeys: [],
+//   // 自定义选择配置项, 设为 true 时使用默认选择项	object[]|boolean	true
+//   selections: true,
+//   // 多选/单选，checkbox or radio	string	checkbox
+//   type: "checkbox",
+//   // 选中项发生变化时的回调	Function(selectedRowKeys, selectedRows)	-
+//   // eslint-disable-next-line no-unused-vars
+//   onChange: (selectedRowKeys, selectedRows) => {},
+//   // 用户手动选择/取消选择某列的回调	Function(record, selected, selectedRows, nativeEvent)	-
+//   // eslint-disable-next-line no-unused-vars
+//   onSelect: (record, selected, selectedRows, nativeEvent) => {},
+//   // 用户手动选择/取消选择所有列的回调	Function(selected, selectedRows, changeRows)	-
+//   // eslint-disable-next-line no-unused-vars
+//   onSelectAll: (selected, selectedRows, changeRows) => {},
+//   // 用户手动选择反选的回调	Function(selectedRows)	-
+//   // eslint-disable-next-line no-unused-vars
+//   onSelectInvert: selectedRows => {}
+// };
 
-const pagination = {
-  disabled: false,
-  hideOnSinglePage: false,
-  pageSizeOptions: ["5", "10", "20", "30", "40"],
-  showLessItems: false,
-  showQuickJumper: true,
-  showSizeChanger: true,
-  //showTotal:
-  simple: false
-};
-
-const columns = [
-  {
-    title: "Date",
-    dataIndex: "date",
-    width: 200,
-    isResize: true,
-    minWidth: 50,
-    maxWidth: 300,
-    ellipsis: true,
-    fixed: "",
-    align: "center"
-  },
-  {
-    title: "Amount",
-    dataIndex: "amount",
-    width: 100,
-    isResize: false,
-    minWidth: 100,
-    maxWidth: 300
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    width: 100,
-    isResize: true,
-    minWidth: 100,
-    maxWidth: 300
-  },
-  {
-    title: "Note",
-    dataIndex: "note",
-    width: 100,
-    isResize: true,
-    minWidth: 100,
-    maxWidth: 300
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
-    // scopedSlots: { customRender: "action" },
-    width: 200,
-    isResize: true,
-    minWidth: 100,
-    maxWidth: 300
-    // fixed: "right"
-  }
-];
-
-const data = [
-  {
-    id: "001",
-    key: 0,
-    date: "2018-02-11",
-    amount: 120,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "002",
-    key: 1,
-    date: "2018-03-11",
-    amount: 243,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "003",
-    key: 2,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "004",
-    key: 3,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "005",
-    key: 4,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "006",
-    key: 5,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "007",
-    key: 6,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  },
-  {
-    id: "008",
-    key: 7,
-    date: "2018-04-11",
-    amount: 98,
-    type: "income",
-    note: "transfer"
-  }
-];
-const draggingMap = {};
-columns.forEach(col => {
-  if (col.isResize) {
-    draggingMap[col.dataIndex] = col;
-  }
-});
+// const pagination = {
+//   disabled: false,
+//   hideOnSinglePage: false,
+//   pageSizeOptions: ["5", "10", "20", "30", "40"],
+//   showLessItems: false,
+//   showQuickJumper: true,
+//   showSizeChanger: true,
+//   //showTotal:
+//   simple: false
+// };
 
 export default {
   name: "BaseTable",
   mixins: [TABLE_MIXIN],
+  components: { BsCore },
   data() {
-    // 表格可伸缩列 不使用JSX【https://www.jianshu.com/p/89b8ccd1eca0】
-    this.tableComponents3 = {
-      header: {
-        cell: (h, props, children) => {
-          const { key, ...restProps } = props;
-          const col = draggingMap[key];
-          if (!col || !col.width) {
-            return h("th", { ...restProps }, [...children]);
-          }
-          const dragProps = {
-            key: col.dataIndex || col.key,
-            class: "table-draggable-handle",
-            attrs: {
-              w: 10,
-              x: col.width,
-              z: 1,
-              axis: "x",
-              draggable: true,
-              resizable: false
-            },
-            on: {
-              dragging: x => {
-                let colWidth = Math.max(x, 1);
-                if (col.minWidth && col.minWidth > colWidth) {
-                  col.width = col.minWidth;
-                  return;
-                }
-                if (col.maxWidth && col.maxWidth < colWidth) {
-                  col.width = col.maxWidth;
-                  return;
-                }
-                col.width = colWidth;
-              }
-            }
-          };
-          const drag = h("vue-draggable-resizable", { ...dragProps });
-          return h("th", { ...restProps, class: "resize-table-th" }, [
-            ...children,
-            drag
-          ]);
-        }
-      }
-    };
     // var vm = this;
     return {
       text: "asdfasdf",
-      table,
-      data,
-      columns,
-      pagination,
-      customRow: record => {
-        return {
-          // props: {
-          //   xxx... //属性
-          // },
-          on: {
-            // 事件
-            click: event => {
-              this.clickRow(event, record);
-            },
-            dblclick: event => {
-              this.dblclickRow(event, record);
-            },
-            contextmenu: event => {
-              this.contextmenuRow(event, record);
-            } /* ,
-        mouseenter: event => {
-          this.mouseenterRow(event, record);
-        },
-        mouseleave: event => {
-          this.mouseleaveRow(event, record);
-        } */
-          }
-        };
-      },
-      rowSelection2: {
-        columnTitle: "选择",
-        // 把选择框列固定在左边	boolean	-
-        fixed: true,
-        // 选择框的默认属性配置	Function(record)	-
-        // eslint-disable-next-line no-unused-vars
-        getCheckboxProps: record => {},
-        // 去掉『全选』『反选』两个默认选项	boolean	false
-        hideDefaultSelections: true,
-        // 指定选中项的 key 数组，需要和 onChange 进行配合	string[]	[]
-        selectedRowKeys: [],
-        // 自定义选择配置项, 设为 true 时使用默认选择项	object[]|boolean	true
-        selections: true,
-        // 多选/单选，checkbox or radio	string	checkbox
-        type: "checkbox",
-        // 选中项发生变化时的回调	Function(selectedRowKeys, selectedRows)	-
-        // eslint-disable-next-line no-unused-vars
-        onChange: (selectedRowKeys, selectedRows) => {
-          this.rowSelection.selectedRowKeys = selectedRowKeys;
-        },
-        // 用户手动选择/取消选择某列的回调	Function(record, selected, selectedRows, nativeEvent)	-
-        // eslint-disable-next-line no-unused-vars
-        onSelect: (record, selected, selectedRows, nativeEvent) => {},
-        // 用户手动选择/取消选择所有列的回调	Function(selected, selectedRows, changeRows)	-
-        // eslint-disable-next-line no-unused-vars
-        onSelectAll: (selected, selectedRows, changeRows) => {},
-        // 用户手动选择反选的回调	Function(selectedRows)	-
-        // eslint-disable-next-line no-unused-vars
-        onSelectInvert: selectedRows => {},
-        onSelectChange: selectedRowKeys => {
-          console.log(typeof selectedRowKeys);
-          console.log("selectedRowKeys changed: ", selectedRowKeys);
-          this.rowSelection.selectedRowKeys = selectedRowKeys;
-        }
-      }
+      table
+      // pagination,
+      // customRow: record => {
+      //   return {
+      //     // props: {
+      //     //   xxx... //属性
+      //     // },
+      //     on: {
+      //       // 事件
+      //       click: event => {
+      //         this.clickRow(event, record);
+      //       },
+      //       dblclick: event => {
+      //         this.dblclickRow(event, record);
+      //       },
+      //       contextmenu: event => {
+      //         this.contextmenuRow(event, record);
+      //       } /* ,
+      //   mouseenter: event => {
+      //     this.mouseenterRow(event, record);
+      //   },
+      //   mouseleave: event => {
+      //     this.mouseleaveRow(event, record);
+      //   } */
+      //     }
+      //   };
+      // }
     };
   },
   methods: {
@@ -535,7 +345,9 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+
+<style lang="less">
+/* 要去除 scoped */
 /* .resize-table-th {
   position: relative;
   .table-draggable-handle {
@@ -551,18 +363,20 @@ export default {
   }
 } */
 .base-table-wrap {
-  .resize-table-th {
-    position: relative;
-    .table-draggable-handle {
-      border: 1px solid red;
-      position: absolute;
-      height: 100% !important;
-      left: auto !important;
-      right: -5px;
-      transform: none !important;
-      bottom: 0;
-      cursor: col-resize;
-      touch-action: none;
+  .base-table {
+    .resize-table-th {
+      position: relative;
+      .table-draggable-handle {
+        border: 1px solid red;
+        position: absolute;
+        height: 100% !important;
+        left: auto !important;
+        right: -5px;
+        transform: none !important;
+        bottom: 0;
+        cursor: col-resize;
+        touch-action: none;
+      }
     }
   }
 }
@@ -573,5 +387,6 @@ export default {
   justify-content: space-between;
   align-content: center;
   padding: 0 1rem;
+  height: 5rem;
 }
 </style>

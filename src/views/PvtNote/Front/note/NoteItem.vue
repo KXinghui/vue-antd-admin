@@ -98,7 +98,7 @@ export default {
 <style scoped>
 .note-item-wrap {
   position: relative;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   height: 100%;
   height: 7.5rem;
   /* background-color: #f5f5f5; */
@@ -106,20 +106,21 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
-  margin: 0 0.6rem;
+  padding: 0 0.8rem;
+  background-color: white;
+  /* background-color: #e5e2e2 */
 }
-
 /* .note-item-skeleton + .note-item-skeleton, */
 .note-item-wrap + .note-item-wrap {
   margin-top: 0.5rem;
 }
-
 .note-item-skeleton {
   display: flex;
   align-items: center;
+  padding: 0 0.8rem;
+  background-color: white;
   /* padding: 0 1rem; */
-  margin: 0 0.6rem;
+  /* margin: 0 0.6rem; */
 }
 
 .note-item-left {

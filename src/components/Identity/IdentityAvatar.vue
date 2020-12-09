@@ -1,5 +1,5 @@
 <template>
-  <div class="identity-avatar img">
+  <div class="identity-avatar img" v-on="$listeners">
     <a-avatar
       :style="{
         backgroundColor: avatarBackGroundColor,
