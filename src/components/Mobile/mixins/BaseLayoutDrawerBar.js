@@ -1,8 +1,10 @@
 import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
+import { BASE_LAYOUT_MIXIN } from "./BaseLayout";
 
 const DRAWER_BAR_DELAY = 180;
 
 export const BASE_LAYOUT_DRAWER_BAR_MIXIN = {
+  mixins: [BASE_LAYOUT_MIXIN],
   components: {
     BaseDrawerBar
   },
@@ -24,16 +26,24 @@ export const BASE_LAYOUT_DRAWER_BAR_MIXIN = {
     },
     showDrawerBar() {
       this.hideDrawerBar();
+      // this.showTabBarCenter();
       let timer = setTimeout(() => {
         this.topDrawerBarVisible = true;
         this.bottomDrawerBarVisible = true;
         clearTimeout(timer);
       }, DRAWER_BAR_DELAY);
+      let timer2 = setTimeout(() => {
+        this.hideTabBarCenter();
+        clearTimeout(timer2);
+      }, DRAWER_BAR_DELAY + 200);
     },
-    hideDrawerBar() {
+    hideDrawerBar(isTabBarCenter = true) {
       this.topDrawerBarVisible = false;
       this.bottomDrawerBarVisible = false;
       this.resetDrawerBar();
+      if (isTabBarCenter) {
+        this.showTabBarCenter();
+      }
     },
     showTopDrawerBar(heightPercent) {
       this.hideDrawerBar();
@@ -45,9 +55,11 @@ export const BASE_LAYOUT_DRAWER_BAR_MIXIN = {
     },
     showBottomDrawerBar(heightPercent) {
       this.hideDrawerBar();
+      // this.showTabBarCenter();
       let timer = setTimeout(() => {
         this.bottomDrawerBarHeightPercent = heightPercent;
         this.bottomDrawerBarVisible = true;
+        this.hideTabBarCenter();
         clearTimeout(timer);
       }, DRAWER_BAR_DELAY);
     }

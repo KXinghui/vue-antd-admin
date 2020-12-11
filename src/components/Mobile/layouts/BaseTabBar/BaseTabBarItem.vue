@@ -155,6 +155,7 @@ export default {
 
 <style>
 .base-tabbar-item-badge-wrap {
+  cursor: pointer;
   width: 3.4rem;
   padding: 0 0 0.4rem;
 }
@@ -207,6 +208,7 @@ export default {
 
 /* Center */
 .base-tabbar-center-item-badge-wrap {
+  cursor: pointer;
   width: 4rem;
   position: relative;
   top: -1.1rem;

@@ -43,6 +43,8 @@
     <base-tab-bar
       :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
+      :visible="baseTabBarVisible"
+      :centerVisible="baseTabBarCenterVisible"
       :color="color"
       :active-color="activeColor"
     ></base-tab-bar>
@@ -156,7 +158,7 @@
 </template>
 
 <script>
-import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+// import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
@@ -169,7 +171,7 @@ import BsCore from "../../../../components/BetterScroll/BsCore.vue";
 
 export default {
   name: "Note",
-  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN],
+  mixins: [BASE_LAYOUT_DRAWER_BAR_MIXIN],
   components: { IdentityAvatar, BaseTabBarItem, NoteItem, BsCore },
   data() {
     return {

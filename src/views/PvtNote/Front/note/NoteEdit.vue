@@ -77,7 +77,8 @@
     >
       <template slot="top">
         <template v-if="management.normal">
-          <span @click="closeDrawerBar">取消</span>
+          <!-- <span @click="closeDrawerBar">取消</span> -->
+          <a-button shape="round" @click="closeDrawerBar">取消</a-button>
           <!-- <span
             >已选择<span
               class="selected-num"
@@ -88,7 +89,22 @@
           <span @click="selectAllNotes">{{
             isSelectedAll ? "反选" : "全选"
           }}</span> -->
-          <span @click="saveNote">保存</span>
+          <div>
+            <!-- <span @click="saveNote">保存</span>
+            <span @click="publishNote">发布</span> -->
+            <a-button
+              shape="round"
+              :loading="btnLoading.saveNote"
+              @click="saveNote"
+              >保存</a-button
+            >
+            <a-button
+              shape="round"
+              :loading="btnLoading.publishNote"
+              @click="publishNote"
+              >发布</a-button
+            >
+          </div>
         </template>
       </template>
       <template slot="bottom">
@@ -162,20 +178,20 @@
 </template>
 
 <script>
-import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+// import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
 import { ROUTER_MIXIN } from "../../../../mixins/router-mixin";
 import { mapState } from "vuex";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
 import { msg, confirm } from "../../../../utils/antd-utils";
-import noteApi from "../../../../api/pvtnote/Note";
+// import noteApi from "../../../../api/pvtnote/Note";
 // import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
 import BsCore from "../../../../components/BetterScroll/BsCore.vue";
 import QuillEditor from "../../../../components/Editor/RichText/QuillEditor/index.vue";
 
 export default {
   name: "NoteEdit",
-  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN, ROUTER_MIXIN],
+  mixins: [BASE_LAYOUT_DRAWER_BAR_MIXIN, ROUTER_MIXIN],
   components: { BaseTabBarItem, BsCore, QuillEditor },
   data() {
     return {
@@ -188,7 +204,7 @@ export default {
         currentOp: "",
         normal: ["delete", "move", "top", "cancelTop", "setting"]
       },
-      note: { title: "SpringBoot Vue 便签" },
+      note: { title: "SpringBoot Vue 便签", isTop: 0 },
       noteContent: {
         html: "",
         md: ""
@@ -196,7 +212,11 @@ export default {
       skeleton: false,
       selectedNoteIds: [],
       noteGroupId: "",
-      isRefresh: false
+      isRefresh: false,
+      timerSecond: {
+        save: null
+      },
+      btnLoading: { saveNote: false, publishNote: false }
     };
   },
   computed: {
@@ -224,7 +244,20 @@ export default {
     }
   },
   methods: {
-    saveNote() {},
+    saveNote() {
+      this.btnLoading.saveNote = true;
+      let timer = setTimeout(() => {
+        this.btnLoading.saveNote = false;
+        clearTimeout(timer);
+      }, 2000);
+    },
+    publishNote() {
+      this.btnLoading.publishNote = true;
+      let timer = setTimeout(() => {
+        this.btnLoading.publishNote = false;
+        clearTimeout(timer);
+      }, 2000);
+    },
     selectNote(noteId, isSelect) {
       let selectedNoteIds = this.selectedNoteIds;
       if (isSelect && !selectedNoteIds.includes(noteId)) {
@@ -250,7 +283,6 @@ export default {
         this.management.normal = !this.management.normal;
         this.selectedNoteIds = [];
         this.hideDrawerBar();
-        this.showTabBar();
       }
     },
     openNormalDrawerBar() {
@@ -258,7 +290,6 @@ export default {
       this.management.normal = true;
       this.operation.currentOp = "";
       this.showDrawerBar();
-      this.hideTabBar();
     },
     findNoteGroupName(noteGroupId) {
       // let noteGroupId = this.noteGroupId;
@@ -311,15 +342,15 @@ export default {
           vm.note.noteGroupId = noteGroupId;
         },
         onCancel() {
-          vm.openNormalDrawerBar();
+          // vm.openNormalDrawerBar();
         }
       });
     },
     topNote() {
-      if (!this.note.id) {
-        // msg({ code: 0, msg: "请至少选择一个" });
-        return;
-      }
+      // if (!this.note.id) {
+      //   // msg({ code: 0, msg: "请至少选择一个" });
+      //   return;
+      // }
       let isTop = this.isTop;
       let title = isTop ? "置顶" : "取消置顶";
       var vm = this;
@@ -337,16 +368,17 @@ export default {
         okText: title,
         // okType: "primary",
         onOk() {
-          console.log("OK");
-          if (this.isTop) {
-            // 置顶
-          } else {
-            // 取消置顶
-          }
-          noteApi.topNotes(this.selectedNoteIds, isTop).then(res => {
-            console.log(res);
-            vm.closeDrawerBar();
-          });
+          vm.note.isTop = isTop ? 1 : 0;
+          msg({ code: 1, msg: `${title}成功` });
+          // if (this.isTop) {
+          //   // 置顶
+          // } else {
+          //   // 取消置顶
+          // }
+          // noteApi.topNotes(this.selectedNoteIds, isTop).then(res => {
+          //   console.log(res);
+          //   vm.closeDrawerBar();
+          // });
         },
         onCancel() {
           vm.closeDrawerBar();

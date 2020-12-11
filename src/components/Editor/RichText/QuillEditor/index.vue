@@ -123,16 +123,16 @@ export default {
                 [{ align: [] }],
                 ["link", "image", "video"],
                 ["clean"]
-              ],
-              handlers: {
-                image: function(value) {
-                  if (value) {
-                    alert("自定义图片");
-                  } else {
-                    this.quill.format("image", false);
-                  }
-                }
-              }
+              ]
+              // handlers: {
+              //   image: function(value) {
+              //     if (value) {
+              //       alert("自定义图片");
+              //     } else {
+              //       this.quill.format("image", false);
+              //     }
+              //   }
+              // }
             }
           }
         },

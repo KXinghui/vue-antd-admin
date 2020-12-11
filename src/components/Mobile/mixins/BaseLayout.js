@@ -195,6 +195,9 @@ export const BASE_LAYOUT_MIXIN = {
         clearTimeout(timer);
       }, 500);
     },
+    showTabBarCenter() {
+      this.baseTabBarCenterVisible = true;
+    },
     hideTabBarCenter() {
       this.baseTabBarCenterVisible = false;
     }

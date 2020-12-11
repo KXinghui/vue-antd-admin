@@ -38,7 +38,7 @@ export default {
     },
     visible: {
       type: [Boolean],
-      default: false,
+      default: true,
       required: false
     },
     showTextOnActive: {
@@ -129,7 +129,7 @@ export default {
   position: fixed;
   width: 100%;
   bottom: 0;
-  transition: bottom 0.3s;
+  transition: bottom 0.25s;
   /* border-top: 0.1rem solid#e1dfde; */
 }
 /* .base-tabbar-wrap .mouse-wheel-content {
