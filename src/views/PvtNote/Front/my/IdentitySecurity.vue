@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-my-wrap">
+  <div class="pvtnote-my-wrap">
     <base-header showBackIcon title="账户安全"> </base-header>
     <!-- <base-cell
       text="图"
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style>
-.chat-my-wrap {
+.pvtnote-my-wrap {
   height: 100%;
   width: 100%;
   background-color: #f5f5f5;

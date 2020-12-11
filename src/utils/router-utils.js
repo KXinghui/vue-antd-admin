@@ -7,12 +7,7 @@ export function pushRoute(route) {
   if (!route) {
     return;
   }
-  debugger;
-  console.log(router.currentRoute.path);
-  console.log(route.path);
-  console.log(router.currentRoute.path == route.path);
-  let isRouteEqual = router.currentRoute.path == route.path;
-  if (route && router.currentRoute && isRouteEqual) {
+  if (route && router.currentRoute && router.currentRoute.path == route.path) {
     if (this) {
       msg(
         "reload" in this && this.reload()

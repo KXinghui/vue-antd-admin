@@ -179,14 +179,16 @@ export default {
   cursor: pointer;
 }
 .base-header-left .icon {
-  padding: 0 1.2rem 0 0;
+  /* padding: 0 1.2rem 0 0; */
+  margin-right: 0.3rem;
 }
-.base-header-right > .icon {
+.base-header-right .icon {
   /* padding-right: 1.2rem; */
-  padding: 0 1.2rem 0 1.2rem;
-  margin-right: 1.2rem;
+  /* padding-right: 1.2rem; */
+  /* padding: 0 1.2rem 0 1.2rem; */
+  margin-left: 0.3rem;
 }
-.base-header-right > .icon:last-of-type {
+/* .base-header-right > .icon:last-of-type {
   padding-right: 0;
-}
+} */
 </style>

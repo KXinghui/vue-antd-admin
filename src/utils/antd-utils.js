@@ -1,4 +1,5 @@
 import { message, notification, Modal } from "ant-design-vue";
+// import { isFunction } from "./utils";
 
 const MSG_DURATION = 3;
 

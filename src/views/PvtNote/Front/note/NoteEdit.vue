@@ -1,13 +1,12 @@
 <template>
   <div class="note-wrap">
-    <base-header showDrawerIcon>
-      <div slot="left">便签</div>
-      <div slot="middle" @click="listNotes">
-        {{ noteGroupName }}
+    <base-header showBackIcon>
+      <div slot="left"></div>
+      <div slot="middle">
+        {{ note.title }}
       </div>
       <div slot="right">
-        <icon icon="IconFont_batch-op" @click="openBatchDrawerBar" />
-        <icon icon="Antd_search" @click="pushRoute('/pvtnote/note/search')" />
+        <icon icon="Antd_ellipsis" @click="openNormalDrawerBar" />
         <!-- <a-popover placement="bottomRight">
           <template slot="content">
             <a-menu>
@@ -27,26 +26,20 @@
       </div>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
     </base-header>
-    <base-main style="background-color: #eeecec;">
+    <base-main :isScroll="false">
       <template slot="main">
-        <note-item
-          v-for="note in notes"
-          :key="note.id"
-          :note="note"
-          :skeleton="skeleton"
-          @selectNote="selectNote"
-          :isSelect="management.batch"
-          :isSelected="selectedNoteIds.includes(note.id)"
-        ></note-item>
+        <quill-editor :html.sync="noteContent.html"></quill-editor>
       </template>
     </base-main>
     <base-tab-bar
       :base-tab-bars="baseTabBars"
       :active-item-key="activeKey"
+      :visible="baseTabBarVisible"
+      :centerVisible="baseTabBarCenterVisible"
       :color="color"
       :active-color="activeColor"
     ></base-tab-bar>
-    <base-drawer
+    <!-- <base-drawer
       class="note-drawer"
       width="300px"
       :visible.sync="showDrawer"
@@ -75,7 +68,7 @@
           </div>
         </bs-core>
       </div>
-    </base-drawer>
+    </base-drawer> -->
     <base-drawer-bar
       :topVisible.sync="topDrawerBarVisible"
       :bottomVisible.sync="bottomDrawerBarVisible"
@@ -83,9 +76,9 @@
       :bottomHeightPercent="bottomDrawerBarHeightPercent"
     >
       <template slot="top">
-        <template v-if="management.batch">
+        <template v-if="management.normal">
           <span @click="closeDrawerBar">取消</span>
-          <span
+          <!-- <span
             >已选择<span
               class="selected-num"
               v-text="selectedNoteIds.length"
@@ -94,11 +87,21 @@
           >
           <span @click="selectAllNotes">{{
             isSelectedAll ? "反选" : "全选"
-          }}</span>
+          }}</span> -->
+          <span @click="saveNote">保存</span>
         </template>
       </template>
       <template slot="bottom">
-        <template v-if="management.batch && !operation.currentOp">
+        <template v-if="management.normal && !operation.currentOp">
+          <base-tab-bar-item
+            :item="{
+              index: 'setting',
+              icon: 'Antd_setting',
+              text: '设置',
+              route: false
+            }"
+            @click="openSetting"
+          ></base-tab-bar-item>
           <base-tab-bar-item
             :item="{
               index: 'move',
@@ -111,10 +114,10 @@
           <base-tab-bar-item
             :item="{
               index: 'top',
-              icon: isTopOnBatch
+              icon: isTop
                 ? 'Antd_vertical-align-top'
                 : 'Antd_vertical-align-bottom',
-              text: isTopOnBatch ? '置顶' : '取消置顶',
+              text: isTop ? '置顶' : '取消置顶',
               route: false
             }"
             @click="topNote"
@@ -129,14 +132,14 @@
             @click="deleteNote"
           ></base-tab-bar-item>
         </template>
-        <template v-if="operation.currentOp == 'batch-move'">
+        <template v-if="operation.currentOp">
           <div class="operation-wrap">
             <div class="operation-btn-wrap">
-              <icon icon="Antd_close" @click="openBatchDrawerBar"></icon>
+              <icon icon="Antd_close" @click="openNormalDrawerBar"></icon>
             </div>
             <div class="operation-main-wrap">
               <bs-core :options="{ scrollbar: false }">
-                <template v-if="operation.currentOp == 'batch-move'">
+                <template v-if="operation.currentOp == 'normal-move'">
                   <div
                     v-for="noteGroup in noteGroups"
                     :key="noteGroup.id"
@@ -145,6 +148,9 @@
                   >
                     <span v-text="noteGroup.name"></span>
                   </div>
+                </template>
+                <template v-if="operation.currentOp == 'normal-setting'">
+                  设置
                 </template>
               </bs-core>
             </div>
@@ -158,50 +164,35 @@
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
-import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
+import { ROUTER_MIXIN } from "../../../../mixins/router-mixin";
 import { mapState } from "vuex";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
-import { msg, destroyMsg, confirm } from "../../../../utils/antd-utils";
+import { msg, confirm } from "../../../../utils/antd-utils";
 import noteApi from "../../../../api/pvtnote/Note";
 // import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
-import NoteItem from "./NoteItem";
 import BsCore from "../../../../components/BetterScroll/BsCore.vue";
+import QuillEditor from "../../../../components/Editor/RichText/QuillEditor/index.vue";
 
 export default {
-  name: "Note",
-  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN],
-  components: { IdentityAvatar, BaseTabBarItem, NoteItem, BsCore },
+  name: "NoteEdit",
+  mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN, ROUTER_MIXIN],
+  components: { BaseTabBarItem, BsCore, QuillEditor },
   data() {
     return {
       msName: "pvtnote",
-      activeTabIndex: 0,
+      activeTabIndex: "",
       management: {
-        batch: false
+        normal: false
       },
       operation: {
         currentOp: "",
-        batch: ["delete", "move", "top", "cancelTop", "selectAll"]
+        normal: ["delete", "move", "top", "cancelTop", "setting"]
       },
-      notes: [
-        {
-          id: "4545454545",
-          coverUrl:
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607250899938&di=4c6d8f23b19a1c1d12295e1b5a4c20d0&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2Faa75a819d9cfd32e39d7965543780f803cd30fe8.jpg",
-          title:
-            "SpringBoot Vue 便签SpringBoot Vue 便签SpringBoot Vue 便签SpringBoot Vue 便签SpringBoot Vue 便签",
-          subTitle:
-            "SpringBoot Vue实现的私人便签SpringBootasdf  Vue实现的私人便签SpringBoot Vue实现的私人便签SpringBoot Vue实现的私人便签",
-          createDate: "2020-12-10",
-          isTop: 1
-        },
-        {
-          id: "4545454545665",
-          title: "SpringBoot Vue IM",
-          subTitle: "SpringBoot Vue实现的私人IM",
-          createDate: "2020-12-11",
-          isTop: 0
-        }
-      ],
+      note: { title: "SpringBoot Vue 便签" },
+      noteContent: {
+        html: "",
+        md: ""
+      },
       skeleton: false,
       selectedNoteIds: [],
       noteGroupId: "",
@@ -214,40 +205,26 @@ export default {
       identity: state => state.identity.identity,
       noteGroups: state => state.pvtnote.noteGroups
     }),
-    isTopOnBatch() {
-      let isTopOnBatch = true;
-      if (this.management.batch) {
-        let topNum = 0;
-        let selectedNoteIds = this.selectedNoteIds;
-        this.notes.forEach(note => {
-          if (selectedNoteIds.includes(note.id) && note.isTop == 1) {
-            topNum++;
-          }
-        });
-        let selectedNoteLen = selectedNoteIds.length;
-        if (selectedNoteLen != 0 && topNum == selectedNoteLen) {
-          isTopOnBatch = false;
-        }
+    isTop() {
+      let isTop = true;
+      if (this.management.normal) {
+        isTop = !this.note.isTop || this.note.isTop == 0;
       }
-      return isTopOnBatch;
-    },
-    isSelected() {
-      let isSelected = this.selectedNoteIds && this.selectedNoteIds.length > 0;
-      if (isSelected) {
-        destroyMsg();
-      }
-      return isSelected;
-    },
-    isSelectedAll() {
-      return (
-        this.selectedNoteIds && this.selectedNoteIds.length == this.notes.length
-      );
+      return isTop;
     },
     noteGroupName() {
       return this.findNoteGroupName(this.noteGroupId);
     }
   },
+  props: {
+    noteId: {
+      type: [String],
+      default: "",
+      required: false
+    }
+  },
   methods: {
+    saveNote() {},
     selectNote(noteId, isSelect) {
       let selectedNoteIds = this.selectedNoteIds;
       if (isSelect && !selectedNoteIds.includes(noteId)) {
@@ -255,19 +232,6 @@ export default {
       } else {
         selectedNoteIds.splice(selectedNoteIds.indexOf(noteId), 1);
       }
-    },
-    selectAllNotes() {
-      if (this.isSelectedAll) {
-        this.selectedNoteIds = [];
-        return;
-      }
-      let selectedNoteIds = this.selectedNoteIds;
-      this.notes.forEach(note => {
-        let noteId = note.id;
-        if (!selectedNoteIds.includes(noteId)) {
-          selectedNoteIds.push(noteId);
-        }
-      });
     },
     getSelectedNotes() {
       let selectedNotes = [];
@@ -279,44 +243,22 @@ export default {
       });
       return selectedNotes;
     },
-    selectNoteGroup(noteGroupId) {
-      console.log(noteGroupId);
-      this.noteGroupId = noteGroupId;
-      this.showDrawer = false;
-      this.listNotes();
-    },
     closeDrawerBar() {
-      let isBatch = this.management.batch;
+      let isNormal = this.management.normal;
       this.operation.currentOp = "";
-      if (isBatch) {
-        this.management.batch = !this.management.batch;
+      if (isNormal) {
+        this.management.normal = !this.management.normal;
         this.selectedNoteIds = [];
         this.hideDrawerBar();
+        this.showTabBar();
       }
     },
-    openBatchDrawerBar() {
+    openNormalDrawerBar() {
       this.hideDrawerBar();
-      this.management.batch = true;
+      this.management.normal = true;
       this.operation.currentOp = "";
       this.showDrawerBar();
-    },
-    listNotes() {
-      this.skeleton = true;
-      if (this.noteGroupId) {
-        // noteApi.listByNoteGroup(this.noteGroupId).then(res => {
-        //   this.notes = res.data;
-        // });
-        noteApi.list().then(res => {
-          console.log(res);
-        });
-      } else {
-        // noteApi.listAll().then(res => {
-        //   this.notes = res.data;
-        // });
-      }
-      setTimeout(() => {
-        this.skeleton = false;
-      }, 3000);
+      this.hideTabBar();
     },
     findNoteGroupName(noteGroupId) {
       // let noteGroupId = this.noteGroupId;
@@ -330,13 +272,13 @@ export default {
       }
       return "";
     },
-    sortNotes() {},
+    openSetting() {
+      this.operation.currentOp = "normal-setting";
+      this.hideDrawerBar();
+      this.showBottomDrawerBar("80%");
+    },
     openMoveNote() {
-      if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
-        return;
-      }
-      this.operation.currentOp = "batch-move";
+      this.operation.currentOp = "normal-move";
       this.hideDrawerBar();
       this.showBottomDrawerBar("80%");
       // noteGroupApi.listAll().then(res => {
@@ -346,10 +288,6 @@ export default {
     },
     moveNote(noteGroupId) {
       // 绑定的事件触发了两次 @click.once
-      if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
-        return;
-      }
       if (!noteGroupId) {
         msg({ code: 0, msg: "请选择便签分组" });
         return;
@@ -370,24 +308,20 @@ export default {
         okType: "primary",
         onOk() {
           console.log("OK");
+          vm.note.noteGroupId = noteGroupId;
         },
         onCancel() {
-          vm.openBatchDrawerBar();
+          vm.openNormalDrawerBar();
         }
       });
     },
     topNote() {
-      if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
+      if (!this.note.id) {
+        // msg({ code: 0, msg: "请至少选择一个" });
         return;
       }
-      if (this.isTopOnBatch) {
-        // 置顶
-      } else {
-        // 取消置顶
-      }
-      let isTopOnBatch = this.isTopOnBatch;
-      let title = isTopOnBatch ? "置顶" : "取消置顶";
+      let isTop = this.isTop;
+      let title = isTop ? "置顶" : "取消置顶";
       var vm = this;
       confirm({
         title,
@@ -404,7 +338,12 @@ export default {
         // okType: "primary",
         onOk() {
           console.log("OK");
-          noteApi.topNotes(this.selectedNoteIds, isTopOnBatch).then(res => {
+          if (this.isTop) {
+            // 置顶
+          } else {
+            // 取消置顶
+          }
+          noteApi.topNotes(this.selectedNoteIds, isTop).then(res => {
             console.log(res);
             vm.closeDrawerBar();
           });
@@ -415,10 +354,6 @@ export default {
       });
     },
     deleteNote() {
-      if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
-        return;
-      }
       var vm = this;
       confirm({
         title: "删除便签",
@@ -438,12 +373,74 @@ export default {
           vm.closeDrawerBar();
         }
       });
+    },
+    beforeunloadWindow(e) {
+      let event = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (event) {
+        event.returnValue = "关闭提示";
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return "关闭提示";
+      // debugger;
+      // e.preventDefault();
+      // confirm({
+      //   // title: "移动便签",
+      //   content: () => (
+      //     <div>
+      //       <span style="color:red;">确定要离开吗？</span>
+      //     </div>
+      //   ),
+      //   cancelText: "取消",
+      //   okText: "离开",
+      //   okType: "danger",
+      //   onOk() {
+      //     window.close();
+      //   },
+      //   onCancel() {}
+      // });
     }
   },
   mounted() {
-    this.listNotes();
+    // TODO 根据noteId判断是否为空 为空则为增加便签；不为空：判断是否自身 不是则显示不可编辑div，且添加增加便签按钮；是则编辑便签
     this.isRefresh = true;
+    // 用户退出页面 unload; 即将离开页面（刷新或关闭）时触发 beforeunload
+    // 监听窗口事件 在用户退出、刷新页面时弹窗提示
+    // window.addEventListener("unload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", this.beforeunloadHandler);
+    // 移除监听窗口事件
+    // window.removeEventListener("unload", e => this.beforeunloadHandler(e));
+    // window.removeEventListener("beforeunload", this.beforeunloadHandler);
+    // let vm = this;
+    // window.onbeforeunload = function(e) {
+    //   // confirm({
+    //   //   // title: "移动便签",
+    //   //   content: () => (
+    //   //     <div>
+    //   //       <span style="color:red;">确定要离开吗？</span>
+    //   //     </div>
+    //   //   ),
+    //   //   cancelText: "取消",
+    //   //   okText: "离开",
+    //   //   okType: "danger",
+    //   //   onOk() {
+    //   //     window.close();
+    //   //   },
+    //   //   onCancel() {}
+    //   // });
+    //   e.preventDefault();
+    //   e = e || window.event;
+    //   // 兼容IE8和Firefox 4之前的版本
+    //   if (e) {
+    //     e.returnValue = vm.html ? true : false;
+    //   }
+    //   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+    //   return vm.html ? true : false;
+    // };
   }
+  // destroyed() {
+  //   window.onbeforeunload = null;
+  // }
 };
 </script>
 

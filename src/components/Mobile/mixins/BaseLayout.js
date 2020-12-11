@@ -139,7 +139,9 @@ export const BASE_LAYOUT_MIXIN = {
       color: COLOR,
       activeColor: ACTIVE_COLOR,
       activeKey: "",
-      baseTabBars: []
+      baseTabBars: [],
+      baseTabBarVisible: true,
+      baseTabBarCenterVisible: true
       // topDrawerBarVisible: false,
       // bottomDrawerBarVisible: false,
       // resetTopDrawerBarHeightPercent: "7.25%",
@@ -181,6 +183,20 @@ export const BASE_LAYOUT_MIXIN = {
       } /* else {
         this.activeKey = StoreJsAPI.get(this.activeTabActiveKey);
       } */
+    },
+    showTabBar() {
+      this.baseTabBarVisible = true;
+      this.baseTabBarCenterVisible = true;
+    },
+    hideTabBar() {
+      this.baseTabBarVisible = false;
+      let timer = setTimeout(() => {
+        this.baseTabBarCenterVisible = false;
+        clearTimeout(timer);
+      }, 500);
+    },
+    hideTabBarCenter() {
+      this.baseTabBarCenterVisible = false;
     }
     // resetDrawerBar() {
     //   this.topDrawerBarHeightPercent = this.resetTopDrawerBarHeightPercent;

@@ -1,7 +1,6 @@
 <template>
   <div class="quill-editor-wrap">
     <div :id="toolbarWrap" :ref="toolbarWrap">
-      <a-icon type="cloud-upload" />
       <slot name="toolbar"></slot>
     </div>
     <div
@@ -151,7 +150,7 @@ export default {
           "update:html",
           this.isXss ? xss(quill.root.innerHTML) : quill.root.innerHTML
         );
-        vm.$emit("update:text", quill.getText());
+        // vm.$emit("update:text", quill.getText());
         // if (source == "api") {
         //   console.log("An API call triggered this change.");
         // } else if (source == "user") {
@@ -165,28 +164,47 @@ export default {
       } else {
         this.quill.setText("");
       }
+      if (!this.readOnly) {
+        this.quill.focus();
+      }
     },
-    destroy() {}
+    destroy() {
+      this.quill = null;
+    }
   },
   watch: {
-    html(newVal) {
-      if (!this.quill || !newVal) {
-        return;
-      }
-      if (newVal) {
-        this.quill.pasteHTML(newVal);
-      } else {
-        this.quill.setText("");
-      }
-      // this.quill && this.quill.pasteHTML(this.html);
-      // this.quill && this.quill.update();
-    }
+    // html(newVal) {
+    //   if (!this.quill || !newVal) {
+    //     return;
+    //   }
+    //   if (newVal) {
+    //     this.quill.pasteHTML(newVal);
+    //   } else {
+    //     this.quill.setText("");
+    //   }
+    //   // this.quill && this.quill.pasteHTML(this.html);
+    //   // this.quill && this.quill.update();
+    // }
   },
   mounted() {
     this.init();
   },
-  destroyed() {}
+  destroyed() {
+    this.destroy();
+  }
 };
 </script>
 
-<style></style>
+<style>
+.quill-editor-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+/* .quill-editor-wrap .ql-editor {
+  height: 100%;
+} */
+.ql-editor {
+  height: 100%;
+}
+</style>

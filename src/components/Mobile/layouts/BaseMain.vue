@@ -7,29 +7,37 @@
     <div class="base-main-scroll">
       <!-- :pullingDownHandler="pullingDownHandler"
       :pullingUpHandler="pullingUpHandler" -->
-      <bs-pull
-        v-if="isScrollPull"
-        :isRefresh.sync="isRefresh"
-        :pullingDownHandler="pullingDownHandler"
-        :pullingUpHandler="pullingUpHandler"
-      >
-        <div slot="isPullingDown">
-          <slot name="isPullingDown"></slot>
-        </div>
+      <template v-if="isScroll">
+        <bs-pull
+          v-if="isScrollPull"
+          :isRefresh.sync="isRefresh"
+          :pullingDownHandler="pullingDownHandler"
+          :pullingUpHandler="pullingUpHandler"
+        >
+          <div slot="isPullingDown">
+            <slot name="isPullingDown"></slot>
+          </div>
+          <slot name="header"></slot>
+          <slot name="main"></slot>
+          <!-- <b-scroll> </b-scroll> -->
+          <slot name="footer"></slot>
+          <div slot="afterPullDown">
+            <slot name="afterPullDown"></slot>
+          </div>
+        </bs-pull>
+        <bs-core v-else :options="{ scrollbar: false, nestedScroll: true }">
+          <slot name="header"></slot>
+          <slot name="main"></slot>
+          <!-- <b-scroll> </b-scroll> -->
+          <slot name="footer"></slot>
+        </bs-core>
+      </template>
+      <template v-else>
         <slot name="header"></slot>
         <slot name="main"></slot>
         <!-- <b-scroll> </b-scroll> -->
         <slot name="footer"></slot>
-        <div slot="afterPullDown">
-          <slot name="afterPullDown"></slot>
-        </div>
-      </bs-pull>
-      <bs-core v-else :options="{ scrollbar: false, nestedScroll: true }">
-        <slot name="header"></slot>
-        <slot name="main"></slot>
-        <!-- <b-scroll> </b-scroll> -->
-        <slot name="footer"></slot>
-      </bs-core>
+      </template>
     </div>
   </div>
 </template>
@@ -54,6 +62,11 @@ export default {
     baseMainHeight: {
       type: [String, Number],
       default: "85.5%",
+      required: false
+    },
+    isScroll: {
+      type: [Boolean],
+      default: true,
       required: false
     },
     isScrollPull: {

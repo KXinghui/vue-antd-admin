@@ -1,42 +1,33 @@
 <template>
   <a-skeleton
-    class="note-item-skeleton"
+    class="base-item-skeleton"
     :loading="skeleton"
     active
     :title="true"
-    :avatar="{ size: 60, shape: 'square' }"
-    :paragraph="{ rows: 2 }"
+    :avatar="skeletonAvatar"
+    :paragraph="skeletonParagraph"
     v-on="$listeners"
   >
-    <div class="note-item-wrap" @click="clickNote">
-      <div class="note-item-left">
-        <div v-show="note.coverUrl" class="note-item-cover">
-          <img class="note-cover-img" v-lazy="note.coverUrl" />
-        </div>
-        <div class="note-item-info">
-          <span class="note-title" @click="pushRoute">{{ note.title }}</span>
-          <span class="note-sub-title">{{ note.subTitle }}</span>
-          <span class="note-date">{{
-            note.updateDate || note.createDate
-          }}</span>
-        </div>
+    <div class="base-item-wrap" @click="clickItem">
+      <div class="base-item-left">
+        <slot name="left"></slot>
       </div>
-      <div class="note-item-right">
-        <div v-show="isSelect" class="note-op">
-          <!-- @change="selectNote" 冒泡 -->
-          <a-checkbox :value="selectValue" :checked="isSelected"></a-checkbox>
-        </div>
+      <div class="base-item-right">
+        <slot name="right">
+          <div v-show="isSelect" class="base-op">
+            <!-- @change="selectItem" 冒泡 -->
+            <a-checkbox :value="selectValue" :checked="isSelected"></a-checkbox>
+          </div>
+        </slot>
       </div>
-      <div v-show="note.isTop == 1" class="tag-bottom note-top-tag"></div>
+      <div v-show="item.isTop == 1" class="tag-bottom base-top-tag"></div>
     </div>
   </a-skeleton>
 </template>
 
 <script>
-import { pushRoute } from "../../../../utils/router-utils";
-
 export default {
-  name: "NoteItem",
+  name: "BaseItem",
   data() {
     return {};
   },
@@ -46,7 +37,21 @@ export default {
       default: false,
       require: true
     },
-    note: {
+    skeletonAvatar: {
+      type: [Object],
+      default() {
+        return {};
+      },
+      require: true
+    },
+    skeletonParagraph: {
+      type: [Object],
+      default() {
+        return {};
+      },
+      require: true
+    },
+    item: {
       type: [Object],
       default() {
         return {};
@@ -71,33 +76,28 @@ export default {
   },
   computed: {
     selectValue() {
-      return this.note[this.selectKey];
+      return this.item[this.selectKey];
     }
   },
   methods: {
-    pushRoute() {
-      if (!this.isSelect) {
-        pushRoute({ path: `/pvtnote/note/${this.note.id}` });
-      }
-    },
-    clickNote() {
+    clickItem() {
       if (!this.isSelect) {
         return;
       }
       this.$emit("selectNote", this.selectValue, !this.isSelected);
     },
-    selectNote(e) {
+    selectItem(e) {
       if (!e || !e.target || !this.isSelect) {
         return;
       }
-      this.$emit("selectNote", e.target.value, e.target.checked);
+      this.$emit("select", e.target.value, e.target.checked);
     }
   }
 };
 </script>
 
 <style scoped>
-.note-item-wrap {
+.base-item-wrap {
   position: relative;
   /* border: 1px solid red; */
   height: 100%;
@@ -109,13 +109,13 @@ export default {
   align-items: center;
   padding: 0 0.8rem;
   background-color: white;
-  /* background-color: #e5e2e2 */
+  /* background-color: #eeecec */
 }
-/* .note-item-skeleton + .note-item-skeleton, */
-.note-item-wrap + .note-item-wrap {
+/* .base-item-skeleton + .base-item-skeleton, */
+.base-item-wrap + .base-item-wrap {
   margin-top: 0.5rem;
 }
-.note-item-skeleton {
+.base-item-skeleton {
   display: flex;
   align-items: center;
   padding: 0 0.8rem;
@@ -124,18 +124,18 @@ export default {
   /* margin: 0 0.6rem; */
 }
 
-.note-item-skeleton + .note-item-skeleton {
+.base-item-skeleton + .base-item-skeleton {
   margin-top: 0.5rem;
 }
 
-.note-item-left {
+.base-item-left {
   width: 90%;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.note-item-cover {
+.base-item-cover {
   max-width: 30%;
   width: 5.5rem;
   height: 5.5rem;
@@ -143,18 +143,18 @@ export default {
   align-items: center;
   padding-right: 0.8rem;
 }
-.note-cover-img {
+.base-cover-img {
   width: 100%;
   border-radius: 5%;
 }
-.note-item-info {
+.base-item-info {
   width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
-.note-title {
+.base-title {
   width: 100%;
   font-size: 1rem;
   font-weight: bold;
@@ -166,7 +166,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.note-sub-title {
+.base-sub-title {
   width: 100%;
   font-size: 1rem;
   font-weight: light;
@@ -176,16 +176,16 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.note-date {
+.base-date {
   font-size: 0.8rem;
 }
-.note-item-right {
+.base-item-right {
   width: 10%;
   display: flex;
   justify-content: flex-end;
 }
 
-.note-top-tag {
+.base-top-tag {
   /* width: 118px;
   height: 28px; */
   width: 0.8rem;
@@ -196,7 +196,7 @@ export default {
   top: 0;
   right: 1rem;
 }
-.note-top-tag:after {
+.base-top-tag:after {
   border-width: 0.4rem;
   left: 0;
   bottom: -0.45rem;

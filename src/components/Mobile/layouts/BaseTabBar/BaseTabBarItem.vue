@@ -78,6 +78,12 @@ export default {
     return {};
   },
   props: {
+    // 中间是否隐藏 是则不是中间的样式
+    centerVisible: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
     // 激活时才显示文字
     showTextOnActive: {
       type: [Boolean],
@@ -130,7 +136,7 @@ export default {
       return activeItemKey && activeItemKey == this.itemKey;
     },
     isCenter() {
-      return this.item.isCenter;
+      return this.item.isCenter && this.centerVisible;
     }
   },
   methods: {

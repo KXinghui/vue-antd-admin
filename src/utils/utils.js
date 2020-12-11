@@ -206,6 +206,9 @@ export function isBoolean(boolean) {
 export function isString(string) {
   return typeof string === "string";
 }
+export function isFunction(func) {
+  return typeof func === "function";
+}
 
 /**
  * 字符串是否JSON 是返回parse后，否返回false

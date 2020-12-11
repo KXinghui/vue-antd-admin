@@ -1,30 +1,15 @@
 <template>
   <div class="note-wrap">
-    <base-header showDrawerIcon>
-      <div slot="left">便签</div>
-      <div slot="middle" @click="listNotes">
-        {{ noteGroupName }}
+    <base-header showBackIcon>
+      <div slot="left">搜索</div>
+      <div slot="middle">
+        <!-- style="width: 200px" -->
       </div>
-      <div slot="right">
+      <template slot="right">
+        <a-input-search placeholder="搜索" @search="searchNote" />
         <icon icon="IconFont_batch-op" @click="openBatchDrawerBar" />
-        <icon icon="Antd_search" @click="pushRoute('/pvtnote/note/search')" />
-        <!-- <a-popover placement="bottomRight">
-          <template slot="content">
-            <a-menu>
-              <a-menu-item>
-                <a href="javascript:;">1st menu item</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">2nd menu item</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">3rd menu item</a>
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <icon icon="Antd_plus-circle" />
-        </a-popover> -->
-      </div>
+        <!-- <icon icon="Antd_search" @click="pushRoute('/search')" /> -->
+      </template>
       <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
     </base-header>
     <base-main style="background-color: #eeecec;">
@@ -46,7 +31,7 @@
       :color="color"
       :active-color="activeColor"
     ></base-tab-bar>
-    <base-drawer
+    <!-- <base-drawer
       class="note-drawer"
       width="300px"
       :visible.sync="showDrawer"
@@ -75,7 +60,7 @@
           </div>
         </bs-core>
       </div>
-    </base-drawer>
+    </base-drawer> -->
     <base-drawer-bar
       :topVisible.sync="topDrawerBarVisible"
       :bottomVisible.sync="bottomDrawerBarVisible"
@@ -106,7 +91,7 @@
               text: '移动',
               route: false
             }"
-            @click="openMoveNote"
+            @click="moveNote"
           ></base-tab-bar-item>
           <base-tab-bar-item
             :item="{
@@ -141,7 +126,6 @@
                     v-for="noteGroup in noteGroups"
                     :key="noteGroup.id"
                     class="note-group-item"
-                    @click.once="moveNote(noteGroup.id)"
                   >
                     <span v-text="noteGroup.name"></span>
                   </div>
@@ -158,7 +142,7 @@
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
 import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
-import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
+// import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
 import { msg, destroyMsg, confirm } from "../../../../utils/antd-utils";
@@ -170,14 +154,15 @@ import BsCore from "../../../../components/BetterScroll/BsCore.vue";
 export default {
   name: "Note",
   mixins: [BASE_LAYOUT_MIXIN, BASE_LAYOUT_DRAWER_BAR_MIXIN],
-  components: { IdentityAvatar, BaseTabBarItem, NoteItem, BsCore },
+  components: { /* IdentityAvatar, */ BaseTabBarItem, NoteItem, BsCore },
   data() {
     return {
       msName: "pvtnote",
-      activeTabIndex: 0,
+      activeTabIndex: 3,
       management: {
         batch: false
       },
+      keyword: "",
       operation: {
         currentOp: "",
         batch: ["delete", "move", "top", "cancelTop", "selectAll"]
@@ -244,10 +229,22 @@ export default {
       );
     },
     noteGroupName() {
-      return this.findNoteGroupName(this.noteGroupId);
+      let noteGroupId = this.noteGroupId;
+      let noteGroup = noteGroupId
+        ? this.noteGroups.find(noteGroup => {
+            return noteGroup.id == noteGroupId;
+          })
+        : null;
+      if (noteGroup) {
+        return noteGroup.name;
+      }
+      return "";
     }
   },
   methods: {
+    searchNote(keyword) {
+      console.log(keyword);
+    },
     selectNote(noteId, isSelect) {
       let selectedNoteIds = this.selectedNoteIds;
       if (isSelect && !selectedNoteIds.includes(noteId)) {
@@ -318,22 +315,10 @@ export default {
         this.skeleton = false;
       }, 3000);
     },
-    findNoteGroupName(noteGroupId) {
-      // let noteGroupId = this.noteGroupId;
-      let noteGroup = noteGroupId
-        ? this.noteGroups.find(noteGroup => {
-            return noteGroup.id == noteGroupId;
-          })
-        : null;
-      if (noteGroup) {
-        return noteGroup.name;
-      }
-      return "";
-    },
     sortNotes() {},
-    openMoveNote() {
+    moveNote() {
       if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
+        msg({ code: -1, msg: "请至少选择一个" });
         return;
       }
       this.operation.currentOp = "batch-move";
@@ -344,41 +329,9 @@ export default {
       //   this.showBottomDrawerBar("80%");
       // });
     },
-    moveNote(noteGroupId) {
-      // 绑定的事件触发了两次 @click.once
-      if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
-        return;
-      }
-      if (!noteGroupId) {
-        msg({ code: 0, msg: "请选择便签分组" });
-        return;
-      }
-      var vm = this;
-      let noteGroupName = this.findNoteGroupName(noteGroupId);
-      confirm({
-        title: "移动便签",
-        content: () => (
-          <div>
-            <span style="color:red;">
-              确定要移动所选便签到 {noteGroupName} ？
-            </span>
-          </div>
-        ),
-        cancelText: "取消",
-        okText: "移动",
-        okType: "primary",
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          vm.openBatchDrawerBar();
-        }
-      });
-    },
     topNote() {
       if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
+        msg({ code: -1, msg: "请至少选择一个" });
         return;
       }
       if (this.isTopOnBatch) {
@@ -416,7 +369,7 @@ export default {
     },
     deleteNote() {
       if (!this.isSelected) {
-        msg({ code: 0, msg: "请至少选择一个" });
+        msg({ code: -1, msg: "请至少选择一个" });
         return;
       }
       var vm = this;

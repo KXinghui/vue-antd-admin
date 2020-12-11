@@ -1,5 +1,5 @@
 <template>
-  <div class="base-tabbar-wrap">
+  <div class="base-tabbar-wrap" :style="{ bottom }">
     <!-- <bs-core :scrollY="false" :scrollX="true" :options="{ scrollbar: false }"> -->
     <slot name="baseTabBarItem">
       <base-tab-bar-item
@@ -8,6 +8,7 @@
         :key="index"
         :item-key="index"
         :active-item-key="realActiveItemKey"
+        :centerVisible="centerVisible"
         @click="clickTabBar"
         @change="changeTabBar(index)"
         v-bind="$props"
@@ -30,6 +31,16 @@ export default {
     };
   },
   props: {
+    centerVisible: {
+      type: [Boolean],
+      default: true,
+      required: false
+    },
+    visible: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
     showTextOnActive: {
       type: [Boolean],
       default: false,
@@ -75,6 +86,9 @@ export default {
       let activeItemKey = this.activeItemKey;
       let isNotNull = activeItemKey | (activeItemKey == 0);
       return isNotNull ? activeItemKey : this.inActiveItemKey;
+    },
+    bottom() {
+      return this.visible ? 0 : "-7.25%";
     }
   },
   methods: {
@@ -86,6 +100,14 @@ export default {
       this.$emit("click");
     }
   },
+  // watch: {
+  //   visible() {
+  //     let bottom = this.visible ? 0 : "-7.25%";
+  //     let interval = setInterval(() => {
+  //       this.bastTabBarBottom -= clearInterval(interval);
+  //     }, 800);
+  //   }
+  // },
   mounted() {
     let activeItemKey = this.activeItemKey;
     let isNotNull = activeItemKey | (activeItemKey == 0);
@@ -107,6 +129,8 @@ export default {
   position: fixed;
   width: 100%;
   bottom: 0;
+  transition: bottom 0.3s;
+  /* border-top: 0.1rem solid#e1dfde; */
 }
 /* .base-tabbar-wrap .mouse-wheel-content {
   display: flex;

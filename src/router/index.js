@@ -5,6 +5,7 @@ import "nprogress/nprogress.css";
 import { routes } from "./routes";
 
 import { loading } from "../utils/store-utils";
+// import { confirm, } from "../utils/antd-utils";
 
 // import { mapMutations } from "vuex";
 
@@ -44,6 +45,31 @@ router.beforeEach((to, from, next) => {
   }
   // TODO 获取未登录时记录的from和
 
+  // TODO 离开页面时是否弹框提示
+  // 全局对于 window默认的 样式不一致 使用组件守卫
+  // if (from.matched.some(record => record.meta.confirmBeforeLeave)) {
+  //   debugger;
+
+  //   return;
+  //   // confirm({
+  //   //   title: "离开页面",
+  //   //   // content: () => (
+  //   //   //   <div>
+  //   //   //     <span style="color:red;">确定要离开吗？</span>
+  //   //   //   </div>
+  //   //   // ),
+  //   //   cancelText: "取消",
+  //   //   okText: "离开",
+  //   //   okType: "danger",
+  //   //   onOk() {
+  //   //     NProgress.start();
+  //   //     next();
+  //   //   },
+  //   //   onCancel() {}
+  //   // });
+  //   // return;
+  // }
+
   try {
     NProgress.start();
     next();
@@ -78,3 +104,11 @@ router.afterEach((to, from) => {
 });
 
 export default router;
+
+// 用户退出页面时触发 unload; 即将离开页面（刷新或关闭）时触发 beforeunload
+// 监听窗口事件 在用户退出、刷新页面时弹窗提示
+// window.addEventListener("unload", e => this.beforeunloadHandler(e));
+// window.addEventListener("beforeunload", this.beforeunloadHandler);
+// 移除监听窗口事件
+// window.removeEventListener("unload", e => this.beforeunloadHandler(e));
+// window.removeEventListener("beforeunload", this.beforeunloadHandler);

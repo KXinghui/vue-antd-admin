@@ -6,8 +6,8 @@
       <div slot="main">
         <div class="identity-wrap">
           <identity-avatar
-            :identity="{ name: 'IM' }"
-            :avatarSize="60"
+            :identity="{ name: 'PVTNOTE' }"
+            :avatarSize="90"
             avatarShape="square"
           ></identity-avatar>
         </div>
@@ -48,14 +48,16 @@ export default {
   background-color: white;
 }
 
-.chat-main-wrap {
+.pvtnote-about-wrap {
   display: flex;
   justify-content: center;
 }
 
-.chat-main-wrap .identity-wrap {
+.pvtnote-about-wrap .identity-wrap {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
 }
 
 .base-cell-wrap {

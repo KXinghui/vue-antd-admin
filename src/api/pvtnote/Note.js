@@ -14,6 +14,10 @@ class NoteApi extends BaseApi {
     let url = `/top`;
     return axiosInstance.post(url, { noteIds, isTop: isTop ? 1 : 0 });
   }
+  moveNotes(noteIds, noteGroupId) {
+    let url = `/noteGroup/move`;
+    return axiosInstance.post(url, { noteIds, noteGroupId });
+  }
 }
 const noteApi = new NoteApi("/note");
 export default noteApi;

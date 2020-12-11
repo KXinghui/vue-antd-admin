@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-identity-info-wrap">
+  <div class="pvtnote-identity-info-wrap">
     <base-header showBackIcon title="个人信息"> </base-header>
     <!-- <base-cell
       text="图"
@@ -10,9 +10,9 @@
       :rightIcon="icon"
       rightLabel="图图"
     ></base-cell> -->
-    <base-main style="">
+    <base-main>
       <div slot="main" style="width: 100%">
-        <base-cell arrow :size="9" @click="pushRoute({ path: '/my/aboutim' })">
+        <base-cell arrow>
           <div slot="left">
             <div class="identity-wrap">
               <identity-avatar
@@ -20,20 +20,10 @@
                 :avatarSize="60"
                 avatarShape="square"
               ></identity-avatar>
-              <div class="identity-info">
-                <span class="identity-nickname">{{ identity.nickname }}</span>
-                <span class="identity-chatno"
-                  >聊天号：{{ identity.chatNo }}</span
-                >
-              </div>
             </div>
           </div>
         </base-cell>
-        <base-cell
-          text="账号与安全"
-          arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
+        <base-cell text="用户名" arrow></base-cell>
         <base-cell
           text="隐私"
           arrow
@@ -79,7 +69,7 @@ export default {
 </script>
 
 <style>
-.chat-identity-info-wrap {
+.pvtnote-identity-info-wrap {
   height: 100%;
   width: 100%;
   background-color: #f5f5f5;
@@ -104,7 +94,7 @@ export default {
   font-weight: bold;
 }
 
-.base-cell-wrap {
+.base-cell-wrap + .base-cell-wrap {
   margin-bottom: 0.5rem;
 }
 </style>

@@ -27,7 +27,7 @@
         <base-cell
           arrow
           :size="9"
-          @click="pushRoute({ path: '/my/identity/info' })"
+          @click="pushRoute({ path: '/pvtnote/my/identity/info' })"
         >
           <div slot="left">
             <div class="identity-wrap">
@@ -37,10 +37,8 @@
                 avatarShape="square"
               ></identity-avatar>
               <div class="identity-info">
-                <span class="identity-nickname">{{ identity.nickname }}</span>
-                <span class="identity-chatno"
-                  >聊天号：{{ identity.chatNo }}</span
-                >
+                <span class="identity-info-title">{{ identity.name }}</span>
+                <span class="identity-chatno"></span>
               </div>
             </div>
           </div>
@@ -48,17 +46,17 @@
         <base-cell
           text="账号安全"
           arrow
-          @click="pushRoute({ path: '/my/identity/security' })"
+          @click="pushRoute({ path: '/pvtnote/my/identity/security' })"
         ></base-cell>
         <base-cell
           text="隐私"
           arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
+          @click="pushRoute({ path: '/pvtnote/my/aboutpvtnote' })"
         ></base-cell>
         <base-cell
-          text="关于IM"
+          text="关于PVTNOTE"
           arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
+          @click="pushRoute({ path: '/pvtnote/my/aboutpvtnote' })"
         ></base-cell>
       </template>
     </base-main>
@@ -116,7 +114,7 @@ export default {
   justify-content: space-between;
 }
 
-.identity-nickname {
+.identity-info-title {
   font-size: 1.3rem;
   color: black;
   font-weight: bold;
