@@ -157,7 +157,7 @@ export default {
 .base-tabbar-item-badge-wrap {
   cursor: pointer;
   width: 3.3rem;
-  padding: 0 0 0.4rem;
+  padding: 0 0 0.1rem;
 }
 .base-tabbar-item-badge-wrap sup,
 .base-tabbar-center-item-badge-wrap sup {
@@ -168,7 +168,7 @@ export default {
 .base-tabbar-item-badge-wrap .ant-badge-count,
 .base-tabbar-item-badge-wrap .ant-badge-dot,
 .base-tabbar-item-badge-wrap .ant-badge .ant-scroll-number-custom-component {
-  transform: translate(30%, 20%);
+  transform: translate(30%, 10%);
 }
 
 .base-tabbar-item-wrap,
@@ -203,8 +203,8 @@ export default {
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text {
-  font-size: 0.7rem;
-  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text-unactive,
@@ -215,9 +215,9 @@ export default {
 /* Center */
 .base-tabbar-center-item-badge-wrap {
   cursor: pointer;
-  width: 4rem;
+  width: 3.5rem;
   position: relative;
-  top: -1.1rem;
+  top: -1.3rem;
 }
 
 /* .base-tabbar-center-item-badge-wrap .ant-badge-count,
@@ -232,8 +232,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 3.7rem;
+  height: 3.7rem;
   /* border-radius: 20%; */
   border: 0.5rem solid #ffffff;
   box-shadow: 0 0 0.35rem 0 #e2e1e1;
