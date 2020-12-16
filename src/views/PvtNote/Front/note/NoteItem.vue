@@ -19,6 +19,36 @@
           <span class="note-date">{{
             note.updateDate || note.createDate
           }}</span>
+          <div>
+            <!-- <a-space :size="3">
+              <a-button size="small">
+                <icon icon="Antd_read" /> {{ note.readNum || 0 }}
+              </a-button>
+              <a-button size="small">
+                <icon icon="Antd_star" /> {{ note.collectNum || 0 }}
+              </a-button>
+              <a-button size="small">
+                <icon icon="Antd_like" /> {{ note.praiseNum || 0 }}
+              </a-button>
+              <a-button size="small">
+                <icon icon="Antd_dislike" /> {{ note.treadNum || 0 }}
+              </a-button>
+            </a-space> -->
+            <a-space>
+              <!-- <a-button size="small"> -->
+              <span><icon icon="Antd_read" /> {{ note.readNum || 0 }}</span>
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span><icon icon="Antd_star" /> {{ note.collectNum || 0 }}</span>
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span><icon icon="Antd_like" /> {{ note.praiseNum || 0 }}</span>
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span><icon icon="Antd_dislike" /> {{ note.treadNum || 0 }}</span>
+              <!-- </a-button> -->
+            </a-space>
+          </div>
         </div>
       </div>
       <div class="note-item-right">
@@ -28,6 +58,11 @@
         </div>
       </div>
       <div v-show="note.isTop == 1" class="tag-bottom note-top-tag"></div>
+      <div v-show="noteTag" class="note-tag-wrap">
+        <a-tag :color="noteTag.color">
+          {{ noteTag.name }}
+        </a-tag>
+      </div>
     </div>
   </a-skeleton>
 </template>
@@ -50,6 +85,20 @@ export default {
       type: [Object],
       default() {
         return {};
+      },
+      require: true
+    },
+    noteTag: {
+      type: [Object],
+      default() {
+        return { id: "45454", name: "SpringBoot", color: "#87d068" };
+      },
+      require: true
+    },
+    notePraiseTread: {
+      type: [Object],
+      default() {
+        return { praiseTreadTypeEnum: "" };
       },
       require: true
     },
@@ -100,8 +149,8 @@ export default {
 .note-item-wrap {
   position: relative;
   /* border: 1px solid red; */
-  height: 100%;
-  height: 7.5rem;
+  height: 8rem;
+  max-height: 10rem;
   /* background-color: #f5f5f5; */
   display: flex;
   flex-direction: row;
@@ -116,6 +165,8 @@ export default {
   margin-top: 0.5rem;
 }
 .note-item-skeleton {
+  height: 8rem;
+  max-height: 10rem;
   display: flex;
   align-items: center;
   padding: 0 0.8rem;
@@ -132,7 +183,7 @@ export default {
   width: 90%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .note-item-cover {
@@ -203,5 +254,10 @@ export default {
   /* border-top-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent; */
+}
+.note-tag-wrap {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.8rem;
 }
 </style>

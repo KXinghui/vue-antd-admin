@@ -3,6 +3,7 @@ import BaseTabBar from "../layouts/BaseTabBar";
 import BaseMain from "../layouts/BaseMain.vue";
 import BaseDrawer from "../layouts/BaseDrawer.vue";
 // import BaseDrawerBar from "../layouts/BaseDrawerBar.vue";
+import BaseSider from "../layouts/BaseSider.vue";
 import BaseCell from "../BaseCell.vue";
 
 import { mapState, mapMutations } from "vuex";
@@ -130,6 +131,7 @@ export const BASE_LAYOUT_MIXIN = {
     BaseMain,
     BaseDrawer,
     // BaseDrawerBar,
+    BaseSider,
     BaseCell
   },
   data() {
@@ -141,7 +143,8 @@ export const BASE_LAYOUT_MIXIN = {
       activeKey: "",
       baseTabBars: [],
       baseTabBarVisible: true,
-      baseTabBarCenterVisible: true
+      baseTabBarCenterVisible: true,
+      baseSiderPlacement: "rightBottom"
       // topDrawerBarVisible: false,
       // bottomDrawerBarVisible: false,
       // resetTopDrawerBarHeightPercent: "7.25%",

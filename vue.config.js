@@ -18,6 +18,7 @@ proxyObj["/"] = {
 };
 
 const path = require("path");
+// const webpack = require("webpack");
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -188,7 +189,12 @@ module.exports = {
 
     // // when there are many pages, it will cause too many meaningless requests
     // config.plugins.delete("prefetch");
-
+    // config.plugin("provide").use(webpack.ProvidePlugin, [
+    //   {
+    //     "window.Quill": "quill/dist/quill.js",
+    //     Quill: "quill/dist/quill.js"
+    //   }
+    // ]);
     // set svg-sprite-loader
     config.module
       .rule("svg")

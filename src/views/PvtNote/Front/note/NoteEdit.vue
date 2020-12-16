@@ -1,5 +1,8 @@
 <template>
   <div class="note-wrap">
+    <base-sider :placement="baseSiderPlacement">
+      asd
+    </base-sider>
     <base-header showBackIcon>
       <div slot="left"></div>
       <div slot="middle">
@@ -531,6 +534,7 @@ export default {
 }
 
 .operation-wrap .operation-main-wrap .note-group-item {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: center;

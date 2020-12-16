@@ -19,6 +19,11 @@
 
 <script>
 import Quill from "quill";
+// https://segmentfault.com/q/1010000012536736/a-1020000012571968
+// https://github.com/kensnyder/quill-image-resize-module
+// npm i quill-image-resize-module
+// https://github.com/kensnyder/quill-image-drop-module
+
 import { isString } from "../../../../utils/utils";
 import xss from "xss";
 import "quill/dist/quill.bubble.css";
@@ -32,6 +37,7 @@ export default {
   data() {
     return {
       quillWrap: "quill-" + this._uid,
+      // quillEditorWrap: "quillEditor-" + this._uid,
       toolbarWrap: "toolbar-" + this._uid
     };
   },
@@ -62,6 +68,11 @@ export default {
     readOnly: {
       type: [Boolean],
       default: false,
+      required: false
+    },
+    scrollingContainer: {
+      type: [String, Object],
+      default: "",
       required: false
     },
     debug: {
@@ -102,6 +113,8 @@ export default {
           theme: this.theme,
           placeholder: this.placeholder,
           readOnly: this.readOnly,
+          // scrollingContainer:
+          //   this.scrollingContainer || `.${this.quillEditorWrap}`,
           debug: this.debug,
           /* toolbar: {
             container: `#${this.toolbarWrap}` // Selector for toolbar container
@@ -164,9 +177,11 @@ export default {
       } else {
         this.quill.setText("");
       }
-      if (!this.readOnly) {
+      let isNotReadOnly = !this.readOnly;
+      if (isNotReadOnly) {
         this.quill.focus();
       }
+      quill.enable(isNotReadOnly);
     },
     destroy() {
       this.quill = null;
@@ -199,12 +214,16 @@ export default {
 .quill-editor-wrap {
   width: 100%;
   height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 /* .quill-editor-wrap .ql-editor {
   height: 100%;
 } */
 .ql-editor {
+  /* border: 1px solid blue; */
   height: 100%;
+  /* max-height: 100%; */
 }
 </style>

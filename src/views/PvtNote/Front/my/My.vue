@@ -49,7 +49,12 @@
           @click="pushRoute({ path: '/pvtnote/my/identity/security' })"
         ></base-cell>
         <base-cell
-          text="隐私"
+          text="用户关注"
+          arrow
+          @click="pushRoute({ path: '/pvtnote/my/aboutpvtnote' })"
+        ></base-cell>
+        <base-cell
+          text="便签收藏"
           arrow
           @click="pushRoute({ path: '/pvtnote/my/aboutpvtnote' })"
         ></base-cell>

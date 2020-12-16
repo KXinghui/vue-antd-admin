@@ -318,7 +318,7 @@ export default {
       }
       setTimeout(() => {
         this.skeleton = false;
-      }, 3000);
+      }, 1000);
     },
     findNoteGroupName(noteGroupId) {
       // let noteGroupId = this.noteGroupId;
@@ -499,11 +499,12 @@ export default {
 }
 .operation-main-wrap {
   border: 1px solid red;
-  height: 80%;
+  height: 85%;
   display: flex;
 }
 
 .operation-wrap .operation-main-wrap .note-group-item {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: center;

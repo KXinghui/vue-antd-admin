@@ -156,7 +156,7 @@ export default {
 <style>
 .base-tabbar-item-badge-wrap {
   cursor: pointer;
-  width: 3.4rem;
+  width: 3.3rem;
   padding: 0 0 0.4rem;
 }
 .base-tabbar-item-badge-wrap sup,
@@ -168,7 +168,7 @@ export default {
 .base-tabbar-item-badge-wrap .ant-badge-count,
 .base-tabbar-item-badge-wrap .ant-badge-dot,
 .base-tabbar-item-badge-wrap .ant-badge .ant-scroll-number-custom-component {
-  transform: translate(30%, 5%);
+  transform: translate(30%, 20%);
 }
 
 .base-tabbar-item-wrap,
@@ -181,13 +181,19 @@ export default {
 
 .base-tabbar-center-item-wrap .icon,
 .base-tabbar-item-wrap .icon {
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
 }
 
-.base-tabbar-center-item-wrap .icon svg,
-.base-tabbar-item-wrap .icon svg {
+.base-tabbar-center-item-wrap .icon,
+.base-tabbar-center-item-wrap .icon svg {
   width: 1.2rem;
   height: 1.2rem;
+}
+
+.base-tabbar-item-wrap .icon,
+.base-tabbar-item-wrap .icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text,
@@ -198,7 +204,7 @@ export default {
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text {
   font-size: 0.7rem;
-  margin-top: 0.3rem;
+  margin-top: 0.4rem;
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text-unactive,
@@ -214,13 +220,13 @@ export default {
   top: -1.1rem;
 }
 
-.base-tabbar-center-item-badge-wrap .ant-badge-count,
+/* .base-tabbar-center-item-badge-wrap .ant-badge-count,
 .base-tabbar-center-item-badge-wrap .ant-badge-dot,
 .base-tabbar-center-item-badge-wrap
   .ant-badge
   .ant-scroll-number-custom-component {
   transform: translate(15%, 60%);
-}
+} */
 
 .base-tabbar-center-item-wrap .base-tabbar-item-icon {
   display: flex;
