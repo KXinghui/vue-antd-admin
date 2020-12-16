@@ -62,7 +62,7 @@
         </base-cell>
         <base-cell>
           <div slot="left">
-            <span class="note-title" v-text="note.title"></span>
+            <span class="note-title-large" v-text="note.title"></span>
           </div>
         </base-cell>
         <base-cell>
@@ -377,7 +377,8 @@ export default {
   padding: 0 0.3rem;
 }
 
-.note-title {
+.note-title,
+.note-title-large {
   width: 100%;
   font-size: 1rem;
   font-weight: bold;
@@ -388,5 +389,8 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.note-title-large {
+  font-size: 1.6rem;
 }
 </style>

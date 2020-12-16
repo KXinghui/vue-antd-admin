@@ -30,23 +30,22 @@
           </div>
         </base-cell> -->
         <base-cell
-          text="账号安全"
+          icon="Antd_lock"
+          text="密码"
           arrow
           @click="pushRoute({ path: '/my/identity/security' })"
         ></base-cell>
         <base-cell
-          text="账号安全"
+          icon="Antd_mobile"
+          text="手机"
           arrow
           @click="pushRoute({ path: '/my/identity/security' })"
         ></base-cell>
-        <!-- v-for="i in 10"
-          :key="i" -->
         <base-cell
-          v-for="i in 10"
-          :key="i"
-          text="关于IM"
+          icon="Antd_mail"
+          text="邮箱"
           arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
+          @click="pushRoute({ path: '/my/identity/security' })"
         ></base-cell>
       </template>
     </base-main>

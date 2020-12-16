@@ -23,16 +23,11 @@
             </div>
           </div>
         </base-cell>
-        <base-cell text="用户名" arrow></base-cell>
         <base-cell
-          text="隐私"
+          icon="Antd_user"
+          text="用户名"
           arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
-        ></base-cell>
-        <base-cell
-          text="关于IM"
-          arrow
-          @click="pushRoute({ path: '/my/aboutim' })"
+          @click="pushRoute({ path: '/my/identity/security' })"
         ></base-cell>
       </div>
     </base-main>
