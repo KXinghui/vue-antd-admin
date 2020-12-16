@@ -204,7 +204,7 @@ export default {
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text {
   font-size: 0.75rem;
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
 }
 
 .base-tabbar-center-item-wrap .base-tabbar-item-text-unactive,
