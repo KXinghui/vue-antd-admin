@@ -1,6 +1,13 @@
 <template>
   <div class="pvtnote-my-wrap">
-    <base-header showBackIcon title="账户安全"> </base-header>
+    <base-header showBackIcon title="账户安全">
+      <div slot="right">
+        <icon
+          icon="Antd_history"
+          @click="pushRoute('/pvtnote/my/loginhistory')"
+        />
+      </div>
+    </base-header>
     <!-- <base-cell
       text="图"
       :icon="icon"
