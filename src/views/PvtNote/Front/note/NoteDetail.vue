@@ -225,8 +225,8 @@ import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixi
 import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
 import { mapState } from "vuex";
 import { confirm } from "../../../../utils/antd-utils";
-import noteApi from "../../../../api/pvtnote/Note";
-import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
+import noteApi from "../../../../api/pvtnote/NoteApi";
+import noteGroupApi from "../../../../api/pvtnote/NoteGroupApi";
 import QuillEditor from "../../../../components/Editor/RichText/QuillEditor/index.vue";
 
 export default {

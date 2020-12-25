@@ -5,6 +5,7 @@ import { genRouters } from "../../router/routes";
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
   identity: { name: "kxh", nickname: "kxh", chatNo: "kxh17666" },
+  token: { tokenCode: "", token: "" },
   roles: [
     { id: "01", enCode: "SysUser" },
     { id: "02", enCode: "User" },
@@ -28,6 +29,10 @@ const getters = {
 };
 
 const mutations = {
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+    store.set("token", state.token);
+  },
   SET_IDENTITY: (state, identity, properties) => {
     let realIdentity = {};
     if (properties) {
@@ -39,7 +44,7 @@ const mutations = {
       if (typeof properties === "string") {
         realIdentity[properties] = identity[properties];
       }
-      Object.assign(state.identity, realIdentity);
+      state.identity = Object.assign(state.identity, realIdentity);
     } else {
       state.identity = identity;
     }
@@ -63,17 +68,32 @@ const mutations = {
   UPLOAD_AVATAR: (state, avatarUrl) => {
     state.identity.avatarUrl = avatarUrl;
   },
-  LOGIN: (state, identity) => {
+  LOGIN: (state, identity, token) => {
     state.identity = identity;
+    state.token = token;
   },
   LOGOUT: state => {
     state.identity = null;
+    state.token = null;
+    state.roles = null;
+    state.permissions = null;
+  },
+  UPDATE_PASSWORD: state => {
+    state.identity = null;
+    state.token = null;
+    state.roles = null;
+    state.permissions = null;
   }
 };
 
 const actions = {
-  Login(context, identity) {},
-  Logout(context, identity) {}
+  Login({ dispatch, commit, getters, rootGetters }, identity) {
+    // 登陆api 获取结果设置token和Identity
+  },
+  Logout(context, identity) {
+    // 登出api 获取结果置空token和Identity
+  },
+  UpdatePassword() {}
 };
 
 // const identity = {

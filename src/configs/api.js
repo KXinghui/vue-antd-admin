@@ -1,6 +1,6 @@
 export { DEFAULT_BASEURL, DEFAULT_TIMEOUT };
 
-const DEFAULT_TIMEOUT = 1000;
+const DEFAULT_TIMEOUT = 100000;
 const port = "8081";
 
 function baseUrl() {

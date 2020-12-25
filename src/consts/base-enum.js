@@ -11,7 +11,7 @@ export class BaseEnum {
     return new BaseEnum(id, name, value);
   }
   equals(enums) {
-    return (this.value == enums) | (this.name == enums);
+    return (this.id == enums) | (this.value == enums) | (this.name == enums);
   }
 }
 
@@ -25,4 +25,15 @@ export class IdentityTypeEnum extends BaseEnum {
   static WECHAT = this.enums(6, "WECHAT", "WeChat");
   static QQ = this.enums(7, "QQ", "QQ");
   static MICRO_BLOG = this.enums(8, "MICRO_BLOG", "MicroBlog");
+}
+
+export class IdentityRoleEnum extends BaseEnum {
+  mapping;
+  constructor(id, name, value, mapping) {
+    super(id, name, value);
+    this.mapping = mapping;
+  }
+  static USER = this.enums(0, "USER", "user", "user");
+  static SYS_USER = this.enums(1, "SYS_USER", "sysuser", "sysUser");
+  static CHAT_USER = this.enums(2, "CHAT_USER", "chatuser", "chatUser");
 }

@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import createPersistedState from "vuex-persistedstate";
-// import SecureLS from "secure-ls";
-// var ls = new SecureLS({ encodingType: "aes" });
+import createPersistedState from "vuex-persistedstate";
+import SecureLS from "secure-ls";
+var ls = new SecureLS({ encodingType: "aes" });
 
 Vue.use(Vuex);
 
@@ -21,19 +21,20 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const getters = {
   identity: state => state.identity.identity,
+  token: state => state.identity.token,
   roles: state => state.identity.roles,
   permissions: state => state.identity.permissions
 };
 
 export default new Vuex.Store({
   plugins: [
-    // createPersistedState({
-    //   storage: {
-    //     getItem: key => ls.get(key),
-    //     setItem: (key, value) => ls.set(key, value),
-    //     removeItem: key => ls.remove(key)
-    //   }
-    // })
+    createPersistedState({
+      storage: {
+        getItem: key => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: key => ls.remove(key)
+      }
+    })
   ],
   strict: process.env.NODE_ENV === "production" ? false : true,
   state: {},

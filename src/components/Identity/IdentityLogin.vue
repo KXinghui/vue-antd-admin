@@ -144,6 +144,9 @@
 
 <script>
 import { FORM_MIXIN } from "@mixins/form-mixin";
+import { baseIdentityApi } from "../../api/base/ApiFactory";
+import { mapMutations } from "vuex";
+import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
 
 export default {
   name: "IdentityLogin",
@@ -216,6 +219,11 @@ export default {
     }
   },
   methods: {
+    ...mapMutations("identity", [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      IDENTITY_MUTATION_TYPE.SET_TOKEN,
+      IDENTITY_MUTATION_TYPE.SET_IDENTITY
+    ]),
     changeTabs(activeKey) {
       if (4 == activeKey) {
         if (!this.loginScanCodeBase64) {
@@ -226,6 +234,27 @@ export default {
     },
     loginByLocalAccount() {
       console.log("localaccount login", this.form);
+      baseIdentityApi(this.identityRole)
+        .loginByLocalAccount(
+          {
+            localAccount: this.form.localAccount,
+            password: this.form.password
+            // userQuery: {
+            //   localAccount: this.form.localAccount,
+            //   password: this.form.password
+            // }
+          },
+          {}
+        )
+        .then(res => {
+          if (res.data.map) {
+            this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
+              token: res.data.map["Authorization"],
+              tokenCode: res.data.map["AuthorizationCode"]
+            });
+          }
+          console.log(res.data.map);
+        });
     },
     loginByMail() {
       console.log("mail login", this.form);

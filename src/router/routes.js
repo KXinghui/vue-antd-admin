@@ -104,14 +104,6 @@ export const routes = [
           import(
             /* webpackChunkName: "imageeditor" */ "@views/Admin/Editor/Image"
           )
-      },
-      {
-        path: "image/tuiImageEditor",
-        name: "TuiImageEditor",
-        component: () =>
-          import(
-            /* webpackChunkName: "imageeditor" */ "@views/Admin/Editor/Image/TuiImageEditorView"
-          )
       }
     ]
   },

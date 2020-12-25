@@ -65,6 +65,14 @@
             展示布局标签栏
           </a-checkbox>
         </a-form-model-item>
+        <a-form-model-item>
+          <a-checkbox
+            :checked="layoutSetting.driverGuide"
+            @change="changeLayoutSetting('driverGuide')"
+          >
+            展示驱动指南
+          </a-checkbox>
+        </a-form-model-item>
       </a-form-model>
 
       <p>主题设置</p>

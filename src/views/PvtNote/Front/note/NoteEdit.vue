@@ -187,8 +187,8 @@ import { ROUTER_MIXIN } from "../../../../mixins/router-mixin";
 import { mapState } from "vuex";
 import BaseTabBarItem from "../../../../components/Mobile/layouts/BaseTabBar/BaseTabBarItem.vue";
 import { msg, confirm } from "../../../../utils/antd-utils";
-// import noteApi from "../../../../api/pvtnote/Note";
-// import noteGroupApi from "../../../../api/pvtnote/NoteGroup";
+// import noteApi from "../../../../api/pvtnote/NoteApi";
+// import noteGroupApi from "../../../../api/pvtnote/NoteGroupApi";
 import BsCore from "../../../../components/BetterScroll/BsCore.vue";
 import QuillEditor from "../../../../components/Editor/RichText/QuillEditor/index.vue";
 

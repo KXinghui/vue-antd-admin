@@ -14,6 +14,14 @@ const ADMIN = [
           import(
             /* webpackChunkName: "note" */ "../../views/PvtNote/Admin/Note/table/index.vue"
           )
+      },
+      {
+        path: "table/noteGroup",
+        name: "NoteGroupTableView",
+        component: () =>
+          import(
+            /* webpackChunkName: "note-group" */ "../../views/PvtNote/Admin/NoteGroup/table/index.vue"
+          )
       }
     ]
   }

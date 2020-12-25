@@ -1,8 +1,6 @@
-import BaseApi from "../base/BaseApi";
-import { axiosInstance } from "../axios-config";
+import BaseIdentityApi from "./base/BaseIdentityApi";
+// import { axiosInstance } from "../axios-config";
 
-class UserApi extends BaseApi {
-  
-}
+class UserApi extends BaseIdentityApi {}
 const userApi = new UserApi("/user");
 export default userApi;

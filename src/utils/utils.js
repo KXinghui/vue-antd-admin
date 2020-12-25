@@ -300,3 +300,51 @@ export async function yuicompress(code, options) {
 };
 window.addEventListener("online", msgOnlineStatus);
 window.addEventListener("offline", msgOnlineStatus); */
+
+import Driver from "driver.js";
+import "driver.js/dist/driver.min.css";
+
+export function driverGuide(driverOption, stepDefinitions) {
+  const driver = new Driver(
+    Object.assign(
+      {
+        // className: "scoped-class", // className to wrap driver.js popover
+        animate: true, // Animate while changing highlighted element
+        opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
+        padding: 5, // Distance of element from around the edges
+        allowClose: true, // Whether clicking on overlay should close or not
+        overlayClickNext: true, // Should it move to next step on overlay click
+        // doneBtnText: "Done", // Text on the final button
+        // closeBtnText: "Close", // Text on the close button for this step
+        // nextBtnText: "Next", // Next button text for this step
+        // prevBtnText: "Previous", // Previous button text for this step
+        doneBtnText: "完成", // Text on the final button
+        closeBtnText: "关闭", // Text on the close button for this step
+        nextBtnText: "下一步", // Next button text for this step
+        prevBtnText: "上一步", // Previous button text for this step
+        // stageBackground: "#ffffff", // Background color for the staged behind highlighted element
+        showButtons: true, // Do not show control buttons in footer
+        keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
+        scrollIntoViewOptions: {} // We use `scrollIntoView()` when possible, pass here the options for it if you want any
+        // // eslint-disable-next-line no-unused-vars
+        // onHighlightStarted: Element => {}, // Called when element is about to be highlighted
+        // // eslint-disable-next-line no-unused-vars
+        // onHighlighted: Element => {}, // Called when element is fully highlighted
+        // // eslint-disable-next-line no-unused-vars
+        // onDeselected: Element => {}, // Called when element has been deselected
+        // // eslint-disable-next-line no-unused-vars
+        // onReset: Element => {
+        //   // driver.reset();
+        // }, // Called when overlay is about to be cleared
+        // // eslint-disable-next-line no-unused-vars
+        // onNext: Element => {}, // Called when moving to next step on any step
+        // // eslint-disable-next-line no-unused-vars
+        // onPrevious: Element => {} // Called when moving to previous step on any step
+      },
+      driverOption
+    )
+  );
+  driver.defineSteps(stepDefinitions);
+  driver.start();
+  return driver;
+}

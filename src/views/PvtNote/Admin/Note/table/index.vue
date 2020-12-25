@@ -8,7 +8,6 @@
       :row-selection-type="rowSelectionType"
       :data="data"
       :columns="columns"
-      :isBatch="true"
       @changePage="changePage"
     >
       <!-- 操作栏 -->
@@ -56,20 +55,27 @@
       <span>{{ record }}</span>
       <span>{{ record }}</span>
     </template> -->
-      <!-- <template v-slot:action>
-      <a href="javascript:;">Delete</a>
-      <a href="javascript:;">Add</a>
-      <a href="javascript:;">Update</a>
-    </template> -->
+      <template v-slot:title="record">
+        <span> {{ record.title }}</span>
+      </template>
+      <template v-slot:coverUrl="record">
+        <img class="img-response" :src="record.coverUrl" />
+      </template>
+      <div slot="action" slot-scope="text, record">
+        {{ record }}
+        <a href="javascript:;">Delete</a>
+        <a href="javascript:;">Add</a>
+        <a href="javascript:;">Update</a>
+      </div>
       <!-- <template v-slot:contextmenu>
       右键菜单
     </template> -->
-      <template v-slot:title>
+      <!--  <template v-slot:title>
         我是表格标题
       </template>
       <template v-slot:footer>
         我是表格尾部
-      </template>
+      </template> -->
     </base-table>
     <base-modal
       :modalRefresh.sync="modalRefresh"
@@ -131,8 +137,10 @@ export default {
       selectedRowKeys: [],
       columns: [
         {
-          title: "Date",
-          dataIndex: "date",
+          title: "标题",
+          dataIndex: "title",
+          key: "title",
+          scopedSlots: { customRender: "title" },
           width: 200,
           isResize: true,
           minWidth: 50,
@@ -142,24 +150,18 @@ export default {
           align: "center"
         },
         {
-          title: "Amount",
-          dataIndex: "amount",
-          width: 100,
-          isResize: false,
-          minWidth: 100,
-          maxWidth: 300
-        },
-        {
-          title: "Type",
-          dataIndex: "type",
+          title: "封面图",
+          dataIndex: "coverUrl",
+          scopedSlots: { customRender: "coverUrl" },
           width: 100,
           isResize: true,
           minWidth: 100,
-          maxWidth: 300
+          maxWidth: 300,
+          ellipsis: true
         },
         {
-          title: "Note",
-          dataIndex: "note",
+          title: "副标题",
+          dataIndex: "subTitle",
           width: 100,
           isResize: true,
           minWidth: 100,
@@ -169,75 +171,64 @@ export default {
           title: "Action",
           dataIndex: "action",
           key: "action",
-          // scopedSlots: { customRender: "action" },
+          scopedSlots: { customRender: "action" },
           width: 200,
           isResize: true,
           minWidth: 100,
           maxWidth: 300
-          // fixed: "right"
         }
       ],
       data: [
         {
           id: "001",
-          key: 0,
-          date: "2018-02-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 120,
           type: "income",
           note: "transfer"
         },
         {
           id: "002",
-          key: 1,
-          date: "2018-03-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 243,
           type: "income",
           note: "transfer"
         },
         {
           id: "003",
-          key: 2,
-          date: "2018-04-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
           note: "transfer"
         },
         {
           id: "004",
-          key: 3,
-          date: "2018-04-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
           note: "transfer"
         },
         {
           id: "005",
-          key: 4,
-          date: "2018-04-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
           note: "transfer"
         },
         {
           id: "006",
-          key: 5,
-          date: "2018-04-11",
-          amount: 98,
-          type: "income",
-          note: "transfer"
-        },
-        {
-          id: "007",
-          key: 6,
-          date: "2018-04-11",
-          amount: 98,
-          type: "income",
-          note: "transfer"
-        },
-        {
-          id: "008",
-          key: 7,
-          date: "2018-04-11",
+          title: "SpringBoot Vue PVTNOTE",
+          coverUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
           note: "transfer"

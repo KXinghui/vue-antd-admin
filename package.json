@@ -30,6 +30,7 @@
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
+    "driver.js": "^0.9.8",
     "element-resize-detector": "^1.2.1",
     "epubjs": "^0.3.88",
     "html2canvas": "^1.0.0-rc.7",

@@ -17,7 +17,8 @@ const state = () => {
       showTagBar: false,
       /* IM */
       showDrawer: true,
-      drawerPlacement: "left"
+      drawerPlacement: "left",
+      driverGuide: false
     },
     // 主题设置
     themeSetting: {

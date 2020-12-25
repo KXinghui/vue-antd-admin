@@ -32,6 +32,7 @@
     </a-col> -->
     <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
       <div class="layout-header-right">
+        <a-icon class="btn" type="compass" @click="clickGuide" />
         <full-screen />
         <identity-avatar :identity="identity" avatar-shape="square" />
       </div>
@@ -81,6 +82,9 @@ export default {
     },
     toggleShowSider() {
       this.$emit("update:showSider", !this.showSider);
+    },
+    clickGuide() {
+      this.$emit("guide");
     }
   }
 };

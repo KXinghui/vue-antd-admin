@@ -64,7 +64,7 @@ export const TABLE_MIXIN = {
       settingModalVisible: false,
       // columns: [],
       /* 伸缩列 */
-      draggingMap: {},
+      // draggingMap: {},
       contextmenuId: `contextmenu${this._uid}`,
       contextmenuVisible: false,
       contextmenuStyle: {
@@ -291,6 +291,9 @@ export const TABLE_MIXIN = {
         onSelectInvert(selectedRows) {}
       };
     }
+    /* columnScopedSlots(){
+      this.column.map
+    } */
   },
   methods: {
     ableBatchOp() {
@@ -412,11 +415,11 @@ export const TABLE_MIXIN = {
   },
   mounted() {
     // 表格可伸缩列 不使用JSX【https://www.jianshu.com/p/89b8ccd1eca0】
-    this.columns.forEach(col => {
+    /* this.columns.forEach(col => {
       if (col.isResize) {
         this.draggingMap[col.key] = col;
       }
-    });
-    window.addEventListener("resize", this.resizeBaseDrawerBarHeight);
+    }); */
+    console.log("columns " + JSON.stringify(this.columns));
   }
 };

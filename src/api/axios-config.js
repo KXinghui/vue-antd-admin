@@ -1,27 +1,39 @@
 import axios from "axios";
-// import https from "https";
+import qs from "qs";
+// npm install https-proxy-agent
+import store from "../store";
 
 // import qs from "qs";
 import { DEFAULT_BASEURL, DEFAULT_TIMEOUT } from "@configs/api";
 
 import { msg } from "@utils/antd-utils";
+// axios POST https net::ERR_CERT_COMMON_NAME_INVALID
 
 const instance = axios.create({
   baseURL: DEFAULT_BASEURL,
   timeout: DEFAULT_TIMEOUT,
   // 跨域【https://segmentfault.com/q/1010000008671922】
-  headers: {
+  // headers: { "content-type": "application/x-www-form-urlencoded" },
+  /* headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Methods": "*"
-  } /*,
-  httpsAgent: new https.Agent({
-    rejectUnauthorized: false
-  }) */
+  }, */
+  // SpringBoot Axios 【https://segmentfault.com/a/1190000013312233】
+  transformRequest: [
+    function(data) {
+      return qs.stringify(data);
+    }
+  ]
 });
 // Add a request interceptor
 instance.interceptors.request.use(
   function(config) {
+    debugger;
+    config.headers = Object.assign(config.headers, {
+      Authorization: store.getters.token.token,
+      AuthorizationCode: store.getters.token.tokenCode
+    });
     // Do something before request is sent
     console.log("interceptors.request 请求拦截");
     return config;
@@ -35,6 +47,7 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function(response) {
+    debugger;
     console.log("interceptors.response 响应拦截");
     console.log(response);
     console.log(response.data);

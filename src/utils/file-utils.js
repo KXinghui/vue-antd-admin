@@ -41,6 +41,32 @@ export function downloadByBase64(base64, fileName) {
   return downloadFile(blob, fileName);
 }
 
+export async function htmlToCanvas(ele, options) {
+  let canvasData = null;
+  let element = ele || document.body;
+  await html2canvas(
+    element,
+    Object.assign(
+      {
+        logging: true, // 启用日志记录以进行调试 (发现加上对去白边有帮助)
+        backgroundColor: null, // 解决生成的图片有白边
+        width: element.clientWidth, //dom 原始宽度
+        height: element.clientHeight,
+        scrollY: 0,
+        scrollX: 0,
+        useCORS: true, // 跨域
+        allowTaint: true // 允许跨源图像污染画布
+        // scale: 2, //图片清晰度的保证
+        // taintTest: false
+      },
+      options
+    )
+  ).then(canvas => {
+    canvasData = canvas;
+  });
+  return canvasData;
+}
+
 /**
  * 截图
  * @param {*} ele
@@ -48,14 +74,18 @@ export function downloadByBase64(base64, fileName) {
  * @param {*} fileName
  */
 export async function screenshot(ele, options, fileName) {
-  debugger;
   let isDownload = false;
+  let element = ele || document.body;
   await html2canvas(
-    ele || document.body,
+    element,
     Object.assign(
       {
         logging: true, // 启用日志记录以进行调试 (发现加上对去白边有帮助)
         backgroundColor: null, // 解决生成的图片有白边
+        width: element.clientWidth, //dom 原始宽度
+        height: element.clientHeight,
+        scrollY: 0,
+        scrollX: 0,
         useCORS: true, // 跨域
         allowTaint: true // 允许跨源图像污染画布
         // scale: 2, //图片清晰度的保证

@@ -10,6 +10,7 @@
         <!-- 'min-width': layoutSiderWidth, -->
         <pane :style="{ 'max-width': layoutSiderWidth }">
           <layout-sider
+            :id="layoutSiderRef"
             :ref="layoutSiderRef"
             :is-mobile.sync="isMobile"
             :float-sider="layoutSetting.floatSider"
@@ -24,13 +25,14 @@
         <pane style="width: 100%;">
           <a-layout class="base-layout-main">
             <splitpanes horizontal>
-              <pane style="max-height: 64px;">
+              <pane :id="layoutHeaderRef" style="max-height: 64px;">
                 <!-- style="background: #fff; padding: 0;" -->
                 <a-layout-header style="background: #fff; padding: 0;">
                   <layout-header
                     :is-mobile.sync="isMobile"
                     :collapsed-sider.sync="collapsedSider"
                     :show-sider.sync="showSider"
+                    @guide="handleGuide"
                   ></layout-header>
                 </a-layout-header>
               </pane>
@@ -41,7 +43,7 @@
                   style="background: #fff; margin: .3rem 0 0; height: 40px;"
                 ></layout-tag-bar>
               </pane>
-              <pane style="overflow: auto; height: 100%">
+              <pane :id="layoutMainRef" style="overflow: auto; height: 100%">
                 <a-spin
                   class="base-layout-spin-container"
                   :spinning="loading.isLoad"
@@ -57,16 +59,17 @@
               <!-- </a-layout-content> -->
               <pane style="max-height: 64px;">
                 <a-layout-footer
+                  :id="layoutFooterRef"
                   :style="{
-                    fontSize: isMobile ? '' : '1rem',
-                    margin: isMobile ? '0 -3rem' : ''
+                    fontSize: isMobile ? '' : '1rem'
                   }"
                 >
+                  <!-- margin: isMobile ? '0 -3rem' : '' -->
                   <layout-footer />
                 </a-layout-footer>
               </pane>
             </splitpanes>
-            <layout-setting></layout-setting>
+            <layout-setting :id="layoutSettingRef"></layout-setting>
           </a-layout>
         </pane>
       </splitpanes>
@@ -87,6 +90,9 @@ import {
   LayoutFooter
 } from "@layouts/layout";
 import { mapState } from "vuex";
+import { driverGuide } from "../utils/utils";
+// import Driver from "driver.js";
+// import "driver.js/dist/driver.min.css";
 
 export default {
   /* name: "BaseLayout", */
@@ -104,8 +110,28 @@ export default {
     return {
       collapsedSider: false,
       showSider: true,
+      layoutMainRef:
+        "layoutMain-" +
+        Math.random()
+          .toString()
+          .substr(2),
+      layoutFooterRef:
+        "layoutFooter-" +
+        Math.random()
+          .toString()
+          .substr(2),
+      layoutSettingRef:
+        "layoutSetting-" +
+        Math.random()
+          .toString()
+          .substr(2),
       layoutSiderRef:
         "layoutSider-" +
+        Math.random()
+          .toString()
+          .substr(2),
+      layoutHeaderRef:
+        "layoutHeader-" +
         Math.random()
           .toString()
           .substr(2),
@@ -196,6 +222,9 @@ export default {
       this.layoutSiderWidth = this.layoutSetting.floatSider
         ? "0px"
         : width + "px";
+    },
+    handleGuide() {
+      this.driver = driverGuide(this.driverOption, this.stepDefinitions);
     }
   },
   watch: {
@@ -226,6 +255,57 @@ export default {
     console.log(
       this.layoutSiderWidth + "  =========   " + this.layoutSiderLeft
     );
+    this.driverOption = {};
+    this.stepDefinitions = [
+      {
+        element: `#${this.layoutSiderRef}`,
+        popover: {
+          // className: 'first-step-popover-class',
+          title: "LayoutSider",
+          description: "LayoutSider",
+          position: "right-center"
+        }
+      },
+      {
+        element: `#${this.layoutHeaderRef}`,
+        popover: {
+          // className: 'first-step-popover-class',
+          title: "LayoutHeader",
+          description: "LayoutHeader",
+          position: "bottom-center"
+        }
+      },
+      {
+        element: `#${this.layoutMainRef}`,
+        popover: {
+          // className: 'first-step-popover-class',
+          title: "LayoutMain",
+          description: "LayoutMain",
+          position: "mid-center"
+        }
+      },
+      {
+        element: `#${this.layoutFooterRef}`,
+        popover: {
+          // className: 'first-step-popover-class',
+          title: "LayoutFooter",
+          description: "LayoutFooter",
+          position: "top-center"
+        }
+      },
+      {
+        element: `#${this.layoutSettingRef}`,
+        popover: {
+          // className: 'first-step-popover-class',
+          title: "LayoutSetting",
+          description: "LayoutSetting",
+          position: "left-center"
+        }
+      }
+    ];
+    if (this.layoutSetting.driverGuide) {
+      this.handleGuide();
+    }
   },
   destroyed() {
     let layoutSiderRef = this.$refs[this.layoutSiderRef];

@@ -56,12 +56,7 @@ export const EDITOR_CODE_MENUS = [
   }
 ];
 
-export const EDITOR_IMAGES_MENUS = [
-  {
-    path: "/editor/image/tuiImageEditor",
-    name: "TuiImageEditor"
-  }
-];
+export const EDITOR_IMAGES_MENUS = [];
 
 /**
  * 编辑器Image路由
