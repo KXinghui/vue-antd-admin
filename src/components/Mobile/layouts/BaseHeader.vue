@@ -154,7 +154,7 @@ export default {
   flex-direction: row;
   align-items: center;
   height: 100%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .base-header-left {

@@ -15,6 +15,15 @@ export const FORM_MIXIN = {
       }
     };
   },
+  props: {
+    // formOption: {
+    //   type: [Object],
+    //   default() {
+    //     return {};
+    //   },
+    //   require: false
+    // }
+  },
   computed: {
     formItemLayout() {
       const { layout } = this.formOption;

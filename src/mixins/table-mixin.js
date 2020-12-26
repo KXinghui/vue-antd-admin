@@ -36,7 +36,7 @@ export const TABLE_MIXIN = {
     //         },
     //         on: {
     //           dragging: x => {
-    //             debugger;
+    //
     //             let colWidth = Math.max(x, 1);
     //             if (col.minWidth && col.minWidth > colWidth) {
     //               col.width = col.minWidth;
@@ -153,6 +153,11 @@ export const TABLE_MIXIN = {
       default: false,
       requrire: false
     },
+    isShowBatch: {
+      typoe: [Boolean],
+      default: true,
+      requrire: false
+    },
     rowKey: {
       typoe: [String],
       default: "id",
@@ -241,7 +246,6 @@ export const TABLE_MIXIN = {
               },
               on: {
                 dragging: x => {
-                  debugger;
                   let colWidth = Math.max(x, 1);
                   if (col.minWidth && col.minWidth > colWidth) {
                     col.width = col.minWidth;
@@ -297,7 +301,8 @@ export const TABLE_MIXIN = {
   },
   methods: {
     ableBatchOp() {
-      this.isBatch = !this.isBatch;
+      this.$emit("update:isBatch", !this.isBatch);
+      // this.isBatch = !this.isBatch;
     },
     // eslint-disable-next-line no-unused-vars
     customRowFunc: function(event, record) {

@@ -1,8 +1,15 @@
 <template>
   <!-- <bs-core :scrollX="true" :isRefres="isScrollRefresh"> -->
   <div class="base-table-wrap" :ref="baseTableRef" :id="baseTableRef">
+    <div class="base-table-form-wrap">
+      <slot name="tableForm"></slot>
+    </div>
     <div class="base-table-header-wrap">
-      <slot name="header"></slot>
+      <slot name="tableHeader"></slot>
+      <a-button v-show="isShowBatch" type="primary" @click="ableBatchOp"
+        ><icon icon="IconFont_batch-op"></icon
+        >{{ isBatch ? "取消批量" : "批量" }}</a-button
+      >
     </div>
     <!-- :row-selection="{
         type: rowSelection.type,
@@ -19,7 +26,7 @@
           return !isBatch;
         }
       }"
-      :scroll="{ scrollToFirstRowOnChange: false }"
+      :scroll="{ x: true, scrollToFirstRowOnChange: false }"
       class="base-table"
       bordered
       :loading="loading"
@@ -56,6 +63,12 @@
       >
         <slot :name="name" v-bind="record"></slot>
       </template> -->
+      <div slot="title" class="base-table-title-wrap">
+        <slot name="tableTitle"></slot>
+      </div>
+      <div slot="footer" class="base-table-footer-wrap">
+        <slot name="tableFooter"></slot>
+      </div>
     </a-table>
     <!-- class="contextmenustyle" -->
     <a-menu
@@ -376,11 +389,13 @@ export default {
   }
 } */
 .base-table-wrap {
+  background-color: white;
   .base-table {
+    // overflow-x: scroll;
     .resize-table-th {
       position: relative;
       .table-draggable-handle {
-        border: 1px solid red;
+        /* border: 1px solid red; */
         position: absolute;
         height: 100% !important;
         left: auto !important;
@@ -402,7 +417,13 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
-  padding: 0 1rem;
-  height: 5rem;
+}
+.base-table-form-wrap {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 1rem 0 2rem;
 }
 </style>

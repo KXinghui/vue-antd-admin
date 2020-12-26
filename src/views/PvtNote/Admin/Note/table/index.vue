@@ -4,16 +4,74 @@
 
     <!-- 表格 -->
     <base-table
+      :isBatch.sync="isBatch"
       :selectedRowKeys.sync="selectedRowKeys"
       :row-selection-type="rowSelectionType"
       :data="data"
       :columns="columns"
       @changePage="changePage"
     >
+      <div slot="tableForm">
+        <!-- <base-form :formModel="noteQuery"> </base-form> -->
+        <a-form-model :model="noteQuery" layout="horizontal">
+          <!-- v-bind="formItemLayout" -->
+          <a-form-model-item label="标题">
+            <a-input v-model="noteQuery.title" placeholder="标题" allow-clear />
+          </a-form-model-item>
+          <a-form-model-item label="副标题">
+            <a-input
+              v-model="noteQuery.subTitle"
+              placeholder="副标题"
+              allow-clear
+            />
+          </a-form-model-item>
+          <!--  {{ enums["NoteTypeEnum"] }} -->
+          <!-- style="width: 100%" -->
+          <a-form-model-item label="便签类型">
+            <a-select
+              mode="multiple"
+              placeholder="便签类型"
+              @change="changeNoteTypes"
+            >
+              <a-select-option
+                v-for="noteType in enums['NoteTypeEnum']"
+                :key="noteType.value"
+                :value="noteType.value"
+              >
+                {{ noteType.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+
+          <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
+            <a-dropdown>
+              <a-button type="primary" block>
+                搜索
+              </a-button>
+              <a-menu slot="overlay">
+                <a-menu-item key="0">
+                  <a-button type="primary" block>
+                    模糊搜索
+                  </a-button>
+                </a-menu-item>
+                <a-menu-item key="1">
+                  <a-button type="primary" block>
+                    精确搜索
+                  </a-button>
+                </a-menu-item>
+                <a-menu-divider />
+              </a-menu>
+            </a-dropdown>
+          </a-form-model-item>
+        </a-form-model>
+      </div>
       <!-- 操作栏 -->
-      <div slot="header" class="operation-bar">
+      <div slot="tableHeader">
         <!-- size="small" -->
-        <a-button v-has-pmsn="{ key: 'enCode', pmsns: ['List'] }" type="primary"
+        <a-button
+          size="small"
+          v-has-pmsn="{ key: 'enCode', pmsns: ['List'] }"
+          type="primary"
           ><icon icon="Antd_search"></icon>搜索</a-button
         >
         <a-button
@@ -70,12 +128,12 @@
       <!-- <template v-slot:contextmenu>
       右键菜单
     </template> -->
-      <!--  <template v-slot:title>
+      <template v-slot:tableTitle>
         我是表格标题
       </template>
-      <template v-slot:footer>
+      <template v-slot:tableFooter>
         我是表格尾部
-      </template> -->
+      </template>
     </base-table>
     <base-modal
       :modalRefresh.sync="modalRefresh"
@@ -124,6 +182,7 @@ import BaseTable from "../../../../../components/Table/BaseTable.vue";
 import BaseModal from "../../../../../components/Antd/Modal/BaseModal";
 import { FORM_MIXIN } from "../../../../../mixins/form-mixin";
 // import BaseForm from "../../../../../components/Antd/Modal/BaseModal.vue";
+import { NoteTypeEnum } from "../../../../../consts/pvtnote";
 
 export default {
   name: "NoteTableView",
@@ -131,6 +190,9 @@ export default {
   components: { BaseTable, /* BaseForm, */ BaseModal },
   data() {
     return {
+      isBatch: false,
+      enums: { NoteTypeEnum: NoteTypeEnum.selectOptions() },
+      noteQuery: { title: "", subTitle: "" },
       form: "",
       formModel: { localAccount: "sentinel", password: "12321654" },
       rowSelectionType: "checkbox",
@@ -138,8 +200,7 @@ export default {
       columns: [
         {
           title: "标题",
-          dataIndex: "title",
-          key: "title",
+          dataIndex: "title2",
           scopedSlots: { customRender: "title" },
           width: 200,
           isResize: true,
@@ -153,7 +214,7 @@ export default {
           title: "封面图",
           dataIndex: "coverUrl",
           scopedSlots: { customRender: "coverUrl" },
-          width: 100,
+          width: 200,
           isResize: true,
           minWidth: 100,
           maxWidth: 300,
@@ -162,7 +223,7 @@ export default {
         {
           title: "副标题",
           dataIndex: "subTitle",
-          width: 100,
+          width: 200,
           isResize: true,
           minWidth: 100,
           maxWidth: 300
@@ -263,6 +324,9 @@ export default {
     },
     changePage(page, pageSize) {
       console.log("当前页码为： " + page + "当前每页条数为： " + pageSize);
+    },
+    changeNoteTypes(value) {
+      console.log("便签类型  " + value);
     }
   }
 };

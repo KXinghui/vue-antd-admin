@@ -3,6 +3,7 @@
     <a-form-model
       :model="formModel"
       :layout="formOption.layout"
+      :rules="formOption.rules"
       v-bind="formItemLayout"
     >
       <!-- :label-col="labelCol"
@@ -26,8 +27,7 @@
           注册
         </a-button>
       </a-form-model-item> -->
-      <slot>asdfasdfasdf</slot>
-      adsfasdf
+      <slot>基础表单</slot>
     </a-form-model>
   </div>
 </template>

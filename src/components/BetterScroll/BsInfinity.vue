@@ -36,7 +36,7 @@ export default {
   position: relative;
   height: 100%;
   padding: 0 10px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   overflow: hidden;
 }
 .bscroll .scroll-x-wrap {

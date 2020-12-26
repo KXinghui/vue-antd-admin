@@ -2,16 +2,29 @@ export class BaseEnum {
   id;
   name;
   value;
-  constructor(id, name, value) {
+  desc;
+  constructor(id, name, value, desc) {
     this.id = id;
     this.name = name;
     this.value = value;
+    this.desc = desc;
   }
-  static enums(id, name, value) {
-    return new BaseEnum(id, name, value);
+
+  static enums(id, name, value, desc) {
+    return new BaseEnum(id, name, value, desc);
   }
   equals(enums) {
     return (this.id == enums) | (this.value == enums) | (this.name == enums);
+  }
+  static selectOptions(name = "desc", value = "id") {
+    let selectOptions = [];
+    for (let enumClass in this) {
+      selectOptions.push({
+        name: this[enumClass][name],
+        value: this[enumClass][value]
+      });
+    }
+    return selectOptions;
   }
 }
 
@@ -29,11 +42,17 @@ export class IdentityTypeEnum extends BaseEnum {
 
 export class IdentityRoleEnum extends BaseEnum {
   mapping;
-  constructor(id, name, value, mapping) {
-    super(id, name, value);
+  constructor(id, name, value, desc, mapping) {
+    super(id, name, value, desc);
     this.mapping = mapping;
   }
-  static USER = this.enums(0, "USER", "user", "user");
-  static SYS_USER = this.enums(1, "SYS_USER", "sysuser", "sysUser");
-  static CHAT_USER = this.enums(2, "CHAT_USER", "chatuser", "chatUser");
+  static USER = this.enums(0, "USER", "user", "用户", "user");
+  static SYS_USER = this.enums(1, "SYS_USER", "sysuser", "系统用户", "sysUser");
+  static CHAT_USER = this.enums(
+    2,
+    "CHAT_USER",
+    "chatuser",
+    "聊天用户",
+    "chatUser"
+  );
 }
