@@ -46,7 +46,7 @@ html {--antd-wave-shadow-color: @primary-color;}
 .ant-alert-info .ant-alert-icon {color: #1890ff;}
 .ant-alert-warning {background-color: #fffbe6;border: 1px solid #ffe58f;}
 .ant-alert-warning .ant-alert-icon {color: #faad14;}
-.ant-alert-error {background-color: color(~`colorPalette("@{layout-header-background}", 1)`);border: 1px solid #ffa39e;}
+.ant-alert-error {background-color: #fff1f0;border: 1px solid #ffa39e;}
 .ant-alert-error .ant-alert-icon {color: #f5222d;}
 .ant-alert-close-icon {background-color: transparent;border: none;}
 .ant-alert-close-icon .anticon-close {color: @text-color-secondary;}
@@ -1381,7 +1381,7 @@ tr.ant-table-expanded-row:hover {background: #fbfbfb;}
 .ant-tag-pink-inverse {color: #fff;background: #eb2f96;border-color: #eb2f96;}
 .ant-tag-magenta {color: #eb2f96;background: #fff0f6;border-color: #ffadd2;}
 .ant-tag-magenta-inverse {color: #fff;background: #eb2f96;border-color: #eb2f96;}
-.ant-tag-red {color: #f5222d;background: color(~`colorPalette("@{layout-header-background}", 1)`);border-color: #ffa39e;}
+.ant-tag-red {color: #f5222d;background: #fff1f0;border-color: #ffa39e;}
 .ant-tag-red-inverse {color: #fff;background: #f5222d;border-color: #f5222d;}
 .ant-tag-volcano {color: #fa541c;background: #fff2e8;border-color: #ffbb96;}
 .ant-tag-volcano-inverse {color: #fff;background: #fa541c;border-color: #fa541c;}
@@ -1590,7 +1590,8 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .tag-left::after {border-left-color: transparent;}
 .tag-right::after {border-right-color: transparent;}
 .typing-text {border-right: 1px solid transparent;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{btn-primary-bg}", 9)`)73;}
+.base-layout-main {color: @primary-color;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{primary-color}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}
@@ -1598,7 +1599,8 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .layout-header {color: @heading-color;background-color: @layout-header-background;}
 .layout-header .btn {color: @heading-color;}
 .layout-header:hover, .layout-header .btn:hover {color: @primary-color;}
-.layout-main-container {background-color: @layout-body-background;}
+.layout-main-container {color: @primary-color;background-color: @layout-body-background;}
+.layout-main {color: @primary-color;}
 .layout-footer {color: @text-color;}
 .layout-setting {color: @text-color;}
 .logo-title, .logo-title-display {color: @heading-color;}
