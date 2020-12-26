@@ -1,7 +1,7 @@
 @primary-color: #1890ff;
 @text-color: fade(@black, 65%);
 @text-color-secondary: fade(@black, 45%);
-@heading-color: fade(#000, 85%);
+@heading-color: #fff;
 @layout-header-background: #001529;
 @layout-body-background: #f0f2f5;
 @btn-primary-bg: #1890ff;
@@ -46,7 +46,7 @@ html {--antd-wave-shadow-color: @primary-color;}
 .ant-alert-info .ant-alert-icon {color: #1890ff;}
 .ant-alert-warning {background-color: #fffbe6;border: 1px solid #ffe58f;}
 .ant-alert-warning .ant-alert-icon {color: #faad14;}
-.ant-alert-error {background-color: #fff1f0;border: 1px solid #ffa39e;}
+.ant-alert-error {background-color: color(~`colorPalette("@{layout-header-background}", 1)`);border: 1px solid #ffa39e;}
 .ant-alert-error .ant-alert-icon {color: #f5222d;}
 .ant-alert-close-icon {background-color: transparent;border: none;}
 .ant-alert-close-icon .anticon-close {color: @text-color-secondary;}
@@ -1381,7 +1381,7 @@ tr.ant-table-expanded-row:hover {background: #fbfbfb;}
 .ant-tag-pink-inverse {color: #fff;background: #eb2f96;border-color: #eb2f96;}
 .ant-tag-magenta {color: #eb2f96;background: #fff0f6;border-color: #ffadd2;}
 .ant-tag-magenta-inverse {color: #fff;background: #eb2f96;border-color: #eb2f96;}
-.ant-tag-red {color: #f5222d;background: #fff1f0;border-color: #ffa39e;}
+.ant-tag-red {color: #f5222d;background: color(~`colorPalette("@{layout-header-background}", 1)`);border-color: #ffa39e;}
 .ant-tag-red-inverse {color: #fff;background: #f5222d;border-color: #f5222d;}
 .ant-tag-volcano {color: #fa541c;background: #fff2e8;border-color: #ffbb96;}
 .ant-tag-volcano-inverse {color: #fff;background: #fa541c;border-color: #fa541c;}
@@ -1590,7 +1590,7 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .tag-left::after {border-left-color: transparent;}
 .tag-right::after {border-right-color: transparent;}
 .typing-text {border-right: 1px solid transparent;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{primary-color}", 9)`)73;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{btn-primary-bg}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}
@@ -1603,13 +1603,13 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .layout-setting {color: @text-color;}
 .logo-title, .logo-title-display {color: @heading-color;}
 .logo-title:hover, .logo-title-display:hover {color: @primary-color;}
-.layout-sider {color: @heading-color;}
+.layout-sider {color: @heading-color;background-color: @layout-header-background;}
 .layout-sider .layout-sider-menu {color: @heading-color;background-color: @layout-header-background;}
 .layout-sider .layout-sider-menu .ant-menu {color: @heading-color;background-color: @layout-header-background;}
 .layout-sider .layout-sider-menu .layout-sider-menu-item {color: @heading-color;background-color: @layout-header-background;}
-.layout-sider .layout-sider-menu .ant-menu-submenu .ant-menu-submenu-title .layout-sider-menu-item, .layout-sider .layout-sider-menu .layout-sider-menu-item, .layout-sider .layout-sider-menu .layout-sider-menu-item a {color: @heading-color;}
+.layout-sider .layout-sider-menu .ant-menu-submenu .ant-menu-submenu-title .layout-sider-menu-item, .layout-sider .layout-sider-menu .layout-sider-menu-item, .layout-sider .layout-sider-menu .layout-sider-menu-item a {color: @heading-color;background-color: @layout-header-background;}
 .layout-sider .layout-sider-menu .ant-menu-submenu .ant-menu-submenu-title .layout-sider-menu-item:hover, .layout-sider .layout-sider-menu .layout-sider-menu-item:hover .layout-sider-menu .layout-sider-menu-item a {color: @primary-color;}
-.layout-sider .layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::before, .layout-sider .layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::after {color: @heading-color;background-color: @heading-color;}
+.layout-sider .layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::before, .layout-sider .layout-sider-menu .layout-sider-menu-item .ant-menu-submenu-arrow::after {color: @heading-color;background-color: @layout-header-background;}
 .bezierEasingMixin() {
 @functions: ~`(function() {var NEWTON_ITERATIONS = 4;var NEWTON_MIN_SLOPE = 0.001;var SUBDIVISION_PRECISION = 0.0000001;var SUBDIVISION_MAX_ITERATIONS = 10;var kSplineTableSize = 11;var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);var float32ArraySupported = typeof Float32Array === 'function';function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
   function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
