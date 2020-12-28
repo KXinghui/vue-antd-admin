@@ -13,7 +13,7 @@
     >
       <div slot="tableForm">
         <!-- <base-form :formModel="noteQuery"> </base-form> -->
-        <a-form-model :model="noteQuery" layout="horizontal">
+        <a-form-model :model="noteQuery" layout="inline">
           <!-- v-bind="formItemLayout" -->
           <a-form-model-item label="标题">
             <a-input v-model="noteQuery.title" placeholder="标题" allow-clear />
@@ -34,7 +34,7 @@
               @change="changeNoteTypes"
             >
               <a-select-option
-                v-for="noteType in enums['NoteTypeEnum']"
+                v-for="noteType in enums['NoteTypeEnumOptions']"
                 :key="noteType.value"
                 :value="noteType.value"
               >
@@ -81,12 +81,14 @@
           ><icon icon="Antd_plus"></icon>增加</a-button
         >
         <a-button
+          :disabled="!selectedRowKeys || selectedRowKeys.length != 1"
           v-has-pmsn="{ key: 'enCode', pmsns: ['Update'] }"
           type="primary"
           @click="openModal('Update')"
           ><icon icon="Antd_edit"></icon>更新</a-button
         >
         <a-button
+          :disabled="!selectedRowKeys || selectedRowKeys.length == 0"
           v-has-pmsn="{ key: 'enCode', pmsns: ['Delete'] }"
           type="danger"
           ><icon icon="Antd_delete"></icon>删除</a-button
@@ -113,18 +115,25 @@
       <span>{{ record }}</span>
       <span>{{ record }}</span>
     </template> -->
+      <template v-slot:groupStationEnum="record">
+        {{ enums["GroupStationEnum"].of(record.groupStationEnum).desc }}
+      </template>
       <template v-slot:title="record">
-        <span> {{ record.title }}</span>
+        <span :title="record.title">{{ record.title }}</span>
       </template>
       <template v-slot:coverUrl="record">
         <img class="img-response" :src="record.coverUrl" />
       </template>
-      <div slot="action" slot-scope="text, record">
-        {{ record }}
+      <template v-slot:noteTypeEnum="record">
+        <a-tag v-if="enums['NoteTypeEnum'].of(record.noteTypeEnum)">
+          {{ enums["NoteTypeEnum"].of(record.noteTypeEnum).desc }}
+        </a-tag>
+      </template>
+      <template v-slot:action="">
         <a href="javascript:;">Delete</a>
         <a href="javascript:;">Add</a>
         <a href="javascript:;">Update</a>
-      </div>
+      </template>
       <!-- <template v-slot:contextmenu>
       右键菜单
     </template> -->
@@ -182,7 +191,7 @@ import BaseTable from "../../../../../components/Table/BaseTable.vue";
 import BaseModal from "../../../../../components/Antd/Modal/BaseModal";
 import { FORM_MIXIN } from "../../../../../mixins/form-mixin";
 // import BaseForm from "../../../../../components/Antd/Modal/BaseModal.vue";
-import { NoteTypeEnum } from "../../../../../consts/pvtnote";
+import { NoteTypeEnum, GroupStationEnum } from "../../../../../consts/pvtnote";
 
 export default {
   name: "NoteTableView",
@@ -191,7 +200,12 @@ export default {
   data() {
     return {
       isBatch: false,
-      enums: { NoteTypeEnum: NoteTypeEnum.selectOptions() },
+      enums: {
+        NoteTypeEnum,
+        NoteTypeEnumOptions: NoteTypeEnum.selectOptions(),
+        GroupStationEnum,
+        GroupStationEnumOptions: GroupStationEnum.selectOptions()
+      },
       noteQuery: { title: "", subTitle: "" },
       form: "",
       formModel: { localAccount: "sentinel", password: "12321654" },
@@ -199,34 +213,58 @@ export default {
       selectedRowKeys: [],
       columns: [
         {
-          title: "标题",
-          dataIndex: "title2",
-          scopedSlots: { customRender: "title" },
-          width: 200,
+          title: "分组站",
+          dataIndex: "groupStationEnum",
+          scopedSlots: { customRender: "groupStationEnum" },
+          width: 50,
           isResize: true,
           minWidth: 50,
           maxWidth: 300,
           ellipsis: true,
-          fixed: "",
+          align: "center"
+        },
+        {
+          title: "标题",
+          dataIndex: "title2",
+          scopedSlots: { customRender: "title" },
+          width: 100,
+          isResize: true,
+          minWidth: 50,
+          maxWidth: 300,
+          ellipsis: true,
           align: "center"
         },
         {
           title: "封面图",
           dataIndex: "coverUrl",
           scopedSlots: { customRender: "coverUrl" },
-          width: 200,
+          width: 100,
           isResize: true,
           minWidth: 100,
           maxWidth: 300,
-          ellipsis: true
+          ellipsis: true,
+          align: "center"
         },
         {
           title: "副标题",
           dataIndex: "subTitle",
-          width: 200,
+          width: 100,
           isResize: true,
           minWidth: 100,
-          maxWidth: 300
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "便签类型",
+          dataIndex: "noteTypeEnum",
+          scopedSlots: { customRender: "noteTypeEnum" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
         },
         {
           title: "Action",
@@ -236,63 +274,72 @@ export default {
           width: 200,
           isResize: true,
           minWidth: 100,
-          maxWidth: 300
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
         }
       ],
       data: [
         {
           id: "001",
-          title: "SpringBoot Vue PVTNOTE",
+          groupStationEnum: "PRIVATE_STATION",
+          title:
+            "SpringBoot Vue PVTNOTESpringBoot Vue PVTNOTESpringBoot Vue PVTNOTESpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 120,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "ORIGINAL"
         },
         {
           id: "002",
+          groupStationEnum: "PRIVATE_STATION",
           title: "SpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 243,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "ORIGINAL"
         },
         {
           id: "003",
+          groupStationEnum: "ENCRYP_STATION",
           title: "SpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "TRANSLATE"
         },
         {
           id: "004",
+          groupStationEnum: "RECYCLE_STATION",
           title: "SpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "REPRINT"
         },
         {
           id: "005",
+          groupStationEnum: "EXHIBITION_STATION",
           title: "SpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "TRANSLATE"
         },
         {
           id: "006",
+          groupStationEnum: "ENCRYP_STATION",
           title: "SpringBoot Vue PVTNOTE",
           coverUrl:
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          note: "transfer"
+          noteTypeEnum: "REPRINT"
         }
       ],
       modalRefresh: false,
@@ -306,6 +353,28 @@ export default {
     reload() {
       this.reload();
     },
+    // openModal(form) {
+    //   let openModal = new Function(
+    //     "vm",
+    //     "form",
+    //     `return console.log("打开表单：" + form);
+    //   // TODO 设置modal属性
+    //   console.log("打开表单：" + vm);
+    //   vm.form = form;
+    //   vm.modalLoading = false;
+    //   vm.modalVisible = true;
+    //   vm.modalRefresh = true;
+    //   if (form === "Insert") {
+    //     vm.modalTitle = "增加便签";
+    //   } else if (form === "Update") {
+    //     vm.modalTitle = "更新便签";
+    //   }
+    //   /* setTimeout(() => {
+    //     this.modalLoading = false;
+    //   }, 4000); */`
+    //   );
+    //   openModal(this, form);
+    // },
     openModal(form) {
       console.log("打开表单：" + form);
       // TODO 设置modal属性
@@ -313,6 +382,7 @@ export default {
       this.modalLoading = false;
       this.modalVisible = true;
       this.modalRefresh = true;
+      debugger;
       if (form === "Insert") {
         this.modalTitle = "增加便签";
       } else if (form === "Update") {
@@ -332,4 +402,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* .ant-btn + .ant-btn {
+  margin-left: 0.5rem;
+} */
+</style>

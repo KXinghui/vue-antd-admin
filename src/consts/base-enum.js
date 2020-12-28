@@ -16,10 +16,25 @@ export class BaseEnum {
   equals(enums) {
     return (this.id == enums) | (this.value == enums) | (this.name == enums);
   }
+  static of(enumName) {
+    let enumObj = new BaseEnum();
+    for (let enumClass in this) {
+      let enums = [
+        this[enumClass]["id"],
+        this[enumClass]["name"],
+        this[enumClass]["value"]
+      ];
+      if (enums.includes(enumName)) {
+        enumObj = this[enumClass];
+      }
+    }
+    return enumObj;
+  }
   static selectOptions(name = "desc", value = "id") {
     let selectOptions = [];
     for (let enumClass in this) {
       selectOptions.push({
+        enum: this[enumClass],
         name: this[enumClass][name],
         value: this[enumClass][value]
       });

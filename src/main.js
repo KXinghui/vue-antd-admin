@@ -54,6 +54,9 @@ Vue.use(VueLazyload, {
 });
 
 Vue.component("vue-draggable-resizable", VueDraggableResizable);
+// Vue.component("vue-draggable-resizable", () =>
+//   import("vue-draggable-resizable")
+// );
 
 Vue.component("form-item", {
   mixins: [],

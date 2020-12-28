@@ -395,7 +395,7 @@ export default {
     .resize-table-th {
       position: relative;
       .table-draggable-handle {
-        /* border: 1px solid red; */
+        border: none;
         position: absolute;
         height: 100% !important;
         left: auto !important;
