@@ -1,3 +1,6 @@
+/**
+ * 主题和字符串计数
+ */
 //default values
 var defaultOptions = {
   themeable: true,
