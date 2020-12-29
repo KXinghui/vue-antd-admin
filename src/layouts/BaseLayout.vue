@@ -12,6 +12,7 @@
           <layout-sider
             :id="layoutSiderRef"
             :ref="layoutSiderRef"
+            :theme="layoutSetting.layoutTheme"
             :is-mobile.sync="isMobile"
             :float-sider="layoutSetting.floatSider"
             :collapsed-sider.sync="collapsedSider"
@@ -27,7 +28,10 @@
             <splitpanes horizontal>
               <pane :id="layoutHeaderRef" style="max-height: 64px;">
                 <!-- style="background: #fff; padding: 0;" -->
-                <a-layout-header style="background: #fff; padding: 0;">
+                <a-layout-header
+                  :theme="layoutSetting.layoutTheme"
+                  style="background: #fff; padding: 0;"
+                >
                   <layout-header
                     :is-mobile.sync="isMobile"
                     :collapsed-sider.sync="collapsedSider"

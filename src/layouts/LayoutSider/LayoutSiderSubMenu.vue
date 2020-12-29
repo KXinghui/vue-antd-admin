@@ -1,17 +1,17 @@
 <template>
+  <!-- class="layout-sider-menu-item" -->
   <a-sub-menu
     class="layout-sider-menu-item"
     :key="menu.name"
     v-bind="$props"
     v-on="$listeners"
   >
-    <span slot="title">
-      <router-link :to="menu.path">
+    <template slot="title">
+      <div @click="pushRoute(menu.path)">
         <icon :icon="menu.icon ? menu.icon : 'Antd_menu'" />
-        <span>{{ menu.name }}</span></router-link
-      >
-    </span>
-
+        <span>{{ menu.name }}</span>
+      </div>
+    </template>
     <template v-for="item in menu.children">
       <a-menu-item
         class="layout-sider-menu-item"
@@ -19,7 +19,7 @@
         :key="item.name"
       >
         <router-link :to="item.path">
-          <icon :icon="menu.icon ? menu.icon : 'Antd_menu'" />
+          <icon :icon="item.icon ? item.icon : 'Antd_menu'" />
           <span>{{ item.name }}</span></router-link
         >
       </a-menu-item>
@@ -30,6 +30,7 @@
 
 <script>
 // import { ROUTES } from "../router/routes";
+import { pushRoute } from "../../utils/router-utils";
 import { Menu } from "ant-design-vue";
 
 export default {
@@ -47,7 +48,9 @@ export default {
       required: false
     }
   },
-  methods: {}
+  methods: {
+    pushRoute
+  }
 };
 </script>
 

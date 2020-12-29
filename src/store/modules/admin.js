@@ -18,7 +18,8 @@ const state = () => {
       /* IM */
       showDrawer: true,
       drawerPlacement: "left",
-      driverGuide: false
+      driverGuide: false,
+      layoutTheme: "dark"
     },
     // 主题设置
     themeSetting: {

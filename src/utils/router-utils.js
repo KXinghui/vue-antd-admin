@@ -1,5 +1,6 @@
 import router from "../router";
 import { msg } from "./antd-utils";
+import { isString } from "./utils";
 
 export function pushRoute(route) {
   // Vue刷新页面的三种方式
@@ -7,10 +8,16 @@ export function pushRoute(route) {
   if (!route) {
     return;
   }
-  if (route && router.currentRoute && router.currentRoute.path == route.path) {
-    if (this) {
+  debugger;
+  let currentRoutePath = router.currentRoute.path;
+  if (
+    route && router.currentRoute && isString(route)
+      ? currentRoutePath == route
+      : currentRoutePath == route.path
+  ) {
+    if (this && "reload" in this) {
       msg(
-        "reload" in this && this.reload()
+        this.reload()
           ? { code: "1", msg: "刷新页面" }
           : { code: "-1", msg: "刷新页面" }
       );

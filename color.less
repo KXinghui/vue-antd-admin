@@ -1,7 +1,7 @@
 @primary-color: #1890ff;
 @text-color: fade(@black, 65%);
 @text-color-secondary: fade(@black, 45%);
-@heading-color: #fff;
+@heading-color: fade(#000, 85%);
 @layout-header-background: #001529;
 @layout-body-background: #f0f2f5;
 @btn-primary-bg: #1890ff;
@@ -1401,7 +1401,7 @@ tr.ant-table-expanded-row:hover {background: #fbfbfb;}
 .ant-tag-blue-inverse {color: #fff;background: #1890ff;border-color: #1890ff;}
 .ant-tag-geekblue {color: #2f54eb;background: #f0f5ff;border-color: #adc6ff;}
 .ant-tag-geekblue-inverse {color: #fff;background: #2f54eb;border-color: #2f54eb;}
-.ant-tag-purple {color: #722ed1;background: #f9f0ff;border-color: #d3adf7;}
+.ant-tag-purple {color: #722ed1;background: color(~`colorPalette("@{processing-color}", 1)`);border-color: #d3adf7;}
 .ant-tag-purple-inverse {color: #fff;background: #722ed1;border-color: #722ed1;}
 .ant-time-picker-panel {color: @text-color;}
 .ant-time-picker-panel-inner {background-color: #fff;background-clip: padding-box;border-radius: 4px;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);}
@@ -1591,7 +1591,7 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .tag-right::after {border-right-color: transparent;}
 .typing-text {border-right: 1px solid transparent;}
 .base-layout-main {color: @primary-color;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{primary-color}", 9)`)73;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{btn-primary-bg}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}

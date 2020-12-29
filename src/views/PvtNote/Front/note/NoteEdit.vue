@@ -6,7 +6,7 @@
     <base-header showBackIcon>
       <div slot="left"></div>
       <div slot="middle">
-        {{ note.title }}
+        <router-link :to="noteDetailUrl">{{ note.title }}</router-link>
       </div>
       <div slot="right">
         <icon icon="Antd_ellipsis" @click="openNormalDrawerBar" />
@@ -207,7 +207,7 @@ export default {
         currentOp: "",
         normal: ["delete", "move", "top", "cancelTop", "setting"]
       },
-      note: { title: "SpringBoot Vue 便签", isTop: 0 },
+      note: { id: "454545", title: "SpringBoot Vue 便签", isTop: 0 },
       noteContent: {
         html: "",
         md: ""
@@ -219,7 +219,8 @@ export default {
       timerSecond: {
         save: null
       },
-      btnLoading: { saveNote: false, publishNote: false }
+      btnLoading: { saveNote: false, publishNote: false },
+      noteDetailUrl: "/pvtnote/note/454545"
     };
   },
   computed: {

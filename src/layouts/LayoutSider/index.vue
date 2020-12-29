@@ -2,6 +2,7 @@
   <a-layout-sider
     v-model="collapsedSider"
     :trigger="null"
+    :theme="theme"
     collapsible
     :class="floatSider ? 'layout-sider-wrap-mobile' : 'layout-sider-wrap'"
     :ref="layoutSiderRef"
@@ -31,6 +32,7 @@
       <a-menu
         class="layout-sider-menu"
         mode="inline"
+        :theme="theme"
         :inline-collapsed="collapsedSider"
         :inline-indent="10"
       >
@@ -111,6 +113,14 @@ export default {
       type: [Boolean],
       default: true,
       required: false
+    },
+    theme: {
+      type: [String],
+      default: "dark",
+      required: false,
+      validator(value) {
+        return ["dark", "light"].includes(value);
+      }
     }
   },
   computed: {

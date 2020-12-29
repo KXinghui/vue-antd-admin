@@ -11,26 +11,26 @@ export const ROUTER_MIXIN = {
     leaveRouteCancle() {}
   },
   mounted() {
-    // window.addEventListener("beforeunload", function(e) {
-    //   e = e || window.event;
-    //   // 兼容IE8和Firefox 4之前的版本
-    //   if (e) {
-    //     e.returnValue = false;
-    //   }
-    //   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-    //   return true;
-    // });
+    window.addEventListener("beforeunload", function(e) {
+      e = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        e.returnValue = false;
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return true;
+    });
   },
   destroyed() {
-    // window.removeEventListener("beforeunload", function(e) {
-    //   e = e || window.event;
-    //   // 兼容IE8和Firefox 4之前的版本
-    //   if (e) {
-    //     e.returnValue = false;
-    //   }
-    //   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-    //   return true;
-    // });
+    window.removeEventListener("beforeunload", function(e) {
+      e = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        e.returnValue = false;
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return true;
+    });
   },
   //   props: {
   //     updateRouteOk: {
@@ -58,11 +58,11 @@ export const ROUTER_MIXIN = {
     let vm = this;
     confirm({
       title: "刷新页面",
-      // content: () => (
-      //   <div>
-      //     <span style="color:red;">确定要离开吗？</span>
-      //   </div>
-      // ),
+      content: () => (
+        <div>
+          <span style="color:red;">确定要刷新该页面吗？</span>
+        </div>
+      ),
       cancelText: "取消",
       okText: "刷新",
       okType: "danger",
@@ -82,11 +82,11 @@ export const ROUTER_MIXIN = {
     let vm = this;
     confirm({
       title: "离开页面",
-      // content: () => (
-      //   <div>
-      //     <span style="color:red;">确定要离开吗？</span>
-      //   </div>
-      // ),
+      content: () => (
+        <div>
+          <span style="color:red;">确定要离开该页面吗？</span>
+        </div>
+      ),
       cancelText: "取消",
       okText: "离开",
       okType: "danger",

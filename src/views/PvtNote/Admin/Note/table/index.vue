@@ -45,7 +45,11 @@
 
           <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
             <a-dropdown>
-              <a-button type="primary" block>
+              <a-button
+                v-has-pmsn="{ key: 'enCode', pmsns: ['List'] }"
+                type="primary"
+                block
+              >
                 搜索
               </a-button>
               <a-menu slot="overlay">
@@ -59,7 +63,6 @@
                     精确搜索
                   </a-button>
                 </a-menu-item>
-                <a-menu-divider />
               </a-menu>
             </a-dropdown>
           </a-form-model-item>
@@ -68,12 +71,6 @@
       <!-- 操作栏 -->
       <div slot="tableHeader">
         <!-- size="small" -->
-        <a-button
-          size="small"
-          v-has-pmsn="{ key: 'enCode', pmsns: ['List'] }"
-          type="primary"
-          ><icon icon="Antd_search"></icon>搜索</a-button
-        >
         <a-button
           v-has-pmsn="{ key: 'enCode', pmsns: ['Insert'] }"
           type="primary"

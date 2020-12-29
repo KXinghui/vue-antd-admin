@@ -73,6 +73,15 @@
             展示驱动指南
           </a-checkbox>
         </a-form-model-item>
+        <a-form-model-item>
+          <a-switch
+            checked-children="暗"
+            un-checked-children="亮"
+            :checked="layoutSetting.layoutTheme == 'dark'"
+            @change="changeLayoutTheme"
+          />
+          布局主题
+        </a-form-model-item>
       </a-form-model>
 
       <p>主题设置</p>
@@ -174,23 +183,22 @@ export default {
       debugger;
       this.themeSettingVar = varName;
     },
-    resetThemeSetting() {
+    resetThemeSetting(isMsg = true) {
       window.less &&
         window.less
-          .modifyVars({
-            "@heading-color": "black",
-            "@layout-header-background": "white"
-          })
+          .modifyVars({})
           .then(() => {
-            msg({ code: 1, msg: "重置主题设置" });
+            if (isMsg) {
+              msg({ code: 1, msg: "重置主题设置" });
+            }
           })
           .catch(() => {
-            msg({ code: -1, msg: "重置主题设置" });
+            if (isMsg) {
+              msg({ code: -1, msg: "重置主题设置" });
+            }
           });
     },
     inputThemeSetting(colors) {
-      debugger;
-      console.log(JSON.stringify(colors));
       let themeSettingVar = this.themeSettingVar;
       if (themeSettingVar) {
         let themeSetting = { [themeSettingVar]: colors.hex };
@@ -218,7 +226,15 @@ export default {
       this.layoutSetting = Object.assign(this.layoutSetting, {
         [prop]: !value
       });
+    },
+    changeLayoutTheme(isDark) {
+      this.layoutSetting = Object.assign(this.layoutSetting, {
+        layoutTheme: isDark ? "dark" : "light"
+      });
     }
+  },
+  beforeCreate() {
+    // this.resetThemeSetting(false);
   },
   mounted() {
     // this.themeSettingVar = this.themeSettingVars[0];
@@ -230,6 +246,7 @@ export default {
     //   }
     // });
     // window.less && window.less.modifyVars(themeSetting);
+    // this.resetThemeSetting(false);
   }
 };
 </script>
