@@ -71,6 +71,7 @@
 
 <script>
 import { pushRoute } from "../../../../utils/router-utils";
+import { isString } from "../../../../utils/utils";
 
 export default {
   name: "BaseTabBarItem",
@@ -129,7 +130,11 @@ export default {
   computed: {
     badge() {
       let badge = this.item.badge;
-      return badge ? JSON.parse(badge) : { count: 0 };
+      return badge
+        ? isString(badge)
+          ? JSON.parse(badge)
+          : badge
+        : { count: 0 };
     },
     isActive() {
       let activeItemKey = this.activeItemKey;

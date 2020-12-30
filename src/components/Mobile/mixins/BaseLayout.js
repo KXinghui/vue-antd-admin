@@ -106,7 +106,7 @@ const PVTNOTE_TABBARS = [
     text: "首页",
     route: { path: "/pvtnote/home" },
     badge: JSON.stringify({ count: 0 }),
-    isCenter: true,
+    isCenter: false,
     // circle square
     centerShape: "square"
   },
