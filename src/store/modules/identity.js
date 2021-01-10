@@ -18,7 +18,8 @@ const state = {
     // { id: "02", enCode: "Delete" },
     { id: "03", enCode: "Update" },
     { id: "04", enCode: "Export" },
-    { id: "05", enCode: "Import" }
+    { id: "05", enCode: "Import" },
+    { id: "06", enCode: "List" }
   ]
 };
 

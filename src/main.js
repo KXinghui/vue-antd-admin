@@ -20,6 +20,8 @@ import "./styles/global.less";
 
 import "./icons";
 
+// process.env.NODE_ENV !== "production" && require("./mock/index.js");
+
 Vue.config.productionTip = false;
 
 // optionally import default styles

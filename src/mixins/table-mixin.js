@@ -301,13 +301,15 @@ export const TABLE_MIXIN = {
   },
   methods: {
     ableBatchOp(rowSelectionType) {
-      let isBatch = this.isBatch;
+      let curIsBatch = this.isBatch;
       let curRowSelectionType = this.rowSelectionType;
+      let isBatch =
+        curRowSelectionType != rowSelectionType ? true : !curIsBatch;
       this.$emit("update:rowSelectionType", rowSelectionType);
-      this.$emit(
-        "update:isBatch",
-        curRowSelectionType != rowSelectionType ? true : !isBatch
-      );
+      this.$emit("update:isBatch", isBatch);
+      if (!isBatch) {
+        this.$emit("update:selectedRowKeys", []);
+      }
       // this.isBatch = !this.isBatch;
     },
     // eslint-disable-next-line no-unused-vars

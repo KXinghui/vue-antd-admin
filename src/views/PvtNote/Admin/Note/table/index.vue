@@ -262,7 +262,7 @@ export default {
           maxWidth: 300,
           ellipsis: true,
           align: "center"
-        },
+        } /* ,
         {
           title: "Action",
           dataIndex: "action",
@@ -274,7 +274,7 @@ export default {
           maxWidth: 300,
           ellipsis: true,
           align: "center"
-        }
+        } */
       ],
       data: [
         {
