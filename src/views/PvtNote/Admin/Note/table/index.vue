@@ -201,7 +201,7 @@ export default {
         NoteTypeEnum,
         NoteTypeEnumOptions: NoteTypeEnum.selectOptions(),
         GroupStationEnum,
-        GroupStationEnumOptions: GroupStationEnum.selectOptions(),
+        GroupStationEnumOptions: GroupStationEnum.selectOptions()
       },
       noteQuery: { title: "", subTitle: "" },
       form: "",
@@ -218,7 +218,7 @@ export default {
           minWidth: 50,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
+          align: "center"
         },
         {
           title: "标题",
@@ -229,7 +229,7 @@ export default {
           minWidth: 50,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
+          align: "center"
         },
         {
           title: "封面图",
@@ -240,7 +240,7 @@ export default {
           minWidth: 100,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
+          align: "center"
         },
         {
           title: "副标题",
@@ -250,7 +250,7 @@ export default {
           minWidth: 100,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
+          align: "center"
         },
         {
           title: "便签类型",
@@ -261,7 +261,7 @@ export default {
           minWidth: 100,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
+          align: "center"
         },
         {
           title: "Action",
@@ -273,8 +273,8 @@ export default {
           minWidth: 100,
           maxWidth: 300,
           ellipsis: true,
-          align: "center",
-        },
+          align: "center"
+        }
       ],
       data: [
         {
@@ -286,7 +286,7 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 120,
           type: "income",
-          noteTypeEnum: "ORIGINAL",
+          noteTypeEnum: "ORIGINAL"
         },
         {
           id: "002",
@@ -296,7 +296,7 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 243,
           type: "income",
-          noteTypeEnum: "ORIGINAL",
+          noteTypeEnum: "ORIGINAL"
         },
         {
           id: "003",
@@ -306,7 +306,7 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          noteTypeEnum: "TRANSLATE",
+          noteTypeEnum: "TRANSLATE"
         },
         {
           id: "004",
@@ -316,7 +316,7 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          noteTypeEnum: "REPRINT",
+          noteTypeEnum: "REPRINT"
         },
         {
           id: "005",
@@ -326,7 +326,7 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          noteTypeEnum: "TRANSLATE",
+          noteTypeEnum: "TRANSLATE"
         },
         {
           id: "006",
@@ -336,13 +336,13 @@ export default {
             "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3708925153,3035744045&fm=26&gp=0.jpg",
           amount: 98,
           type: "income",
-          noteTypeEnum: "REPRINT",
-        },
+          noteTypeEnum: "REPRINT"
+        }
       ],
       modalRefresh: false,
       modalVisible: false,
       modalTitle: "",
-      modalLoading: true,
+      modalLoading: true
     };
   },
   methods: {
@@ -394,8 +394,8 @@ export default {
     },
     changeNoteTypes(value) {
       console.log("便签类型  " + value);
-    },
-  },
+    }
+  }
 };
 </script>
 

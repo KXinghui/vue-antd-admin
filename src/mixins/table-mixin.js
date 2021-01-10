@@ -304,7 +304,10 @@ export const TABLE_MIXIN = {
       let isBatch = this.isBatch;
       let curRowSelectionType = this.rowSelectionType;
       this.$emit("update:rowSelectionType", rowSelectionType);
-      this.$emit("update:isBatch", curRowSelectionType != rowSelectionType ? true : !isBatch);
+      this.$emit(
+        "update:isBatch",
+        curRowSelectionType != rowSelectionType ? true : !isBatch
+      );
       // this.isBatch = !this.isBatch;
     },
     // eslint-disable-next-line no-unused-vars
