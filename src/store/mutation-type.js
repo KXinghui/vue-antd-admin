@@ -9,6 +9,13 @@ export const FULL_SCREEN = "FULL_SCREEN";
 
 export const ADMIN_COLLAPSED_LAYOUT = "ADMIN_COLLAPSED_LAYOUT"; */
 
+export const OAUTH2_MUTATION_TYPE = {
+  NAMESPACE: "oauth2/",
+  SET_GITHUB: "SET_GITHUB",
+  SET_WECHAT: "SET_WECHAT",
+  SET_QQ: "SET_QQ"
+};
+
 export const ADMIN_MUTATION_TYPE = {
   NAMESPACE: "admin/",
   SHOW_DRAWER: "SHOW_DRAWER",

@@ -1,30 +1,42 @@
 <template>
-  <div class="register">
-    <identity-register-view
+  <div class="third-party-login">
+    <identity-third-party-login-view
       ms="vue-antd-admin"
       msAlias="Vue Antd Admin"
       identity-role="user"
-    ></identity-register-view>
+      :thirdPartyPlatform="thirdPartyPlatform"
+    >
+    </identity-third-party-login-view>
   </div>
 </template>
 
 <script>
-import IdentityRegisterView from "./Base/Front/IdentityRegisterView";
+import IdentityThirdPartyLoginView from "./Base/Front/IdentityThirdPartyLoginView";
 
 export default {
-  name: "Register",
+  name: "Login",
   components: {
-    IdentityRegisterView
+    IdentityThirdPartyLoginView
+  },
+  props: {
+    thirdPartyPlatform: {
+      type: [String],
+      default: "",
+      required: true,
+      validator(value) {
+        return ["github", "gitee", "qq"].includes(value);
+      }
+    }
   }
 };
 </script>
 
 <style>
-.register .identity-register {
+.third-party-login .identity-login {
   margin-top: 3.2rem;
 }
 
-.register h1 {
+.third-party-login h1 {
   /* background: #203; */
   color: black;
   /* text-shadow: 0 0 0.1em, 0 0 0.3em; */
@@ -35,7 +47,7 @@ export default {
     5px 5px black, 6px 6px black, 7px 7px black, 8px 8px black; */
   transition: 0.5s;
 }
-.register h1:hover {
+.third-party-login h1:hover {
   /* color: transparent; */
   color: black;
   text-shadow: 0 0 0.1em, 0 0 0.3em;

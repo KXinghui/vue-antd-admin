@@ -2,7 +2,11 @@
   <div class="identity-login">
     <!-- <a-row type="flex" justify="center">
       <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6"> -->
+    <div class="identity-login-header">
+      <slot name="header"></slot>
+    </div>
     <a-tabs
+      class="identity-login-tabs"
       default-active-key="1"
       :tab-position="tabOption.position"
       :tab-bar-style="tabOption.tabBarStyle"
@@ -139,6 +143,9 @@
     <!-- 扫码登录 -->
     <!-- </a-col>
     </a-row> -->
+    <div class="identity-login-footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
@@ -295,5 +302,11 @@ export default {
 .login-scan-code-wrap .login-scan-code {
   width: 200px;
   height: 200px;
+}
+
+.identity-login-header,
+.identity-login-footer {
+  border: 1px solid red;
+  margin: -1.5rem 0 0;
 }
 </style>

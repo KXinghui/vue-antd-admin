@@ -1,21 +1,21 @@
 <template>
   <div class="login">
-    <a-row type="flex" justify="center">
-      <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-        <h1 align="center" style="margin-top: 2rem;">Vue Antd Admin</h1>
-      </a-col>
-    </a-row>
-    <identity-login identity-role="user"></identity-login>
+    <identity-login-view
+      ms="vue-antd-admin"
+      msAlias="Vue Antd Admin"
+      identity-role="user"
+    >
+    </identity-login-view>
   </div>
 </template>
 
 <script>
-import IdentityLogin from "../components/Identity/IdentityLogin";
+import IdentityLoginView from "./Base/Front/IdentityLoginView";
 
 export default {
   name: "Login",
   components: {
-    IdentityLogin
+    IdentityLoginView
   }
 };
 </script>

@@ -1,0 +1,432 @@
+<template>
+  <div class="note-read-wrap">
+    <base-header showBackIcon>
+      <div slot="left"></div>
+      <div slot="middle">
+        <span class="note-title" v-text="note.title"></span>
+      </div>
+      <div slot="right">
+        <a-dropdown placement="bottomRight">
+          <icon icon="Antd_ellipsis" />
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="http://www.tmall.com/"
+                >3rd menu item</a
+              >
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+        <!-- <a-popover placement="bottomRight">
+          <template slot="content">
+            <a-menu>
+              <a-menu-item>
+                <a href="javascript:;">1st menu item</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a href="javascript:;">2nd menu item</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a href="javascript:;">3rd menu item</a>
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <icon icon="Antd_plus-circle" />
+        </a-popover> -->
+      </div>
+      <!-- <div slot="right"><a-icon type="ellipsis" /></div> -->
+    </base-header>
+    <!-- :isScroll="false" -->
+    <base-main baseMainHeight="92.75%">
+      <template slot="main">
+        <!-- TODO 作者 关注 -->
+        <base-cell>
+          <div slot="left">
+            <identity-avatar :identity="author"></identity-avatar>
+          </div>
+          <div slot="right">
+            <a-dropdown placement="bottomRight">
+              <a-button type="success">关注</a-button>
+              <a-menu slot="overlay">
+                <a-menu-item>
+                  <span @click="followAuthor">关注</span>
+                </a-menu-item>
+                <a-menu-item>
+                  <span @click="followAuthor(true)">悄悄关注</span>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </div>
+        </base-cell>
+        <base-cell>
+          <div slot="left">
+            <span class="note-title-large" v-text="note.title"></span>
+          </div>
+        </base-cell>
+        <base-cell>
+          <div slot="left">
+            <a-space>
+              <!-- <a-button size="small"> -->
+              <span
+                :style="{ color: note.isRead == 1 ? 'rgb(234, 162, 84)' : '' }"
+                ><icon
+                  :color="note.isRead == 1 ? 'rgb(234, 162, 84)' : ''"
+                  icon="Antd_read"
+                />
+                {{ note.readNum || 0 }}</span
+              >
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span
+                :style="{
+                  color: note.isCollect == 1 ? 'rgb(234, 162, 84)' : ''
+                }"
+                ><icon
+                  :color="note.isCollect == 1 ? 'rgb(234, 162, 84)' : ''"
+                  icon="Antd_star"
+                />
+                {{ note.collectNum || 0 }}</span
+              >
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span
+                :style="{
+                  color: note.isPraise == 1 ? 'rgb(234, 162, 84)' : ''
+                }"
+                ><icon
+                  :color="note.isPraise == 1 ? 'rgb(234, 162, 84)' : ''"
+                  icon="Antd_like"
+                />
+                {{ note.praiseNum || 0 }}</span
+              >
+              <!-- </a-button> -->
+              <!-- <a-button size="small"> -->
+              <span
+                :style="{ color: note.isTread == 1 ? 'rgb(234, 162, 84)' : '' }"
+                ><icon
+                  :color="note.isTread == 1 ? 'rgb(234, 162, 84)' : ''"
+                  icon="Antd_dislike"
+                />
+                {{ note.treadNum || 0 }}</span
+              >
+              <!-- </a-button> -->
+            </a-space>
+          </div>
+        </base-cell>
+        <base-cell>
+          <div slot="left">
+            标签：
+            <a-tag
+              v-for="noteTag in noteTags"
+              :key="noteTag.id"
+              :color="noteTag.color"
+            >
+              {{ noteTag.name }}
+            </a-tag>
+          </div>
+        </base-cell>
+        <!-- 阅读便签  -->
+        <quill-editor
+          :html="noteContent.html"
+          :readOnly="true"
+          theme="bubble"
+        ></quill-editor>
+        <a-divider></a-divider>
+        <!-- 评论 -->
+      </template>
+    </base-main>
+    <!-- <base-tab-bar
+      :base-tab-bars="baseTabBars"
+      :active-item-key="activeKey"
+      :color="color"
+      :active-color="activeColor"
+    ></base-tab-bar> -->
+    <base-drawer-bar
+      :topVisible.sync="topDrawerBarVisible"
+      :bottomVisible.sync="bottomDrawerBarVisible"
+      :topHeightPercent="topDrawerBarHeightPercent"
+      :bottomHeightPercent="bottomDrawerBarHeightPercent"
+    >
+      <template slot="top">
+        <template v-if="management.normal">
+          <!-- <span @click="closeDrawerBar">取消</span> -->
+          <a-button shape="round" @click="closeDrawerBar">取消</a-button>
+          <!-- <span
+            >已选择<span
+              class="selected-num"
+              v-text="selectedNoteIds.length"
+            ></span
+            >项</span
+          >
+          <span @click="selectAllNotes">{{
+            isSelectedAll ? "反选" : "全选"
+          }}</span> -->
+          <div>
+            <!-- <span @click="saveNote">保存</span>
+            <span @click="publishNote">发布</span> -->
+            <a-button
+              shape="round"
+              :loading="btnLoading.saveNote"
+              @click="saveNote"
+              >保存</a-button
+            >
+            <a-button
+              shape="round"
+              :loading="btnLoading.publishNote"
+              @click="publishNote"
+              >发布</a-button
+            >
+          </div>
+        </template>
+      </template>
+      <template slot="bottom">
+        <template v-if="management.normal && !operation.currentOp">
+          <base-tab-bar-item
+            :item="{
+              index: 'setting',
+              icon: 'Antd_setting',
+              text: '设置',
+              route: false
+            }"
+            @click="openSetting"
+          ></base-tab-bar-item>
+          <base-tab-bar-item
+            :item="{
+              index: 'move',
+              icon: 'Antd_drag',
+              text: '移动',
+              route: false
+            }"
+            @click="openMoveNote"
+          ></base-tab-bar-item>
+          <base-tab-bar-item
+            :item="{
+              index: 'top',
+              icon: isTop
+                ? 'Antd_vertical-align-top'
+                : 'Antd_vertical-align-bottom',
+              text: isTop ? '置顶' : '取消置顶',
+              route: false
+            }"
+            @click="topNote"
+          ></base-tab-bar-item>
+          <base-tab-bar-item
+            :item="{
+              index: 'delete',
+              icon: 'Antd_delete',
+              text: '删除',
+              route: false
+            }"
+            @click="deleteNote"
+          ></base-tab-bar-item>
+        </template>
+        <template v-if="operation.currentOp">
+          <div class="operation-wrap">
+            <div class="operation-btn-wrap">
+              <icon icon="Antd_close" @click="openNormalDrawerBar"></icon>
+            </div>
+            <div class="operation-main-wrap">
+              <bs-core :options="{ scrollbar: false }">
+                <template v-if="operation.currentOp == 'normal-move'">
+                  <div
+                    v-for="noteGroup in noteGroups"
+                    :key="noteGroup.id"
+                    class="note-group-item"
+                    @click.once="moveNote(noteGroup.id)"
+                  >
+                    <span v-text="noteGroup.name"></span>
+                  </div>
+                </template>
+                <template v-if="operation.currentOp == 'normal-setting'">
+                  设置
+                </template>
+              </bs-core>
+            </div>
+          </div>
+        </template>
+      </template>
+    </base-drawer-bar>
+  </div>
+</template>
+
+<script>
+// import { BASE_LAYOUT_MIXIN } from "../../../../components/Mobile/mixins/BaseLayout";
+import { BASE_LAYOUT_DRAWER_BAR_MIXIN } from "../../../../components/Mobile/mixins/BaseLayoutDrawerBar";
+import IdentityAvatar from "../../../../components/Identity/IdentityAvatar";
+import { mapState } from "vuex";
+import { confirm } from "../../../../utils/antd-utils";
+import { title } from "../../../../utils/utils";
+import noteApi from "../../../../api/pvtnote/NoteApi";
+import noteGroupApi from "../../../../api/pvtnote/NoteGroupApi";
+import QuillEditor from "../../../../components/Editor/RichText/QuillEditor/index.vue";
+
+export default {
+  name: "NoteDetail",
+  mixins: [/* BASE_LAYOUT_MIXIN, */ BASE_LAYOUT_DRAWER_BAR_MIXIN],
+  components: { IdentityAvatar, QuillEditor },
+  data() {
+    return {
+      msName: "pvtnote",
+      management: {
+        normarl: false
+      },
+      operation: {
+        currentOp: "",
+        normarl: [""]
+      },
+      note: {
+        id: "4545454545665",
+        title: "SpringBoot Vue IM",
+        subTitle: "SpringBoot Vue实现的私人IM",
+        html: `<div class="RichContent-inner"><span class="RichText ztext CopyrightRichText-richText" itemprop="text"><h3>1、过于求急，追求立竿见影的效果的人</h3><blockquote>这类人深陷「学习差」的泥潭，长久忍受父母责骂、老师忽视或同学嘲笑后，暗自决定要逆袭。作为行动派的他们，把一切时间都花在学习上，恨不得成为不吃不睡只学习的机器人，创造「今天熬夜复习，明天考试第一」的奇迹。<br>但是，一旦发现努力没有回报，成绩迟迟不见长进，就开始闷闷不乐，垂头丧气，甚至自暴自弃。</blockquote><p><b>破解：</b></p><p><b>放平心态，别想一口吃成个胖子。学习就像细水长流，要稳扎稳打，才能有条不紊地进步。</b></p><p>过于渴望提高成绩，可能反而会因为焦虑、暴躁、压力，而影响自身的学习。</p><p>不如，先定个小目标，每次考试比之前进步1名，一个学期下来你就会发现，成绩可能到了之前不敢想的高度。</p><p class="ztext-empty-paragraph"><br></p><h3>2、思维固化导致否定自己，或者故步自封的人</h3><blockquote>这类人对自己缺乏信心，长久以来的「坏成绩」和负面反馈，导致他们思维固化：<b>我天生就蠢笨，怎么努力都学不好，我注定没出息</b>。</blockquote><p><b>破解：思维决定心态，心态决定成绩。</b>如果你认定自己是扶不上墙的学渣，那么别人再怎么帮你，你依旧变不成学霸。</p><p>学会打破固定思维，不要认定死理，学会灵活思维。平时可以玩玩活跃思维的益智小游戏，比如数字游戏、华容道等。<b>还可以试试挑战类小游戏，比如5秒内猛戳屏幕30下，这个一般人都挑战不成功。</b></p><p>其实，绝大部分人的学习，还远远没到拼智商的程度，<b>只要「努力+正确的学习方法」，成绩一定会蹭蹭蹭往上涨！</b></p><p class="ztext-empty-paragraph"><br></p><h3>3、「看书5分钟，准备2小时」，过于重视准备工作的人</h3><blockquote>这类人总觉得「万事齐全」了才有资格学习，查阅各种备考攻略、如何认真学习、如何做好笔记等等，结果花大量时间，搜集了一堆资料和方法，真正学习的时间反倒减少了。</blockquote><p>破解：学习就像「抢红包」，讲究干脆利落，直奔目标。</p><p>所以，<b>尽量减少复杂而耗时的前提工作，过于花里胡哨，反而影响学习。</b></p><p class="ztext-empty-paragraph"><br></p><h3>4、不懂就问，一做就废，不知道主动思考的人</h3><blockquote>这类人看起来很勤勉爱学习，不论是办公室的任课老师身边，还是教室里的学霸周围，总有他们问「为什么」的身影。<br>但他们的问题，往往又很简单且基础，一般只知道问答案是什么，不知道将问题和答案集合起来思考，也不知道什么叫举一反三。</blockquote><p><b>破解：</b>首先，问问题前，先自己思考三遍怎么解，实在想不到再问别人。</p><p>其次，要问答案的本质是「问思路」，知道答案只是懂这一道题，清楚思路才是懂这一类题。</p><p>最后，弄懂思路后趁热打铁，付出行动，多刷几个类似的题目加深理解。</p><p>其实，不知道主动思考的本质原因，还是书读得不多，缺少深度思考的能力。</p><p>我很喜欢杨绛先生的一句话：<b>“年轻的时候以为不读书不足以了解人生，直到后来才发现如果不了解人生，是读不懂书的。读书的意义大概就是用生活所感去读书，用读书所得去生活吧。”</b></p><p class="ztext-empty-paragraph"><br></p><h3>5、从来没一个完整的学习过程，进度总卡在80%的人</h3><blockquote>老师讲题听了80%：这个我懂了。<br>解题思路在80%：这题我会了。<br>刷题刷了80%：考试没问题了。<br>结果是，成绩也只停在80%。</blockquote><p>他们的常态是：<b>明明差一点就可以做对，但每次考试都做不对。</b></p><p><b>破解：</b>不要凭眼睛做题，只有把题目从书本装进脑袋，再从脑子拿出来放在纸上，你才能知道自己的易错点在哪里，考试才能获得100%的正确。</p><p class="ztext-empty-paragraph"><br></p><h3>6、不论是历史意义还是数学公式，都只知道死记硬背的人</h3><blockquote>这类人单纯靠记忆来冲击高分，不论是什么科目的知识，都先背上几百遍再说。他们没有思维模型，不知道怎么去思考题目，也不知道有哪些记忆方法。</blockquote><p><b>破解：打破「死记硬背」模式，先理解，再背诵，准成功。</b>遵循21天记忆曲线复习，有技巧、有规律地记知识点。</p><p>再说一件有意思的事，如果尽可能地将多种联系，结合在某一件事情上，那么你对这件事的记忆就会加深。比如，给你看男女混合的二十张照片，你只会对长相特别美或丑的有印象，但如果告诉你其中某一对是夫妻，那么你记住夫妻的长相的概率会高于其他人。</p><p>所以，<b>在我们背书记忆的时候，也可以尽量建立多的联系，充分调动五官感觉，记忆效果会大大不同</b>。不信你现在就可以试试，每次看到「铁木君」的回答，就敲两下手机屏幕，听听关节撞击玻璃屏的声音，用心感受手机屏幕的震动感，这种感觉真的很独特！相信我，不出三次，你就会对「铁木君」印象深刻。</p><h3>7、只知道低头学习，为了进度而赶进度，不知道思考和复盘的人</h3><blockquote>上一章的概念还没弄懂，就跟风刷下一章的题目，学习就像一路走马观花，没有思考总结重点和难点，也不会复盘自己掌握的程度。<br>到最后通常越学越吃力，渴望跟上进度，但一直追赶不上。</blockquote><p><b>破解：宁愿落后一点，也要抽出时间来总结和反省。</b>地基稳了，才有建高楼大厦的可能，如果一味追速度，每层楼都偷工减料，那么即使建楼成功，也岌岌可危。</p><p>学习也是一样，如果基础不稳，为了赶进度每部分知识都「漏」一点，一旦积少成多，就会形成巨大的知识漏洞。更可怕的是，你还不知道漏洞的「组成部分」，想查漏补缺也无从下手。</p><p class="ztext-empty-paragraph"><br></p><h3>8、不会抓重点，花大量时间做单调重复的事的人</h3><blockquote>这类人分不清刷题和抄错题哪个更重要，不放过老师说的每一句话，通常书本上全是密密麻麻的笔记，但依旧不清楚考试的重点是什么。</blockquote><p><b>破解：不要本末倒置。</b>记大片笔记、抄错题……都是耗费时间，但收获很小的机械化事情，不值得你把珍贵的时间耗在这上面。</p><p>建议采用思维导图的方式记笔记，省时又有重点，至于错题本，可以剪下试卷（注：老师已经讲过且不会再用）上的错题，直接贴在本子上。</p><p class="ztext-empty-paragraph"><br></p><h3>9、不会输出自己的知识和学习心得的人</h3><blockquote>这类人只知道一味学习，背了大量知识点，只把学习当任务，不会自己总结重点和学习心得，一旦别人问起来，就支支吾吾不知道怎么表达。</blockquote><p><b>破解：把知识点理解透之后，转换成自己的语言，再复述一遍给别人听</b>。这有利于避免浅尝辄止，停留在知识表面。</p><p>感兴趣的同学，可以搜搜费曼学习法，依靠输出倒逼输入，效果绝对比单纯的看书好得多。</p><p class="ztext-empty-paragraph"><br></p><h3>10、过分注重细节，不关注整体的人</h3><blockquote>这类人看书学习时，不愿意错过任何细节，必须全部弄懂再进行下一步，导致经常过分沉迷细节，无法把学习的知识联合成整体来看。</blockquote><p><b>破解：但其实，知识是触类旁通的一张大网，经常看见整体布局就能猜准细节。</b>我们不能单一地学习，要让已经装进脑海的知识点建立联系，这样更有利于记忆。</p><p>比如，学习历史朝代时，可以和该时期的必背诗词联系起来，一起背诵加深记忆等等。</p><p class="ztext-empty-paragraph"><br></p><h3>11、不分区别地刷题，也不研究题目背后考察的知识点的人</h3><blockquote>赋予自己「无情的刷题机器」这个称号，以为刷的题目越多，碰见原题的几率就会越大。于是，不论是模拟题、押题还是往年真题，只要是题目就开刷，却不知道分析题目背后的知识点，结果考试还是摔得很惨。</blockquote><p><b>破解：</b>刷题的重点在于「选择性」而不是「广泛性」，要只刷那些需要自己发力攻克的题目，不然天下的题是永远刷不完的。一眼就知道是考什么知识点的，可选择性忽视。</p><p><b>重点是通过题目看清楚想考的知识点，并通过刷题熟练掌握该知识点，而不是一味地刷量计数。</b></p><p class="ztext-empty-paragraph"><br></p><h3>12、学习不专心，一边写作业一边放松（玩手机、看电视）的人</h3><blockquote>这类人通常喜欢惬意地学习，而不是「苦行僧」似的学习，或者认为自己天赋异禀，有一心二用还学得很好的能力，结果往往效率很低。<br>比如，看了半天的书，还停留在前几页，又或是自以为都懂了，但一关上书就「马什么梅」。</blockquote><p><b>破解：这完全是学习态度的问题。</b>只有当你完全投入学习时，大脑记忆才会最深刻，这时候，你的学习效率，会狂甩「一心二用」时的效率好几倍。</p><p class="ztext-empty-paragraph"><br></p><h3>13、不懂得主动找学习捷径和学习方法的人</h3><blockquote>这类人只知道闷头死读书，固执地遵循自己的那套学习方法，学习效率和成果日渐低下。<br>结果，明明是同样的知识点，你花好几个小时背下来的，学霸只花了十分钟就理解透彻，这完全是青铜和王者的差距。</blockquote><p><b>破解：很多事情都是有捷径的，尤其是学习上，有些人走的比你快，不是因为他比你勤奋，而是你的交通工具是双腿，人家的是飞机。</b></p><p>平时多观察和询问学霸是怎么看书和学习的，另外，也可以在知乎搜搜怎么高效学习、记笔记等。</p><p class="ztext-empty-paragraph"><br></p><h3>14、不会让自己喘口气，停下来适当休息的人</h3><blockquote>挑灯熬夜刷题的是他，废寝忘食看书的是他，走路飞快绝不浪费一秒钟的是他，最后考试滑铁卢的也是他。他经常会对天发问：明明我从没偷懒，恨不得一天有25个小时可以学习，为什么还是学渣？</blockquote><p><b>破解：人生和学习一样，是一场马拉松，并不是一下子拼尽全力就能赢的。</b>学习一定要劳逸结合，有合理必要的休息时间。</p><p>且不说熬夜看书刷题效率远不如白天，长期睡眠时间不够，那你的学习状态一定好不到哪里去。午休是必不可少的，即使精力很好，也最好小睡一下。时间在10-30分钟就好，不然容易进入深度睡眠，效果更差。</p><p>另外，学累了也可以采取换科目的休息方式，比如，做数学题累了就看看语文文章，或者听听英语歌等，<b>不要玩手机刷抖音，会很难再次进入学习状态。</b></p><h3>15、学习目的不单纯，假装学习的人。</h3><blockquote>经常被努力学习的自己感动到，熬夜学习、图书馆自习必定发朋友圈，然后享受清一色的「你好努力、学霸大神」等夸赞。吸引他们学习的不是知识，而是想炫耀自己很努力很刻苦的虚荣心。这样一来，即使自己成绩不好，父母家长也没理由责骂自己，毕竟自己是「刻苦学习」的乖孩子。</blockquote><p><b>破解：明白学习是为了自己，而不是别人的眼光。</b>其实，除了父母没人会关心你的成绩，你假装的努力，在别人眼里根本不算什么，到头来你也只能欺骗父母，感动自己，浪费大量时间和精力。</p><p>你可以一直假装演戏，但是结果不会陪你演。真想炫耀的话，等到成绩出来那天再炫会更爽。</p><p class="ztext-empty-paragraph"><br></p><h3>16、不能把知识结构化和系统化的人</h3><blockquote>知识的记忆点总是很模糊，每个答案都似曾相识，但又不知道具体在哪章见过。感觉背了很多书，记住了很多东西，但是真到了要考察的时候，却大脑一片空白，说不出个所以然。一句话总结，就是记住的知识很零散、单一、毫无规律，就像杂乱无章的线团，无法形成系统化的知识体系。</blockquote><p><b>破解：知识结构化和系统化很重要！知识结构化和系统化很重要！知识结构化和系统化很重要！</b>这就像我们整理衣服，一边是衣服裤子胡乱堆成小山，一边是分门别类规规矩矩存放，当你想穿某件衣服出门时，很显然更容易在第二个里面找到。</p><p>知识也是一样，将每个知识点都整理分类，按照一定的联系或者规律，放在记忆盒子里，当你需要调动某个知识点时，它也会很快速且清晰地蹦出来。</p><p class="ztext-empty-paragraph"><br></p><h3><b>17.中了以上任意一条，但是假装没看到，也不愿意改正的人。</b></h3><p class="ztext-empty-paragraph"><br></p><h3><b>18.面对别人的建议和问题指出，不管不顾先否定了再说的人。</b></h3><p>他们不会思考自己是不是真的错了，而是想别人怎么总挑我的毛病。但其实，如果别人是真的为了你好，你也有所收获的话，大可以敞开心扉，大方承认，并表示感谢，<b>一来可以彰显你的气度和素质，二来你也会建立联系，增加记忆，对收获的内容记忆更深刻，获得更多人的喜欢，比如现在为我点了赞的你。</b></p><p class="ztext-empty-paragraph"><br></p><h3><b>19.这一条不重要，主要看第18条。</b></h3></span></div>`,
+        createDate: "2020-12-11",
+        isTop: 0,
+        readNum: 0,
+        collectNum: 120,
+        praiseNum: 0,
+        treadNum: 0,
+        isRead: 1,
+        isCollect: 0,
+        isPraise: 1,
+        isTread: 1
+      },
+      noteDTO: {},
+      noteContent: {},
+      author: {
+        name: "wl"
+      },
+      userFollow: {},
+      noteTags2: [
+        { id: "12121212", name: "Java", color: "" },
+        { id: "45454", name: "SpringBoot", color: "#87d068" },
+        { id: "1212451212", name: "Java", color: "" },
+        { id: "4895454", name: "SpringBoot", color: "#87d068" },
+        { id: "48954854", name: "SpringBoot", color: "#87d068" },
+        { id: "48975454", name: "SpringBoot", color: "#87d068" },
+        { id: "489854854", name: "SpringBoot", color: "#87d068" }
+      ]
+    };
+  },
+  props: {
+    noteId: {
+      type: [String],
+      default: "",
+      required: true
+    }
+  },
+  computed: {
+    ...mapState({
+      // showDrawer: state => state.admin.layoutSetting.showDrawer,
+      identity: state => state.identity.identity
+    }),
+    noteTags() {
+      return this.note.noteTags || [];
+    }
+    //
+  },
+  methods: {
+    followAuthor() {},
+    readNote(noteDTO) {
+      noteApi.read(Object.assign(this.noteDTO, noteDTO)).then(res => {
+        console.log(res);
+        this.note = res.map.noteVo;
+      });
+    },
+    closeDrawerBar() {
+      let isBatch = this.management.batch;
+      if (isBatch) {
+        this.management.batch = !this.management.batch;
+        this.hideDrawerBar();
+      }
+    },
+    moveNote() {
+      this.operation.currentOp = "batch-move";
+      this.hideDrawerBar();
+      noteGroupApi.listAll().then(res => {
+        this.noteGroups = res.data;
+        this.showBottomDrawerBar("80%");
+      });
+    },
+    topNote() {
+      if (this.isTopOnBatch) {
+        // 置顶
+      } else {
+        // 取消置顶
+      }
+      let isTopOnBatch = this.isTopOnBatch;
+      let title = isTopOnBatch ? "置顶" : "取消置顶";
+      confirm({
+        title,
+        // content: () => <div style="color:red;">确定要title所选便签？</div>,
+        content: function(h) {
+          // h == createElement
+          return h("div", {
+            style: { color: "red" },
+            text: `确定要${title}所选便签？`
+          });
+        },
+        cancelText: "取消",
+        okText: title,
+        // okType: "primary",
+        onOk() {
+          console.log("OK");
+          noteApi.topNotes(this.selectedNoteIds, isTopOnBatch);
+        },
+        onCancel() {}
+      });
+    },
+    deleteNote() {
+      confirm({
+        title: "删除便签",
+        content: () => <div style="color:red;">确定要删除所选便签？</div>,
+        cancelText: "取消",
+        okText: "删除",
+        okType: "danger",
+        onOk() {
+          console.log("OK");
+        },
+        onCancel() {}
+      });
+    }
+  },
+  mounted() {
+    this.readNote();
+    title(this.note.title);
+  }
+};
+</script>
+
+<style>
+.note-read-wrap {
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.note-read-wrap .base-cell-wrap {
+  padding: 0 1rem;
+}
+
+.selected-num {
+  font-size: 1rem;
+  padding: 0 0.3rem;
+}
+
+.note-title,
+.note-title-large {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+  /* 自动换行 */
+  /* word-wrap: break-word;
+  word-break: normal; */
+  /* 强制不换行，省略号 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-title-large {
+  font-size: 1.6rem;
+}
+</style>

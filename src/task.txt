@@ -41,6 +41,9 @@ Electron Vue
 https://www.jianshu.com/p/1dbb96bc8f37
 https://www.php.cn/div-tutorial-411690.html
 自定义图标 ico且256*256以上 【在线转换ico http://www.ico51.cn/】
+图片转svg 【https://www.vectorizer.io/images/upload.html】
+icon 转 图片 【https://www.aconvert.com/cn/image/ico-to-png/】
+
 
 Vue-Router
 路由嵌套、路由缓存、路由动画
@@ -65,6 +68,24 @@ Vuex
 2. 将 动画加载 dom 元素放在 body 下，Vue 生命周期开始时 App.vue (created, mounted) 调用 `@/utils/utll` 下的 removeLoadingAnimate(#id, timeout) 则会移除加载动画
 最后一步：
 ​	将样式插入到 `public/index.html` 文件的 `<head></head>` 最好写成内联 `<style>动画样式</style>` 
+
+首屏优化 【https://blog.csdn.net/zhenghao35791/article/details/93649587】
+webpack-bundle-analyzer https://github.com/webpack-contrib/webpack-bundle-analyzer
+vue 首屏优化 monacoeditor 
+CDN优化 使用CDN资源引入固定的公共库 
+1）在index.html添加公共库脚本
+2）在vue.config.js配置externals 如：
+externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'ant-design-vue': 'ant-design-vue',
+    'axios': 'axios'
+  },
+3）去除vue.use相关代码
+使用 webpack-cdn-plugin 自动引入 不用手动引入，但需要去除vue.use相关代码
+CDN会把它们挂载到window 在 Vue.use 上加条件判断【if (!window.VueRouter) {Vue.use()}】或直接去除
+
 
 2 图标
 svg【symbol svg-sprite-loader（将svg生成对应的symbolId放到body） svgo（精简svg文件）】 

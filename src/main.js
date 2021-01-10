@@ -8,7 +8,7 @@ import * as filters from "./filters";
 import Viewer from "v-viewer";
 import Viser from "viser-vue";
 import VueLazyload from "vue-lazyload";
-import VueDraggableResizable from "vue-draggable-resizable";
+// import VueDraggableResizable from "vue-draggable-resizable";
 
 import "normalize.css/normalize.css";
 // https://animate.style/
@@ -53,48 +53,30 @@ Vue.use(VueLazyload, {
   attempt: 1
 });
 
-Vue.component("vue-draggable-resizable", VueDraggableResizable);
-// Vue.component("vue-draggable-resizable", () =>
-//   import("vue-draggable-resizable")
-// );
+// Vue.component("vue-draggable-resizable", VueDraggableResizable);
+Vue.component("vue-draggable-resizable", () =>
+  import("vue-draggable-resizable")
+);
 
-Vue.component("form-item", {
-  mixins: [],
-  render(h) {
-    let formItem = this.formItem;
-    return h(formItem.cmptName, formItem.dataObj);
-  },
-  props: {
-    formItem: {
-      type: [Object],
-      default: function() {
-        return { cmptName: "", dataObj: {} };
-      },
-      required: false
-    }
-  }
-});
+// Vue.component("form-item", {
+//   mixins: [],
+//   render(h) {
+//     let formItem = this.formItem;
+//     return h(formItem.cmptName, formItem.dataObj);
+//   },
+//   props: {
+//     formItem: {
+//       type: [Object],
+//       default: function() {
+//         return { cmptName: "", dataObj: {} };
+//       },
+//       required: false
+//     }
+//   }
+// });
 
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount("#app");
-
-import { gzipStr, ungzipStr } from "./utils/pako-utils";
-let str =
-  "kxhwl520邝星辉阿斯蒂芬撒旦发射点 阿斯蒂芬撒旦发射点发 阿斯蒂芬撒旦发射点发撒打发士大夫撒地方";
-// let str2 = "kxhwl520aasdf邝星辉";
-// for (let index = 0; index < 1000; index++) {
-//   str = str + str2;
-// }
-
-let compress = gzipStr(str);
-console.log(`H4sIAAAAAAAAAMuuyCjPMTUyeNk099mM+S/2dQIAt6LZJREAAAA=` == compress);
-console.log(compress);
-console.log(
-  ungzipStr(
-    "H4sIAAAAAAAAAMuuyCjPMTUyeNk099mM+S/2db6csf/ZtPUvJjW96FrzbNKkZ9OXPe2f+HRDy/OmnQp45IAMAtIgkc7JIJHFq58uWf50yWqgyNM5G55N2wkAX+tKvoUAAAA="
-  )
-);
-console.log(ungzipStr(compress));

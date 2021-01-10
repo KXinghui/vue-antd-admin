@@ -60,13 +60,19 @@ export function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
+/**
+ * 压缩
+ * @param {*} str
+ */
 export function gzipStr(str) {
   // window.btoa(uint8ArrayToStr(pako.gzip(str)));
   return uint8ArrayToBase64(pako.gzip(str));
 }
 
-// 解压
+/**
+ * 解压
+ * @param {*} str
+ */
 export function ungzipStr(str) {
-  console.log(pako.ungzip(strToUint8Array(window.atob(str)), { to: "string" }));
   return pako.ungzip(base64ToUint8Array(str), { to: "string" });
 }

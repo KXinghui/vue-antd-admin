@@ -1,6 +1,14 @@
 // import { PSM, OEM } from "tesseract.js";
 // import { msg } from "./antd-utils";
 
+export function favicon(href) {
+  document.getElementById("headFavicon").setAttribute("href", href);
+}
+
+export function title(title) {
+  document.getElementById("headTitle").innerText = title;
+}
+
 export function isProd() {
   return process.env.NODE_ENV === "production";
 }

@@ -168,7 +168,7 @@ export const TABLE_MIXIN = {
       default: "checkbox",
       requrire: false,
       validator(value) {
-        return ["checkbox", "radio", ""].includes(value);
+        return ["checkbox", "radio"].includes(value);
       }
     },
     selectedRowKeys: {
@@ -300,8 +300,11 @@ export const TABLE_MIXIN = {
     } */
   },
   methods: {
-    ableBatchOp() {
-      this.$emit("update:isBatch", !this.isBatch);
+    ableBatchOp(rowSelectionType) {
+      let isBatch = this.isBatch;
+      let curRowSelectionType = this.rowSelectionType;
+      this.$emit("update:rowSelectionType", rowSelectionType);
+      this.$emit("update:isBatch", curRowSelectionType != rowSelectionType ? true : !isBatch);
       // this.isBatch = !this.isBatch;
     },
     // eslint-disable-next-line no-unused-vars

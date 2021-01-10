@@ -214,6 +214,13 @@ export const routes = [
     component: () => import(/* webpackChunkName: "login" */ "@views/Login.vue")
   },
   {
+    path: "/oauth2/:thirdPartyPlatform/login",
+    name: "ThirdPartyLogin",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@views/ThirdPartyLogin.vue"),
+    props: true
+  },
+  {
     path: "/register",
     name: "Register",
     component: () =>

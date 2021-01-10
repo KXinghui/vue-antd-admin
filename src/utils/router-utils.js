@@ -8,7 +8,6 @@ export function pushRoute(route) {
   if (!route) {
     return;
   }
-  debugger;
   let currentRoutePath = router.currentRoute.path;
   if (
     route && router.currentRoute && isString(route)

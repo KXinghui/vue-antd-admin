@@ -2,6 +2,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 // var WebpackObfuscator = require("webpack-obfuscator");
 const AntDesignThemePlugin = require("antd-theme-webpack-plugin");
 // const themeColorReplacer = import("@configs/themes");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let proxyObj = {};
 proxyObj["/ws"] = {
@@ -24,41 +25,47 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 // const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+const COMMON_PLUGINS = [/* [
+  'import',
+  { libraryName: 'ant-design-vue', libraryDirectory: 'es', style: 'css' },
+  'ant-design-vue'
+], */
+];
+const PROD_PLUGINS = [...COMMON_PLUGINS, new CompressionPlugin(),
+  // themeColorReplacer
+  new AntDesignThemePlugin({
+    antDir: resolve("./node_modules/ant-design-vue"),
+    stylesDir: resolve("./src/styles"),
+    varFile: resolve(
+      // "./node_modules/ant-design-vue/lib/style/themes/default.less"
+      "./src/styles/themes/variables.less"
+    ),
+    themeVariables: [
+      "@primary-color",
+      "@secondary-color",
+      "@text-color",
+      "@text-color-secondary",
+      "@heading-color",
+      "@layout-header-background",
+      "@layout-body-background",
+      "@btn-primary-bg",
+      "@processing-color"
+    ],
+    generateOnce: false,
+    indexFileName: "index.html",
+    // indexFileName: "./public/index.html",
+    lessUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js",
+    publicPath: "/vue-antd-admin"
+    // customColorRegexArray: [] // An array of regex codes to match your custom color variable values so that code can identify that it's a valid color. Make sure your regex does not adds false positives.
+  })];
+const DEV_PLUGINS = [...COMMON_PLUGINS, new BundleAnalyzerPlugin()];
 
 const configureWebpack = {
   plugins:
     process.env.NODE_ENV === "production"
-      ? [
-          new CompressionPlugin(),
-          // themeColorReplacer
-          new AntDesignThemePlugin({
-            antDir: resolve("./node_modules/ant-design-vue"),
-            stylesDir: resolve("./src/styles"),
-            varFile: resolve(
-              // "./node_modules/ant-design-vue/lib/style/themes/default.less"
-              "./src/styles/themes/variables.less"
-            ),
-            themeVariables: [
-              "@primary-color",
-              "@secondary-color",
-              "@text-color",
-              "@text-color-secondary",
-              "@heading-color",
-              "@layout-header-background",
-              "@layout-body-background",
-              "@btn-primary-bg",
-              "@processing-color"
-            ],
-            generateOnce: false,
-            indexFileName: "index.html",
-            // indexFileName: "./public/index.html",
-            lessUrl:
-              "https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js",
-            publicPath: "/vue-antd-admin"
-            // customColorRegexArray: [] // An array of regex codes to match your custom color variable values so that code can identify that it's a valid color. Make sure your regex does not adds false positives.
-          })
-        ]
-      : [],
+      ? PROD_PLUGINS
+      : DEV_PLUGINS,
   // new CompressionPlugin({
   //   algorithm: "gzip", //'brotliCompress'
   //   test: /\.js$|\.html$|\.css/, // + $|\.svg$|\.png$|\.jpg

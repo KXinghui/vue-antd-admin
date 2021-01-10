@@ -14,11 +14,11 @@ const instance = axios.create({
   timeout: DEFAULT_TIMEOUT,
   // 跨域【https://segmentfault.com/q/1010000008671922】
   // headers: { "content-type": "application/x-www-form-urlencoded" },
-  /* headers: {
+  headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Methods": "*"
-  }, */
+  },
   // SpringBoot Axios 【https://segmentfault.com/a/1190000013312233】
   transformRequest: [
     function(data) {
@@ -29,7 +29,6 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(
   function(config) {
-    debugger;
     config.headers = Object.assign(config.headers, {
       Authorization: store.getters.token.token,
       AuthorizationCode: store.getters.token.tokenCode
@@ -47,7 +46,6 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function(response) {
-    debugger;
     console.log("interceptors.response 响应拦截");
     console.log(response);
     console.log(response.data);

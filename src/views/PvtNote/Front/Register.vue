@@ -1,6 +1,7 @@
 <template>
   <identity-register-view
     ms="pvtnote"
+    msAlias="PVTNOTE"
     identity-role="user"
   ></identity-register-view>
 </template>

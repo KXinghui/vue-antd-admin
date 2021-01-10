@@ -1,5 +1,9 @@
 <template>
-  <identity-login-view ms="pvtnote" identity-role="user"></identity-login-view>
+  <identity-login-view
+    ms="pvtnote"
+    msAlias="PVTNOTE"
+    identity-role="user"
+  ></identity-login-view>
 </template>
 
 <script>

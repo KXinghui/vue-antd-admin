@@ -11,7 +11,7 @@
     v-bind="$props"
     @cancel="cancelModal"
   >
-    <a-spin :spinning="modalLoading">
+    <a-spin class="modal-body" :spinning="modalLoading">
       <!-- @ok="hideModal" -->
       <a-anchor
         v-show="showAnchor"
@@ -49,7 +49,7 @@
         }"
         :isRefresh.sync="modalRefresh"
       > -->
-      <div :ref="modalRef"><slot></slot></div>
+      <div class="modal-body" :ref="modalRef"><slot></slot></div>
       <!-- </bs-core> -->
     </a-spin>
     <template slot="footer">
@@ -198,5 +198,10 @@ export default {
   outline: 0;
   cursor: pointer;
   transition: color 0.3s;
+}
+.modal-body,
+.modal-body .ant-spin-container {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -68,10 +68,10 @@ export default [
   },
   {
     path: "/pvtnote/note/:noteId",
-    name: `${MS}FrontNoteDetail`,
+    name: `${MS}FrontNoteRead`,
     component: () =>
       import(
-        /* webpackChunkName: "pvtnote-note" */ "@views/PvtNote/Front/note/NoteDetail.vue"
+        /* webpackChunkName: "pvtnote-note" */ "@views/PvtNote/Front/note/NoteRead.vue"
       ),
     props: true
   },
