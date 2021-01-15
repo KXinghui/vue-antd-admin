@@ -52,6 +52,14 @@
                   <a-button
                     size="large"
                     shape="circle"
+                    title="开源中国"
+                    @click="thirdPartyLogin('oschina')"
+                  >
+                    <icon icon="IconFont_oschina"></icon>
+                  </a-button>
+                  <a-button
+                    size="large"
+                    shape="circle"
                     title="支付宝"
                     @click="thirdPartyLogin('alipay')"
                   >
@@ -159,16 +167,20 @@ export default {
     })
   },
   methods: {
-    thirdPartyLogin(thirdPartyPlatform) {
+    thirdPartyLogin(thirdParty) {
       let authorizeUrl = "";
-      switch (thirdPartyPlatform) {
+      switch (thirdParty) {
         case "github":
           authorizeUrl =
-            "https://github.com/login/oauth/authorize?client_id=Iv1.f804df1563d19bbc&redirect_uri=http://localhost:8080/vue-antd-admin/oauth2/github/login";
+            "https://github.com/login/oauth/authorize?client_id=Iv1.f804df1563d19bbc&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/github/login";
           break;
         case "gitee":
           authorizeUrl =
-            "https://gitee.com/oauth/authorize?client_id=c793a3534c904c288b0eee13de35f36044a521631575a15222b114e66630736d&redirect_uri=http://localhost:8080/vue-antd-admin/oauth2/gitee/login&response_type=code";
+            "https://gitee.com/oauth/authorize?client_id=c793a3534c904c288b0eee13de35f36044a521631575a15222b114e66630736d&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/gitee/login&response_type=code";
+          break;
+        case "oschina":
+          authorizeUrl =
+            "https://www.oschina.net/action/oauth2/authorize?response_type=code&client_id=3J1nieR2SomKwSPKTFuA&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/oschina/login";
           break;
         default:
           break;

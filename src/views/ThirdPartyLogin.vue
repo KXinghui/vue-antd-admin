@@ -4,7 +4,7 @@
       ms="vue-antd-admin"
       msAlias="Vue Antd Admin"
       identity-role="user"
-      :thirdPartyPlatform="thirdPartyPlatform"
+      :thirdParty="thirdParty"
     >
     </identity-third-party-login-view>
   </div>
@@ -12,6 +12,7 @@
 
 <script>
 import IdentityThirdPartyLoginView from "./Base/Front/IdentityThirdPartyLoginView";
+import { mapState } from "vuex";
 
 export default {
   name: "Login",
@@ -19,13 +20,24 @@ export default {
     IdentityThirdPartyLoginView
   },
   props: {
-    thirdPartyPlatform: {
+    thirdParty: {
       type: [String],
       default: "",
-      required: true,
-      validator(value) {
-        return ["github", "gitee", "qq"].includes(value);
-      }
+      required: true
+      // validator(value) {
+      //   return this.thirdPartySupport.includes(value);
+      // }
+    }
+  },
+  computed: {
+    ...mapState({
+      thirdPartySupport: state => state.admin.thirdPartySupport
+    })
+  },
+  mounted() {
+    console.log(this.thirdPartySupport);
+    if (this.thirdPartySupport.includes(this.thirdParty)) {
+      console.log("支持");
     }
   }
 };

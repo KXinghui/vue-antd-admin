@@ -32,7 +32,16 @@ const state = () => {
       "layout-body-background": "",
       "btn-primary-bg": "",
       "processing-color": ""
-    }
+    },
+    thirdPartySupport: [
+      "github",
+      "gitee",
+      "oschina",
+      "alipay",
+      "weibo",
+      "wechat",
+      "qq"
+    ]
   };
 };
 

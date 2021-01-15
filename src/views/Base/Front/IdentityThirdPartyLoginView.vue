@@ -1,6 +1,6 @@
 <template>
   <div class="identity-third-party-login-wrap">
-    <!-- <base-header showBackIcon></base-header> -->
+    <base-header showBackIcon></base-header>
     <base-main
       :isScroll="true"
       :isScrollPull="false"
@@ -18,7 +18,7 @@
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
             <identity-third-party-login
               identity-role="user"
-              :thirdPartyPlatform="thirdPartyPlatform"
+              :thirdParty="thirdParty"
             >
             </identity-third-party-login>
           </a-col>
@@ -70,15 +70,10 @@ export default {
       default: "",
       required: true
     },
-    thirdPartyPlatform: {
+    thirdParty: {
       type: [String],
       default: "",
-      required: true,
-      validator(value) {
-        return ["github", "gitee", "alipay", "weibo", "wechat", "qq"].includes(
-          value
-        );
-      }
+      required: true
     }
   },
   computed: {

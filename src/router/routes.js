@@ -214,7 +214,7 @@ export const routes = [
     component: () => import(/* webpackChunkName: "login" */ "@views/Login.vue")
   },
   {
-    path: "/oauth2/:thirdPartyPlatform/login",
+    path: "/thirdparty/oauth2/:thirdParty/login",
     name: "ThirdPartyLogin",
     component: () =>
       import(/* webpackChunkName: "login" */ "@views/ThirdPartyLogin.vue"),

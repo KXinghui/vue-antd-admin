@@ -4,12 +4,13 @@
     <!-- 手机登录 -->
     <!-- 邮箱登录 -->
     <!-- 扫码登录 -->
-    <a-result title="第三方登陆">
+    <a-result :status="isSupport ? 'success' : 'error'" title="第三方登陆">
       <template #icon>
-        <icon icon="Antd_loading" />
+        <a-icon :type="isSupport ? 'loading' : 'close-circle'" />
       </template>
       <template #extra>
-        登陆即注册 {{ thirdPartyPlatform.toLocaleUpperCase() }} 登陆。。。
+        登陆即注册
+        {{ isSupport ? thirdParty.toLocaleUpperCase() : "暂不支持" }} 登陆。。。
       </template>
     </a-result>
   </div>
@@ -22,7 +23,7 @@ import { FORM_MIXIN } from "@mixins/form-mixin";
 import { baseIdentityApi } from "../../api/base/ApiFactory";
 import { mapMutations } from "vuex";
 import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
-import { axiosInstance } from "../../api/axios-config";
+import { mapState } from "vuex";
 
 export default {
   name: "IdentityOauth2Login",
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       identity: { name: "kxh" },
+      isSupport: false,
       loginCancleTokenSource: {
         localAccount: null,
         mail: null,
@@ -60,19 +62,24 @@ export default {
     };
   },
   props: {
-    thirdPartyPlatform: {
+    thirdParty: {
       type: [String],
       default: "",
-      required: true,
-      validator(value) {
-        return ["github", "gitee", "qq"].includes(value);
-      }
+      required: true
+      // validator(value) {
+      //   return this.thirdPartySupport.includes(value);
+      // }
     },
     identityRole: {
       type: [String],
       default: "",
       required: true
     }
+  },
+  computed: {
+    ...mapState({
+      thirdPartySupport: state => state.admin.thirdPartySupport
+    })
   },
   methods: {
     ...mapMutations("identity", [
@@ -134,28 +141,20 @@ export default {
   },
   mounted() {
     // 根据第三方平台分别请求处理
-    if (this.thirdPartyPlatform === "github") {
+    let thirdParty = this.thirdParty;
+
+    this.isSupport = this.thirdPartySupport.includes(thirdParty);
+    if (!this.isSupport) {
+      return;
+    }
+    if (thirdParty === "github") {
       // No 'Access-Control-Allow-Origin' header is present on the requested resource
       // 获取code
       // 将code和state传到后台 后台根据code和state获取token 在header设置token后，请求用户信息 根据用户信息找第三方表 若有，则不增加记录；没有，增加两条记录([用户|系统用户|聊天用户]表和第三方表) 然后是登陆
-      let code = this.$route.query.code;
-      let url = "https://github.com/login/oauth/access_token";
-      axiosInstance
-        .post(url, {
-          client_id: "Iv1.f804df1563d19bbc",
-          client_secret: "7b6013324277839f55dff21f8c644028db6195d0",
-          redirect_uri:
-            "http://localhost:8080/vue-antd-admin/oauth2/github/login",
-          code
-        })
-        .then(res => {
-          console.log(res);
-        });
-      console.log("github");
-    } else if (this.thirdPartyPlatform === "gitee") {
+    } else if (thirdParty === "gitee") {
       console.log("gitee");
-    } else if (this.thirdPartyPlatform === "wechat") {
-      console.log("wechat");
+    } else if (thirdParty === "oschina") {
+      console.log("oschina");
     }
   }
 };
