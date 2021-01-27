@@ -43,7 +43,30 @@ export class BaseEnum {
   }
 }
 
-export class IdentityTypeEnum extends BaseEnum {
+export class BaseMappingEnum extends BaseEnum {
+  mapping;
+  constructor(id, name, value, desc, mapping) {
+    super(id, name, value, desc);
+    this.mapping = mapping;
+  }
+  static of(enumName) {
+    let enumObj = new BaseEnum();
+    for (let enumClass in this) {
+      let enums = [
+        this[enumClass]["id"],
+        this[enumClass]["name"],
+        this[enumClass]["value"],
+        this[enumClass]["mapping"]
+      ];
+      if (enums.includes(enumName)) {
+        enumObj = this[enumClass];
+      }
+    }
+    return enumObj;
+  }
+}
+
+export class IdentityTypeEnum extends BaseMappingEnum {
   static USERNAME = this.enums(0, "USERNAME", "UserName");
   static PASSWORD = this.enums(1, "PASSWORD", "Password");
   static MAIL = this.enums(2, "MAIL", "Mail");
@@ -55,12 +78,7 @@ export class IdentityTypeEnum extends BaseEnum {
   static MICRO_BLOG = this.enums(8, "MICRO_BLOG", "MicroBlog");
 }
 
-export class IdentityRoleEnum extends BaseEnum {
-  mapping;
-  constructor(id, name, value, desc, mapping) {
-    super(id, name, value, desc);
-    this.mapping = mapping;
-  }
+export class IdentityRoleEnum extends BaseMappingEnum {
   static USER = this.enums(0, "USER", "user", "用户", "user");
   static SYS_USER = this.enums(1, "SYS_USER", "sysuser", "系统用户", "sysUser");
   static CHAT_USER = this.enums(

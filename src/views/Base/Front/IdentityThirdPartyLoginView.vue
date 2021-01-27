@@ -41,7 +41,9 @@
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
 import IdentityThirdPartyLogin from "../../../components/Identity/IdentityThirdPartyLogin.vue";
 import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
+import thirdPartyOAuth2Api from "../../../api/ThirdPartyOAuth2Api";
+import { IDENTITY_MUTATION_TYPE } from "../../../store/mutation-type";
 
 export default {
   name: "IdentityThirdPartyLoginView",
@@ -90,10 +92,58 @@ export default {
       return `/${this.ms}/password/forget`;
     },
     ...mapState({
-      github: state => state.oauth2.github
+      oauth2: state => state.getters.oauth2
     })
   },
-  methods: {}
+  methods: {
+    async authorize() {
+      debugger;
+      let state = this.$route.query.state;
+      let code = this.$route.query.code;
+      let thirdParty = this.thirdParty;
+      console.log(thirdParty);
+      await thirdPartyOAuth2Api
+        .authorize(thirdParty, { code, state })
+        .then(res => {
+          let thirdPartyOAuth2Authorize =
+            res.data.map.thirdPartyOAuth2Authorize;
+          console.log(thirdPartyOAuth2Authorize);
+          if (thirdPartyOAuth2Authorize) {
+            this[IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY]({
+              thirdParty,
+              thirdPartyOAuth2Authorize
+            });
+          }
+        });
+    },
+    async loginIsRegister() {
+      debugger;
+      await this.authorize();
+      let thirdParty = this.thirdParty;
+      let accessTokenName = `${thirdParty}_access_token`;
+      let accessToken = this.$store.getters.oauth2[thirdParty]["accessToken"];
+      thirdPartyOAuth2Api
+        .loginIsRegister(
+          thirdParty,
+          {},
+          {
+            headers: {
+              [accessTokenName]: accessToken
+            }
+          }
+        )
+        .then(res => {
+          console.log(res.data);
+        });
+    },
+    ...mapMutations("identity", [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY
+    ])
+  },
+  mounted() {
+    this.loginIsRegister();
+  }
 };
 </script>
 

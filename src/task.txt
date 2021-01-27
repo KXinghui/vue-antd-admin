@@ -61,6 +61,16 @@ html,body,#app {
 
 Vuex
 
+vuex unknown mutation type 
+声明
+...mapMutations("identity", [
+  // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+  MUTATION_TYPE.MUTATION_TYPE_NAME
+])
+使用
+this[MUTATION_TYPE.MUTATION_TYPE_NAME](payload);
+参数只有一个
+
 优化：
 1、首屏加载动画
 实现：

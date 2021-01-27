@@ -20,7 +20,12 @@ const state = {
     { id: "04", enCode: "Export" },
     { id: "05", enCode: "Import" },
     { id: "06", enCode: "List" }
-  ]
+  ],
+  oauth2: {
+    github: {},
+    gitee: {},
+    oschina: {}
+  }
 };
 
 const getters = {
@@ -56,6 +61,13 @@ const mutations = {
   },
   SET_PERMISSIONS: (state, permissions) => {
     state.permissions = permissions;
+  },
+  SET_OAUTH2: (state, oauth2) => {
+    state.oauth2 = oauth2;
+  },
+  SET_OAUTH2_THIRDPARTY: (state, { thirdParty, thirdPartyOAuth2Authorize }) => {
+    debugger;
+    state.oauth2[thirdParty] = thirdPartyOAuth2Authorize;
   },
   // GET_IDENTITY: state => state.identity,
   // GET_ROLES: state => state.permissions,

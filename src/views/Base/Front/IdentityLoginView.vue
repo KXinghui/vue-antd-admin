@@ -37,7 +37,7 @@
                     size="large"
                     shape="circle"
                     title="GitHub"
-                    @click="thirdPartyLogin('github')"
+                    @click="authorizeUrl('github')"
                   >
                     <icon icon="IconFont_github"></icon>
                   </a-button>
@@ -45,7 +45,7 @@
                     size="large"
                     shape="circle"
                     title="GitHub"
-                    @click="thirdPartyLogin('gitee')"
+                    @click="authorizeUrl('gitee')"
                   >
                     <icon icon="IconFont_gitee"></icon>
                   </a-button>
@@ -53,7 +53,7 @@
                     size="large"
                     shape="circle"
                     title="开源中国"
-                    @click="thirdPartyLogin('oschina')"
+                    @click="authorizeUrl('oschina')"
                   >
                     <icon icon="IconFont_oschina"></icon>
                   </a-button>
@@ -61,7 +61,7 @@
                     size="large"
                     shape="circle"
                     title="支付宝"
-                    @click="thirdPartyLogin('alipay')"
+                    @click="authorizeUrl('alipay')"
                   >
                     <icon icon="IconFont_alipay"></icon>
                   </a-button>
@@ -70,7 +70,7 @@
                     size="large"
                     shape="circle"
                     title="微博"
-                    @click="thirdPartyLogin('weibo')"
+                    @click="authorizeUrl('weibo')"
                   >
                     <icon icon="IconFont_weibo"></icon>
                   </a-button>
@@ -79,7 +79,7 @@
                     size="large"
                     shape="circle"
                     title="微信"
-                    @click="thirdPartyLogin('wechat')"
+                    @click="authorizeUrl('wechat')"
                   >
                     <icon icon="IconFont_wechat"></icon>
                   </a-button>
@@ -88,7 +88,7 @@
                     size="large"
                     shape="circle"
                     title="QQ"
-                    @click="thirdPartyLogin('qq')"
+                    @click="authorizeUrl('qq')"
                   >
                     <icon icon="IconFont_qq"></icon>
                   </a-button>
@@ -116,7 +116,7 @@ import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout"
 import IdentityLogin from "../../../components/Identity/IdentityLogin.vue";
 import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import { mapState } from "vuex";
-import { msg } from "../../../utils/antd-utils";
+import thirdPartyOAuth2Api from "../../../api/ThirdPartyOAuth2Api";
 
 export default {
   name: "IdentityLoginView",
@@ -167,29 +167,14 @@ export default {
     })
   },
   methods: {
-    thirdPartyLogin(thirdParty) {
-      let authorizeUrl = "";
-      switch (thirdParty) {
-        case "github":
-          authorizeUrl =
-            "https://github.com/login/oauth/authorize?client_id=Iv1.f804df1563d19bbc&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/github/login";
-          break;
-        case "gitee":
-          authorizeUrl =
-            "https://gitee.com/oauth/authorize?client_id=c793a3534c904c288b0eee13de35f36044a521631575a15222b114e66630736d&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/gitee/login&response_type=code";
-          break;
-        case "oschina":
-          authorizeUrl =
-            "https://www.oschina.net/action/oauth2/authorize?response_type=code&client_id=3J1nieR2SomKwSPKTFuA&redirect_uri=http://localhost:8080/vue-antd-admin/thirdparty/oauth2/oschina/login";
-          break;
-        default:
-          break;
-      }
-      if (authorizeUrl) {
-        window.location.href = authorizeUrl;
-      } else {
-        msg({ code: -1, msg: "暂不支持" });
-      }
+    authorizeUrl(thirdParty) {
+      thirdPartyOAuth2Api.authorizeUrl(thirdParty).then(res => {
+        let authorizeUrl = res.data.map.authorizeUrl;
+        console.log(authorizeUrl);
+        if (authorizeUrl) {
+          window.location.href = authorizeUrl;
+        }
+      });
     }
   }
 };
