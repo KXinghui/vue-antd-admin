@@ -44,6 +44,7 @@ import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import { mapState, mapMutations } from "vuex";
 import thirdPartyOAuth2Api from "../../../api/ThirdPartyOAuth2Api";
 import { IDENTITY_MUTATION_TYPE } from "../../../store/mutation-type";
+import { IdentityRoleEnum } from "../../../consts/base-enum";
 
 export default {
   name: "IdentityThirdPartyLoginView",
@@ -69,7 +70,7 @@ export default {
     },
     identityRole: {
       type: [String],
-      default: "",
+      default: "user",
       required: true
     },
     thirdParty: {
@@ -97,11 +98,9 @@ export default {
   },
   methods: {
     async authorize() {
-      debugger;
       let state = this.$route.query.state;
       let code = this.$route.query.code;
       let thirdParty = this.thirdParty;
-      console.log(thirdParty);
       await thirdPartyOAuth2Api
         .authorize(thirdParty, { code, state })
         .then(res => {
@@ -117,7 +116,6 @@ export default {
         });
     },
     async loginIsRegister() {
-      debugger;
       await this.authorize();
       let thirdParty = this.thirdParty;
       let accessTokenName = `${thirdParty}_access_token`;
@@ -125,7 +123,11 @@ export default {
       thirdPartyOAuth2Api
         .loginIsRegister(
           thirdParty,
-          {},
+          {
+            identityRoleEnum:
+              IdentityRoleEnum.of(this.identityRole).mapping ||
+              IdentityRoleEnum.USER.mapping
+          },
           {
             headers: {
               [accessTokenName]: accessToken
@@ -133,7 +135,7 @@ export default {
           }
         )
         .then(res => {
-          console.log(res.data);
+          console.log(JSON.stringify(res.data.map));
         });
     },
     ...mapMutations("identity", [

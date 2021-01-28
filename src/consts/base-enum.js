@@ -49,8 +49,11 @@ export class BaseMappingEnum extends BaseEnum {
     super(id, name, value, desc);
     this.mapping = mapping;
   }
+  static enums(id, name, value, desc, mapping) {
+    return new BaseMappingEnum(id, name, value, desc, mapping);
+  }
   static of(enumName) {
-    let enumObj = new BaseEnum();
+    let enumObj = new BaseMappingEnum();
     for (let enumClass in this) {
       let enums = [
         this[enumClass]["id"],
@@ -67,15 +70,25 @@ export class BaseMappingEnum extends BaseEnum {
 }
 
 export class IdentityTypeEnum extends BaseMappingEnum {
-  static USERNAME = this.enums(0, "USERNAME", "UserName");
-  static PASSWORD = this.enums(1, "PASSWORD", "Password");
-  static MAIL = this.enums(2, "MAIL", "Mail");
-  static MOBILE = this.enums(3, "MOBILE", "Mobile");
-  static SCAN_CODE = this.enums(4, "SCAN_CODE", "ScanCode");
-  static GITHUB = this.enums(5, "GITHUB", "Github");
-  static WECHAT = this.enums(6, "WECHAT", "WeChat");
-  static QQ = this.enums(7, "QQ", "QQ");
-  static MICRO_BLOG = this.enums(8, "MICRO_BLOG", "MicroBlog");
+  static USERNAME = this.enums(0, "USERNAME", "UserName", "用户名", "username");
+  static PASSWORD = this.enums(1, "PASSWORD", "Password", "密码", "password");
+  static MAIL = this.enums(2, "MAIL", "Mail", "邮箱", "mail");
+  static MOBILE = this.enums(3, "MOBILE", "Mobile", "手机", "mobile");
+  static SCAN_CODE = this.enums(4, "SCAN_CODE", "ScanCode", "扫码", "scanCode");
+  static GITHUB = this.enums(5, "GITHUB", "GitHub", "GitHub", "github");
+  static GITEE = this.enums(6, "GITEE", "Gitee", "Gitee", "gitee");
+  static OSCHINA = this.enums(7, "OSCHINA", "OSChina", "开源中国", "oschina");
+  static DINGTALK = this.enums(8, "DINGTALK", "DingTalk", "钉钉", "dingtalk");
+  static ALIPAY = this.enums(9, "ALIPAY", "Alipay", "支付宝", "alipay");
+  static WECHAT = this.enums(10, "WECHAT", "WeChat", "微信", "wechat");
+  static QQ = this.enums(11, "QQ", "QQ", "qq", "qq");
+  static MICRO_BLOG = this.enums(
+    12,
+    "MICRO_BLOG",
+    "MicroBlog",
+    "微博",
+    "microblog"
+  );
 }
 
 export class IdentityRoleEnum extends BaseMappingEnum {
