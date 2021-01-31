@@ -22,7 +22,9 @@ const instance = axios.create({
   // SpringBoot Axios 【https://segmentfault.com/a/1190000013312233】
   transformRequest: [
     function(data) {
-      console.log("请求 data      " + data);
+      if (data) {
+        console.log("请求 data      " + data);
+      }
       return qs.stringify(data);
     }
   ]

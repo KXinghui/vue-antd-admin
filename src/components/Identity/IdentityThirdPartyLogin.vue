@@ -4,13 +4,19 @@
     <!-- 手机登录 -->
     <!-- 邮箱登录 -->
     <!-- 扫码登录 -->
-    <a-result :status="isSupport ? 'success' : 'error'" title="第三方登陆">
+    <a-result :status="isSupport ? 'success' : 'error'">
+      <template #title>
+        第三方登陆 <icon :icon="thirdPartyIcon"></icon>
+      </template>
       <template #icon>
         <a-icon :type="isSupport ? 'loading' : 'close-circle'" />
       </template>
       <template #extra>
         登陆即注册
-        {{ isSupport ? thirdParty.toLocaleUpperCase() : "暂不支持" }} 登陆。。。
+        <span style="color: red;">{{
+          isSupport ? thirdParty.toLocaleUpperCase() : "暂不支持"
+        }}</span>
+        登陆。。。
       </template>
     </a-result>
   </div>
@@ -79,7 +85,10 @@ export default {
   computed: {
     ...mapState({
       thirdPartySupport: state => state.admin.thirdPartySupport
-    })
+    }),
+    thirdPartyIcon() {
+      return `IconFont_${this.thirdParty}`;
+    }
   },
   methods: {
     ...mapMutations("identity", [

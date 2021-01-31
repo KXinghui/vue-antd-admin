@@ -98,15 +98,16 @@ export default {
   },
   methods: {
     async authorize() {
-      let state = this.$route.query.state;
-      let code = this.$route.query.code;
+      let { code, state } = this.$route.query;
       let thirdParty = this.thirdParty;
       await thirdPartyOAuth2Api
         .authorize(thirdParty, { code, state })
         .then(res => {
           let thirdPartyOAuth2Authorize =
             res.data.map.thirdPartyOAuth2Authorize;
-          console.log(thirdPartyOAuth2Authorize);
+          console.log(
+            "thirdPartyOAuth2Authorize  " + thirdPartyOAuth2Authorize
+          );
           if (thirdPartyOAuth2Authorize) {
             this[IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY]({
               thirdParty,
@@ -117,9 +118,11 @@ export default {
     },
     async loginIsRegister() {
       await this.authorize();
+      debugger;
       let thirdParty = this.thirdParty;
       let accessTokenName = `${thirdParty}_access_token`;
       let accessToken = this.$store.getters.oauth2[thirdParty]["accessToken"];
+      console.log("accessToken   " + accessToken);
       thirdPartyOAuth2Api
         .loginIsRegister(
           thirdParty,
@@ -135,12 +138,17 @@ export default {
           }
         )
         .then(res => {
-          console.log(JSON.stringify(res.data.map));
+          let { Authorization, AuthorizationCode } = res.data.map;
+          this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
+            token: Authorization,
+            tokenCode: AuthorizationCode
+          });
         });
     },
     ...mapMutations("identity", [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY
+      IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY,
+      IDENTITY_MUTATION_TYPE.SET_TOKEN
     ])
   },
   mounted() {

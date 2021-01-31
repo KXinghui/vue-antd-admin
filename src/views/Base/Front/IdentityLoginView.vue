@@ -32,6 +32,7 @@
                     <span>忘记密码</span>
                   </a-button>
                 </div>
+                <!-- <a-divider>登录即注册</a-divider> -->
                 <div class="thirdparty-wrap">
                   <a-button
                     size="large"

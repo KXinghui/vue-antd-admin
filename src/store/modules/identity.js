@@ -66,7 +66,6 @@ const mutations = {
     state.oauth2 = oauth2;
   },
   SET_OAUTH2_THIRDPARTY: (state, { thirdParty, thirdPartyOAuth2Authorize }) => {
-    debugger;
     state.oauth2[thirdParty] = thirdPartyOAuth2Authorize;
   },
   // GET_IDENTITY: state => state.identity,
