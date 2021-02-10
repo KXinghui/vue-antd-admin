@@ -82,7 +82,6 @@ export default {
   watch: {
     src() {
       if (this.player) {
-        debugger;
         this.player.src({ type: this.type, src: this.src });
       }
     }

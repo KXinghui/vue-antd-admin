@@ -1,8 +1,7 @@
-import BaseApi from "./base/BaseApi";
-import { axiosInstance } from "./axios-config";
-import store from "../store";
+import { axiosInstance } from "../axios-config";
+import store from "../../store";
 
-class ThirdPartyOAuth2Api extends BaseApi {
+class ThirdPartyOAuth2Api {
   authorizeUrl(thirdParty, data, config) {
     let url = `/${thirdParty}/authorizeurl`;
     return axiosInstance.post(this.buildUrl(url), data, config);

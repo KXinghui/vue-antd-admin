@@ -89,7 +89,6 @@ export const DEFAULT_EDITOR_CONFIG = {
   pasteIgnoreImg: false,
   pasteTextHandle: function(content) {
     // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
-    debugger;
     return (
       content + makePasteAppend(this.pasteAppendTexts, true) + "<p>粘贴后的</p>"
     );
@@ -198,7 +197,6 @@ export function initEditor(vm, wangEditor) {
     "uploadImgShowBase64"
   ];
   configNames.forEach(configName => {
-    debugger;
     editor.customConfig[configName] = editorConfig[configName]
       ? editorConfig[configName]
       : DEFAULT_EDITOR_CONFIG[configName];
@@ -242,7 +240,6 @@ export function initEditor(vm, wangEditor) {
  */
 export function destroyEditor(vm) {
   if (vm.editor) {
-    debugger;
     "destroy" in vm.editor && vm.editor.destroy();
     vm.editor = null;
   }

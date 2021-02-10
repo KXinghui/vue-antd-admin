@@ -28,9 +28,11 @@
 <script>
 import { client, disconnect, HEADERS, getHeader } from "@utils/websocket";
 import { msg } from "@utils/antd-utils";
+import WS_MIXIN from "../../../mixins/ws-mixin";
 
 export default {
   name: "WebSocket",
+  mixins: [WS_MIXIN],
   data() {
     return {
       tokenCode: "TokenCode",

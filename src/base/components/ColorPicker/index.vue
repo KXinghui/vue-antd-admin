@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     inputColors(colors) {
-      debugger;
       // this.$emit("update:colors", colors);
       this.$emit("input", colors);
       if (this.isInputVisible) {

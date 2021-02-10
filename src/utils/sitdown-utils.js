@@ -21,7 +21,6 @@ import { applyWechatRule, extraFootLinks } from "@sitdown/wechat";
 let wechatSitdown = null;
 
 export function wechatTomd(html) {
-  debugger;
   if (!wechatSitdown) {
     wechatSitdown = new Sitdown({
       keepFilter: ["style"],

@@ -42,7 +42,7 @@ import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout"
 import IdentityThirdPartyLogin from "../../../components/Identity/IdentityThirdPartyLogin.vue";
 import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import { mapState, mapMutations } from "vuex";
-import thirdPartyOAuth2Api from "../../../api/ThirdPartyOAuth2Api";
+import thirdPartyOAuth2Api from "../../../api/integral/ThirdPartyOAuth2Api";
 import { IDENTITY_MUTATION_TYPE } from "../../../store/mutation-type";
 import { IdentityRoleEnum } from "../../../consts/base-enum";
 
@@ -118,7 +118,6 @@ export default {
     },
     async loginIsRegister() {
       await this.authorize();
-      debugger;
       let thirdParty = this.thirdParty;
       let accessTokenName = `${thirdParty}_access_token`;
       let accessToken = this.$store.getters.oauth2[thirdParty]["accessToken"];

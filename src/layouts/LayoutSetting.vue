@@ -180,7 +180,6 @@ export default {
       ADMIN_MUTATION_TYPE.SET_THEME_SETTING
     ]),
     changeThemeSettingVar(varName) {
-      debugger;
       this.themeSettingVar = varName;
     },
     resetThemeSetting(isMsg = true) {

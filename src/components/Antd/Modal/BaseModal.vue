@@ -4,7 +4,6 @@
       height: modalHeight
     }"
     v-model="visible"
-    :title="modalTitle"
     :centered="modalCentered"
     ok-text="确认"
     cancel-text="取消"
@@ -39,7 +38,7 @@
         </span>
       </div>
 
-      <!-- <bs-core
+      <bs-core
         :options="{
           nestedScroll: true,
           bounce: {
@@ -48,10 +47,15 @@
           }
         }"
         :isRefresh.sync="modalRefresh"
-      > -->
-      <div class="modal-body" :ref="modalRef"><slot></slot></div>
-      <!-- </bs-core> -->
+      >
+        <div class="modal-body" :ref="modalRef"><slot></slot></div>
+      </bs-core>
     </a-spin>
+    <template slot="title">
+      <div>
+        <slot name="title">{{ modalTitle }}</slot>
+      </div>
+    </template>
     <template slot="footer">
       <a-spin :spinning="modalLoading">
         <slot name="footer"></slot>
@@ -61,10 +65,13 @@
 </template>
 
 <script>
-// import BsCore from "../../BetterScroll/BsCore.vue";
+import BsCore from "../../BetterScroll/BsCore.vue";
+// import FullScreen from "../../FullScreen/index.vue";
+
 export default {
   components: {
-    /*  BsCore */
+    BsCore
+    // FullScreen
   },
   name: "BaseModal",
   data() {
@@ -164,6 +171,7 @@ export default {
   },
   mounted() {
     this.resizeModalHeight();
+    this.visible = this.modalVisible;
     window.addEventListener("resize", this.resizeModalHeight);
   },
   destroyed() {

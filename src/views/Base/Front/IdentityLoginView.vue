@@ -16,7 +16,7 @@
         </a-row>
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <identity-login identity-role="user">
+            <identity-login identity-role="identityRole">
               <template v-slot:footer>
                 <div class="identity-login-footer-op">
                   <a-button
@@ -45,7 +45,7 @@
                   <a-button
                     size="large"
                     shape="circle"
-                    title="GitHub"
+                    title="码云"
                     @click="authorizeUrl('gitee')"
                   >
                     <icon icon="IconFont_gitee"></icon>
@@ -117,7 +117,7 @@ import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout"
 import IdentityLogin from "../../../components/Identity/IdentityLogin.vue";
 import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import { mapState } from "vuex";
-import thirdPartyOAuth2Api from "../../../api/ThirdPartyOAuth2Api";
+import thirdPartyOAuth2Api from "../../../api/integral/ThirdPartyOAuth2Api";
 
 export default {
   name: "IdentityLoginView",
@@ -171,7 +171,6 @@ export default {
     authorizeUrl(thirdParty) {
       thirdPartyOAuth2Api.authorizeUrl(thirdParty).then(res => {
         let authorizeUrl = res.data.map.authorizeUrl;
-        console.log(authorizeUrl);
         if (authorizeUrl) {
           window.location.href = authorizeUrl;
         }

@@ -10,6 +10,7 @@ import {
   exitFullScreen,
   isFullScreen
 } from "@utils/full-screen";
+import { isString } from "@utils/utils";
 
 export default {
   name: "FullScreen",
@@ -21,7 +22,7 @@ export default {
   // Props with type Object/Array must use a factory function to return the default value
   props: {
     element: {
-      type: [Object],
+      type: [Object, String],
       default: function() {
         return null;
       },
@@ -41,6 +42,14 @@ export default {
       let ele = this.element;
       if (!ele) {
         ele = document.body;
+      }
+      if (isString(ele)) {
+        debugger;
+        ele.includes("#")
+          ? document.getElementById(ele)
+          : ele.includes(".")
+          ? document.getElementsByClassName(ele)[0]
+          : this.$refs[this.modalRef] || this.$refs[this.modalRef].$el;
       }
       isFullScreen() ? exitFullScreen() : openFullscreen(ele);
       this.isFullScreen = !isFullScreen();

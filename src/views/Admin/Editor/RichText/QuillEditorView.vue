@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     html2md(platform) {
-      debugger;
       this.md = htmlTomd(this.html, platform);
     },
     changeTextArea(e) {

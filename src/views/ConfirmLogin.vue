@@ -1,30 +1,25 @@
 <template>
-  <div class="third-party-login">
-    <identity-third-party-login-view
+  <div class="confirm-login">
+    <identity-confirm-login-view
       ms="vue-antd-admin"
       msAlias="Vue Antd Admin"
-      identity-role="identityRole"
+      identity-role="user"
       :thirdParty="thirdParty"
     >
-    </identity-third-party-login-view>
+    </identity-confirm-login-view>
   </div>
 </template>
 
 <script>
-import IdentityThirdPartyLoginView from "./Base/Front/IdentityThirdPartyLoginView";
+import IdentityConfirmLoginView from "./Base/Front/IdentityConfirmLoginView";
 import { mapState } from "vuex";
 
 export default {
-  name: "IdentityThirdPartyLogin",
+  name: "ConfirmLogin",
   components: {
-    IdentityThirdPartyLoginView
+    IdentityConfirmLoginView
   },
   props: {
-    identityRole: {
-      type: [String],
-      default: "user",
-      required: true
-    },
     thirdParty: {
       type: [String],
       default: "",
@@ -49,11 +44,11 @@ export default {
 </script>
 
 <style>
-.third-party-login .identity-login {
+.confirm-login .identity-login {
   margin-top: 3.2rem;
 }
 
-.third-party-login h1 {
+.confirm-login h1 {
   /* background: #203; */
   color: black;
   /* text-shadow: 0 0 0.1em, 0 0 0.3em; */
@@ -64,7 +59,7 @@ export default {
     5px 5px black, 6px 6px black, 7px 7px black, 8px 8px black; */
   transition: 0.5s;
 }
-.third-party-login h1:hover {
+.confirm-login h1:hover {
   /* color: transparent; */
   color: black;
   text-shadow: 0 0 0.1em, 0 0 0.3em;

@@ -37,7 +37,6 @@ export function init(vm) {
       ? monaco.editor.createDiffEditor(editorEle, editorOptions)
       : monaco.editor.create(editorEle, editorOptions);
     // 设置样式
-    debugger;
     // monacoEditorEle = .monaco-editor-wrap .monaco-editor
     // monacoEditorEle.firstChild = .monaco-editor-wrap .monaco-editor .overflow-guard
     let monacoEditorEle = editorEle.querySelector(".monaco-editor");

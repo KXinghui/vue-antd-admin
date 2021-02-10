@@ -221,6 +221,20 @@ export const routes = [
     props: true
   },
   {
+    path: "/:identityRole/confirm/login",
+    name: "IdentityRoleConfirmLogin",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@views/ConfirmLogin.vue"),
+    props: true
+  },
+  {
+    path: "/confirm/login",
+    name: "ConfirmLogin",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@views/ConfirmLogin.vue")
+  },
+
+  {
     path: "/register",
     name: "Register",
     component: () =>

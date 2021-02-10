@@ -45,6 +45,7 @@ import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout"
 import IdentityLogin from "../../../components/Identity/IdentityLogin";
 import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
+import scanCodeLoginApi from "../../../api/integral/ScanCodeLoginApi";
 
 export default {
   name: "IdentityConfirmLoginView",
@@ -72,7 +73,24 @@ export default {
     }
   },
   methods: {
-    confirmLogin() {}
+    enterView() {
+      let scanCode = this.$route.query.scancode;
+      scanCodeLoginApi.enterView({ scanCode }).then(res => {
+        console.log(res.data);
+      });
+    },
+    confirmLogin() {
+      let scanCode = this.$route.query.scancode;
+      scanCodeLoginApi.confirmLogin({ scanCode }).then(res => {
+        console.log(res.data);
+      });
+    }
+  },
+  created() {
+    this.enterView();
+  },
+  mounted() {
+    this.confirmLogin();
   }
 };
 </script>

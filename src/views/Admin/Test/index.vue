@@ -24,6 +24,10 @@
     <!-- <cropper></cropper> -->
     <a-input v-model="text"></a-input>
     <qr-code :text="text"></qr-code>
+    <icon-selector
+      selectNum="5"
+      :selectedIcons.sync="selectedIcons"
+    ></icon-selector>
   </div>
 </template>
 
@@ -33,14 +37,16 @@ import { md5, hashFile } from "@utils/spark-md5-utils";
 import QRCode from "../../../components/QRCode";
 import { screenshot } from "../../../utils/file-utils";
 // import Cropper from "../../../components/Cropper";
+import IconSelector from "../../../components/Icon/IconSelector";
 
 export default {
   name: "Test",
-  components: { "qr-code": QRCode },
+  components: { "qr-code": QRCode, IconSelector },
   data() {
     return {
       htmlRef: this.$refs.test,
-      text: "https://webqr.com/create.html"
+      text: "https://webqr.com/create.html",
+      selectedIcons: []
     };
   },
   methods: {
@@ -67,6 +73,9 @@ export default {
   },
   mounted() {
     this.htmlRef = this.$refs["test"].$el;
+  },
+  updated() {
+    console.log(this.selectedIcons);
   }
 };
 </script>

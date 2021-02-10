@@ -3,13 +3,13 @@
  */
 export let URL =
   process.env.NODE_ENV === "production"
-    ? "/pvtnote/pvtnws"
-    : "https://localhost:8080/pvtnote/pvtnws";
+    ? "/cloud/pvtcws"
+    : "https://localhost:8080/cloud/pvtcws";
 
 /**
  * 支持WebSocket
  */
 export let WEBSOCKET_URL =
   process.env.NODE_ENV === "production"
-    ? "/pvtnote/pvtnws"
-    : "ws://localhost:8080/pvtnote/pvtnws";
+    ? "/cloud/pvtcws"
+    : "ws://localhost:8080/cloud/pvtcws";

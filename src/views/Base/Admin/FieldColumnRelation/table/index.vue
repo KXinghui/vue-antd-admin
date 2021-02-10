@@ -379,7 +379,6 @@ export default {
       this.modalLoading = false;
       this.modalVisible = true;
       this.modalRefresh = true;
-      debugger;
       if (form === "Insert") {
         this.modalTitle = "增加便签";
       } else if (form === "Update") {

@@ -19,6 +19,7 @@ import SockJS from "sockjs-client";
 import { URL, WEBSOCKET_URL } from "@configs/websocket";
 import { isProd } from "@utils/utils";
 import { msg } from "@utils/antd-utils";
+import store from "../store";
 
 export const HEADERS = {
   Authorization: "Token",
@@ -27,14 +28,17 @@ export const HEADERS = {
   passcode: "pvtnote" */
 };
 
-export function getHeader(vm) {
+export function getHeader() {
   if (isProd()) {
     // 从Vuex获取Token和TokenCode
-    return HEADERS;
+    return {
+      Authorization: store.getters.token.token,
+      AuthorizationCode: store.getters.token.tokenCode
+    };
   } else {
     return {
-      Authorization: vm.token,
-      AuthorizationCode: vm.tokenCode
+      Authorization: "Token",
+      AuthorizationCode: "TokenCode"
     };
   }
 }
@@ -67,7 +71,7 @@ export function client(options, headers, connectCallBack, errorCallBack) {
       webstomp.over(new WebSocket(WEBSOCKET_URL), targetOptions)
     : webstomp.over(new SockJS(URL), targetOptions);
   stompClient.connect(
-    !headers ? HEADERS : headers,
+    Object.assign(headers, getHeader()),
     connectCallBack,
     errorCallBack
   );
@@ -78,7 +82,7 @@ export function disconnect(stompClient) {
   if (stompClient && stompClient instanceof webstomp.client) {
     stompClient.disconnect(function() {
       msg({ code: "1", msg: "断连成功=======" });
-    }, HEADERS);
+    }, getHeader());
   }
 }
 
