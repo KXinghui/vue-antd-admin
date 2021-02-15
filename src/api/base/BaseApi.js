@@ -1,14 +1,8 @@
 import { axiosInstance } from "../axios-config";
+import BaseNameSpaceApi from "./BaseNameSpaceApi";
 
-class BaseApi {
+class BaseApi extends BaseNameSpaceApi {
   // 如：/user
-  namespace;
-  constructor(namespace) {
-    this.namespace = namespace;
-  }
-  buildUrl(url) {
-    return `${this.namespace}${url}`;
-  }
   insert(data, config) {
     return axiosInstance.post(this.buildUrl(``), data, config);
   }

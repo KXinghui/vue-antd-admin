@@ -3,7 +3,7 @@
     <identity-third-party-login-view
       ms="vue-antd-admin"
       msAlias="Vue Antd Admin"
-      identity-role="identityRole"
+      :identity-role="identityRole"
       :thirdParty="thirdParty"
     >
     </identity-third-party-login-view>

@@ -14,7 +14,7 @@
       :tab-bar-gutter="tabOption.tabBarGutter"
       @change="changeTabs"
     >
-      <a-tab-pane key="1">
+      <a-tab-pane key="localAccount">
         <span slot="tab">
           <a-icon type="user" />
           本地账号登录
@@ -29,25 +29,33 @@
           <a-form-model-item label="本地账号">
             <a-input
               v-model="form.localAccount"
+              autocomplete="username"
               placeholder="用户名/手机/邮箱"
               allow-clear
             />
           </a-form-model-item>
+          <!-- Input elements should have autocomplete attributes (suggested: "current-password") -->
           <a-form-model-item label="密码">
             <a-input-password
               v-model="form.password"
+              autocomplete="current-password"
               placeholder="密码"
               allow-clear
             />
           </a-form-model-item>
           <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-            <a-button type="primary" @click="loginByLocalAccount" block>
+            <a-button
+              type="primary"
+              @click="loginByLocalAccount"
+              :loading="loginLoading.localAccount"
+              block
+            >
               登录
             </a-button>
           </a-form-model-item>
         </a-form-model>
       </a-tab-pane>
-      <a-tab-pane key="2">
+      <a-tab-pane key="mail">
         <span slot="tab">
           <a-icon type="mail" />
           邮箱登录
@@ -75,13 +83,18 @@
             </a-input-group>
           </a-form-model-item>
           <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-            <a-button type="primary" @click="loginByMail" block>
+            <a-button
+              type="primary"
+              @click="loginByMail"
+              :loading="loginLoading.mail"
+              block
+            >
               登录
             </a-button>
           </a-form-model-item>
         </a-form-model>
       </a-tab-pane>
-      <a-tab-pane key="3">
+      <a-tab-pane key="mobile">
         <span slot="tab">
           <a-icon type="mobile" />
           手机登录
@@ -109,19 +122,38 @@
             </a-input-group>
           </a-form-model-item>
           <a-form-model-item :wrapper-col="buttonItemLayout.wrapperCol">
-            <a-button type="primary" @click="loginByMobile" block disabled>
+            <a-button
+              type="primary"
+              @click="loginByMobile"
+              :loading="loginLoading.mobile"
+              block
+              disabled
+            >
               登录(暂不支持)
             </a-button>
           </a-form-model-item>
         </a-form-model>
       </a-tab-pane>
-      <a-tab-pane key="4">
+      <a-tab-pane key="scanCode">
         <span slot="tab">
           <a-icon type="qrcode" />
           扫码登录
         </span>
         <div class="login-wrap login-scan-code-wrap">
-          <img class="login-scan-code" :src="loginScanCodeSrc" />
+          <!-- <img class="login-scan-code" :src="loginScanCodeSrc" /> -->
+          <div class="login-scan-code-wrap">
+            <a-spin :spinning="loginLoading.scanCode">
+              <img class="login-scan-code" :src="loginScanCodeSrc" />
+            </a-spin>
+            <div
+              v-show="loginScanCodeExpiration == 0"
+              class="login-scan-code-expiration"
+            >
+              <a-button type="primary" @click="drawLoginScanCode"
+                >点击刷新登陆二维码</a-button
+              >
+            </div>
+          </div>
           <div class="login-scan-code-tips">
             <a-alert
               :message="loginScanCodeAlert.message"
@@ -151,27 +183,39 @@
 
 <script>
 import { FORM_MIXIN } from "@mixins/form-mixin";
-import WS_MIXIN from "@mixins/ws-mixin";
+import { WS_MIXIN } from "@mixins/ws-mixin";
 import { baseIdentityApi } from "../../api/base/ApiFactory";
-import { mapMutations } from "vuex";
+import { CANCEL_TOKEN, getCancelTokenSource } from "../../api/axios-config";
+import { mapState, mapMutations } from "vuex";
 import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
 import scanCodeLoginApi from "../../api/integral/ScanCodeLoginApi";
+import { scanCodeLogin } from "../../api/ws/destination";
+
+const IDENITTY_TYPES = ["localAccount", "mail", "mobile", "scanCode"];
 
 export default {
   name: "IdentityLogin",
   mixins: [FORM_MIXIN, WS_MIXIN],
   data() {
     return {
-      identity: { name: "kxh" },
       loginCancleTokenSource: {
         localAccount: null,
         mail: null,
         mobile: null,
         scanCode: null
       },
+      loginLoading: {
+        localAccount: false,
+        mail: false,
+        mobile: false,
+        scanCode: false
+      },
+      // loginScanCodeLoading: true,
       loginScanCode: "",
       loginScanCodeBase64: `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`,
-      loginScanCodeExpiration: 100,
+      loginScanCodeExpiration: -1,
+      loginScanCodeAvatarUrl: "",
+      isConfirmLogin: false,
       tabOption: {
         position: "top",
         tabBarStyle: {
@@ -225,6 +269,9 @@ export default {
           }
         : {};
     }, */
+    ...mapState({
+      identity: state => state.identity.identity
+    }),
     loginScanCodeSrc() {
       return `data:image/png;base64,${this.loginScanCodeBase64}`;
     }
@@ -236,14 +283,17 @@ export default {
       IDENTITY_MUTATION_TYPE.SET_IDENTITY
     ]),
     changeTabs(activeKey) {
-      if (4 == activeKey) {
-        if (!this.loginScanCodeBase64) {
-          this.drawLoginScanCode();
-        }
+      if ("scanCode" == activeKey) {
+        this.drawLoginScanCode();
       }
     },
     loginByLocalAccount() {
-      console.log("localaccount login", this.form);
+      console.log("localAccount login", this.form);
+      let vm = this;
+      if (vm.handleCancleWhenLogin("mail")) {
+        return;
+      }
+      vm.loginLoading["localAccount"] = true;
       baseIdentityApi(this.identityRole)
         .loginByLocalAccount(
           {
@@ -254,51 +304,193 @@ export default {
             //   password: this.form.password
             // }
           },
-          {}
+          {
+            [CANCEL_TOKEN]: this.getLoginCancleTokenSource("localAccount").token
+          }
         )
         .then(res => {
-          if (res.data.map) {
-            this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
-              token: res.data.map["Authorization"],
-              tokenCode: res.data.map["AuthorizationCode"]
-            });
-          }
-          console.log(res.data.map);
+          vm.handleAfterLogin(res.data);
+          vm.loginLoading["localAccount"] = false;
+        })
+        .catch(() => {
+          vm.loginLoading["localAccount"] = false;
         });
     },
     loginByMail() {
       console.log("mail login", this.form);
+      let vm = this;
+      if (vm.handleCancleWhenLogin("mail")) {
+        return;
+      }
+      vm.loginLoading["mail"] = true;
+      baseIdentityApi(this.identityRole)
+        .loginByMail(
+          {
+            mail: this.form.mail,
+            svCodeKey: this.form.mail,
+            svCode: this.form.svCode
+            // userQuery: {
+            //   localAccount: this.form.localAccount,
+            //   password: this.form.password
+            // }
+          },
+          {
+            [CANCEL_TOKEN]: this.getLoginCancleTokenSource("mail").token
+          }
+        )
+        .then(res => {
+          vm.handleAfterLogin(res.data);
+          vm.loginLoading["mail"] = false;
+        })
+        .catch(() => {
+          vm.loginLoading["mail"] = false;
+        });
     },
     loginByMobile() {
       console.log("mobile login", this.form);
+      let vm = this;
+      if (vm.handleCancleWhenLogin("mail")) {
+        return;
+      }
+      vm.loginLoading["mobile"] = true;
+      baseIdentityApi(this.identityRole)
+        .loginByMobile(
+          {
+            mobile: this.form.mobile,
+            svCodeKey: this.form.mobile,
+            svCode: this.form.svCode
+            // userQuery: {
+            //   localAccount: this.form.localAccount,
+            //   password: this.form.password
+            // }
+          },
+          {
+            [CANCEL_TOKEN]: this.getLoginCancleTokenSource("mobile").token
+          }
+        )
+        .then(res => {
+          vm.handleAfterLogin(res.data);
+          vm.loginLoading["mobile"] = false;
+        })
+        .catch(() => {
+          vm.loginLoading["mobile"] = false;
+        });
     },
     drawLoginScanCode() {
-      // TODO 判断是否有扫描码或过期
-      scanCodeLoginApi.drawScanCode(this.identityRole).then(res => {
+      let vm = this;
+      // 判断是否有扫描码或扫描码过期
+      if (vm.loginScanCodeExpiration && vm.loginScanCodeExpiration > 0) {
+        return;
+      }
+      vm.loginLoading.scanCode = true;
+      scanCodeLoginApi.drawScanCode(vm.identityRole).then(res => {
         if (res.data.code == 1) {
+          vm.loginScanCodeAlert = {
+            message: "请扫描二维码登录",
+            type: "warning"
+          };
+          debugger;
           let { scanCode, scanCodeBase64, scanCodeExpiration } = res.data.map;
-          this.loginScanCode = scanCode;
-          this.loginScanCodeBase64 = scanCodeBase64;
-          this.loginScanCodeExpiration = scanCodeExpiration;
-          // TODO 订阅WebSocket
-          this.wssubscribe(
-            `/topic/scancode.login.${scanCode}`,
+          vm.loginScanCode = scanCode;
+          vm.loginScanCodeBase64 = scanCodeBase64;
+          vm.loginScanCodeExpiration = scanCodeExpiration;
+          vm.loginLoading.scanCode = false;
+          vm.wssubscribe(
+            scanCodeLogin(scanCode),
             function(response) {
-              console.log("/topic/send.msg     ", response);
+              console.log(
+                "处理订阅WebSocket 扫码和确认登录后的返回结果     ",
+                response
+              );
+              let { code, msg } = response;
+              if (code == 1) {
+                let { avatarUrl } = response.map;
+                // 扫码登陆 进入视图
+                if (avatarUrl) {
+                  vm.loginScanCodeAvatarUrl = avatarUrl;
+                  vm.loginScanCodeAlert = {
+                    message: msg ? msg : "扫码成功",
+                    type: "success"
+                  };
+                }
+                let {
+                  Authorization,
+                  AuthorizationCode,
+                  identity
+                } = response.map;
+                // 确认登陆
+                if (Authorization && AuthorizationCode && identity) {
+                  vm.loginScanCodeAlert = {
+                    message: msg ? msg : "扫码登陆中。。。",
+                    type: "success"
+                  };
+                  // 处理登陆后
+                  vm.handleAfterLogin(response);
+                  vm.isConfirmLogin = true;
+                }
+              } else {
+                vm.loginScanCodeAlert = {
+                  message: msg ? msg : "扫码失败",
+                  type: "error"
+                };
+              }
             },
             {}
           );
+          // TODO Interval 处理过期情况
+          let loginScanCodeInterval = setInterval(function() {
+            // 未确认登陆
+            if (!vm.isConfirmLogin) {
+              vm.loginScanCode = "";
+              // vm.loginScanCodeBase64 = "";
+              vm.loginScanCodeExpiration = 0;
+              vm.loginScanCodeAlert = {
+                message: "请点击刷新登陆二维码",
+                type: "warning"
+              };
+            }
+            clearInterval(loginScanCodeInterval);
+          }, scanCodeExpiration * 1000);
         }
       });
     },
-    getLoginCancleTokenSource(identityType) {
-      switch (identityType) {
-        case "LOCALACCOUNT":
-          break;
-
-        default:
-          break;
+    getLoginCancleTokenSource(identityType, isCreateWhenNon = true) {
+      if (IDENITTY_TYPES.includes(identityType)) {
+        let loginCancleTokenSource = this.loginCancleTokenSource[identityType];
+        if (!loginCancleTokenSource && isCreateWhenNon) {
+          loginCancleTokenSource = getCancelTokenSource();
+          this.loginCancleTokenSource[identityType] = loginCancleTokenSource;
+        }
+        return loginCancleTokenSource;
       }
+      return null;
+    },
+    handleAfterLogin(response) {
+      let vm = this;
+      let { Authorization, AuthorizationCode, identity } = response.map;
+      if (Authorization && AuthorizationCode && identity) {
+        vm[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
+          token: Authorization,
+          tokenCode: AuthorizationCode
+        });
+        vm[IDENTITY_MUTATION_TYPE.SET_IDENTITY](identity);
+        // TODO 进入首页
+      }
+    },
+    handleCancleWhenLogin(identityType) {
+      if (!IDENITTY_TYPES.includes(identityType)) {
+        return;
+      }
+      let vm = this;
+      let isCancle = vm.loginLoading[identityType];
+      if (isCancle) {
+        let source = vm.getLoginCancleTokenSource(identityType, false);
+        if (source) {
+          source.cancel();
+        }
+        vm.loginLoading[identityType] = false;
+      }
+      return isCancle;
     }
   }
 };
@@ -321,9 +513,25 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.login-scan-code-wrap .login-scan-code {
+/* .login-scan-code-wrap .login-scan-code {
+  position: absolute;
   width: 200px;
   height: 200px;
+} */
+
+.login-scan-code-wrap {
+  margin: 0.5rem 0 1.4rem;
+}
+
+.login-scan-code-wrap .login-scan-code-expiration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  background-color: rgba(177, 180, 182, 0.4);
 }
 
 /* .login-scan-code-wrap .login-scan-code-tips {

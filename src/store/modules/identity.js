@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import store from "@utils/store";
 import { genRouters } from "../../router/routes";
 // import { login, logout, getInfo } from '@/api/login'
 // import { getToken, setToken, removeToken } from '@/utils/auth'
@@ -37,7 +36,6 @@ const getters = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token;
-    store.set("token", state.token);
   },
   SET_IDENTITY: (state, identity, properties) => {
     let realIdentity = {};
@@ -54,7 +52,6 @@ const mutations = {
     } else {
       state.identity = identity;
     }
-    store.set("identity", state.identity);
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;

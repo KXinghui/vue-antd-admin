@@ -29,18 +29,10 @@ export const HEADERS = {
 };
 
 export function getHeader() {
-  if (isProd()) {
-    // 从Vuex获取Token和TokenCode
-    return {
-      Authorization: store.getters.token.token,
-      AuthorizationCode: store.getters.token.tokenCode
-    };
-  } else {
-    return {
-      Authorization: "Token",
-      AuthorizationCode: "TokenCode"
-    };
-  }
+  return {
+    Authorization: store.getters.token.token || "Token",
+    AuthorizationCode: store.getters.token.tokenCode || "TokenCode"
+  };
 }
 
 /**
@@ -61,11 +53,19 @@ export const OPTIONS = {
   protocols: ["v10.stomp", "v11.stomp", "v12.stomp"],
   binary: false,
   heartbeat: { incoming: 1000000, outgoing: 1000000 },
+  timeout: 15000,
   debug: isProd() ? false : true
 };
 
-export function client(options, headers, connectCallBack, errorCallBack) {
+export function client(
+  options = {},
+  headers = {},
+  connectCallBack,
+  errorCallBack
+) {
   let targetOptions = Object.assign(options, OPTIONS);
+  console.log("isSupport    " + !isSupport());
+  console.log("URL  " + URL + "  WEBSOCKET_URL   " + WEBSOCKET_URL);
   let stompClient = !isSupport()
     ? /* webstomp.client(WEBSOCKET_URL, targetOptions) */
       webstomp.over(new WebSocket(WEBSOCKET_URL), targetOptions)

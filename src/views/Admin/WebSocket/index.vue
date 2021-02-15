@@ -28,7 +28,7 @@
 <script>
 import { client, disconnect, HEADERS, getHeader } from "@utils/websocket";
 import { msg } from "@utils/antd-utils";
-import WS_MIXIN from "../../../mixins/ws-mixin";
+import { WS_MIXIN } from "../../../mixins/ws-mixin";
 
 export default {
   name: "WebSocket",
@@ -66,7 +66,7 @@ export default {
       disconnect(this.stompClient);
       this.stompClient = client(
         { binary: false },
-        getHeader(vm),
+        getHeader(),
         vm.connect,
         vm.error
       );

@@ -10,6 +10,7 @@ export const FULL_SCREEN = "FULL_SCREEN";
 export const ADMIN_COLLAPSED_LAYOUT = "ADMIN_COLLAPSED_LAYOUT"; */
 
 export const OAUTH2_MUTATION_TYPE = {
+  name: "oauth2",
   NAMESPACE: "oauth2/",
   SET_GITHUB: "SET_GITHUB",
   SET_WECHAT: "SET_WECHAT",
@@ -17,6 +18,7 @@ export const OAUTH2_MUTATION_TYPE = {
 };
 
 export const ADMIN_MUTATION_TYPE = {
+  name: "identity",
   NAMESPACE: "admin/",
   SHOW_DRAWER: "SHOW_DRAWER",
   LOADING: "LOADING",
@@ -26,6 +28,7 @@ export const ADMIN_MUTATION_TYPE = {
 };
 
 export const IDENTITY_MUTATION_TYPE = {
+  name: "identity",
   NAMESPACE: "identity/",
   SET_IDENTITY: "SET_IDENTITY",
   SET_ROLES: "SET_ROLES",
@@ -42,6 +45,16 @@ export const IDENTITY_MUTATION_TYPE = {
 };
 
 export const PVTNOTE_MUTATION_TYPE = {
+  name: "pvtnote",
   NAMESPACE: "pvtnote/",
   SET_NOTE_GROUPS: "SET_NOTE_GROUPS"
+};
+
+export const WEBSOCKET_MUTATION_TYPE = {
+  name: "websocket",
+  NAMESPACE: "websocket/",
+  SET_STOMPCLIENT: "SET_STOMPCLIENT",
+  GET_STOMPCLIENT: "GET_STOMPCLIENT",
+  GET_SUBSCRIBE: "GET_SUBSCRIBE",
+  SET_SUBSCRIBE: "SET_SUBSCRIBE"
 };

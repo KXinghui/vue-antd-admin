@@ -1,6 +1,7 @@
 import { axiosInstance } from "../axios-config";
+import BaseNameSpaceApi from "../base/BaseNameSpaceApi";
 
-class ScanCodeLoginApi {
+class ScanCodeLoginApi extends BaseNameSpaceApi {
   drawScanCode(identityRole, data, config) {
     let url = `/draw`;
     if (identityRole) {

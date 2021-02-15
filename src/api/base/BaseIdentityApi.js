@@ -10,10 +10,6 @@ class BaseIdentityApi extends BaseApi {
     let url = "/login/mail";
     return axiosInstance.post(this.buildUrl(url), data, config);
   }
-  confirmLoginByScanCode(data, config) {
-    let url = "/login/scancode/confirm";
-    return axiosInstance.post(this.buildUrl(url), data, config);
-  }
   register(data, config) {
     let url = "/register";
     return axiosInstance.post(this.buildUrl(url), data, config);
@@ -33,6 +29,10 @@ class BaseIdentityApi extends BaseApi {
   upLoadAvatar(data, config) {
     let url = "/avatar/upload";
     return axiosInstance.post(this.buildUrl(url), data, config);
+  }
+  getIdentity(data, config) {
+    let url = "/identity";
+    return axiosInstance.get(this.buildUrl(url), data, config);
   }
 }
 

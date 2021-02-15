@@ -236,6 +236,6 @@ export default {
 .identity-register-header,
 .identity-register-footer {
   border: 1px solid red;
-  margin: -1.5rem 0 0;
+  margin: -1rem 0 0;
 }
 </style>
