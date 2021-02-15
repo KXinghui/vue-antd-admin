@@ -4,13 +4,13 @@
     <!-- 手机登录 -->
     <!-- 邮箱登录 -->
     <!-- 扫码登录 -->
-    <a-result :status="isSupport ? 'success' : 'error'" title="第三方登陆">
+    <a-result :status="isSupport ? 'success' : 'error'" title="第三方登录">
       <template #icon>
         <a-icon :type="isSupport ? 'loading' : 'close-circle'" />
       </template>
       <template #extra>
-        登陆即注册
-        {{ isSupport ? thirdParty.toLocaleUpperCase() : "暂不支持" }} 登陆。。。
+        登录即注册
+        {{ isSupport ? thirdParty.toLocaleUpperCase() : "暂不支持" }} 登录。。。
       </template>
     </a-result>
   </div>
@@ -150,7 +150,7 @@ export default {
     if (thirdParty === "github") {
       // No 'Access-Control-Allow-Origin' header is present on the requested resource
       // 获取code
-      // 将code和state传到后台 后台根据code和state获取token 在header设置token后，请求用户信息 根据用户信息找第三方表 若有，则不增加记录；没有，增加两条记录([用户|系统用户|聊天用户]表和第三方表) 然后是登陆
+      // 将code和state传到后台 后台根据code和state获取token 在header设置token后，请求用户信息 根据用户信息找第三方表 若有，则不增加记录；没有，增加两条记录([用户|系统用户|聊天用户]表和第三方表) 然后是登录
     } else if (thirdParty === "gitee") {
       console.log("gitee");
     } else if (thirdParty === "oschina") {

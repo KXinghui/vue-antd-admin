@@ -1,5 +1,5 @@
 /**
- * subscribe 扫码登陆
+ * subscribe 扫码登录
  * @param {*} scanCode
  */
 export function scanCodeLogin(scanCode) {

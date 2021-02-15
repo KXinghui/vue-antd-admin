@@ -23,7 +23,7 @@
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
             <a-button type="primary" block @click="confirmLogin">
-              确认登陆
+              确认登录
             </a-button>
           </a-col>
         </a-row>

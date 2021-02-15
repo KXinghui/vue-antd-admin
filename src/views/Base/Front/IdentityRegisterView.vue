@@ -20,7 +20,7 @@
               <template v-slot:footer>
                 <div class="identity-register-footer-op">
                   <a-button type="link" @click="pushRoute({ path: loginUrl })">
-                    <span>已有账号 登陆</span>
+                    <span>已有账号 登录</span>
                   </a-button>
                   <a-button
                     type="link"

@@ -86,7 +86,7 @@ const mutations = {
 
 const actions = {
   Login({ dispatch, commit, getters, rootGetters }, identity) {
-    // 登陆api 获取结果设置token和Identity
+    // 登录api 获取结果设置token和Identity
   },
   Logout(context, identity) {
     // 登出api 获取结果置空token和Identity

@@ -50,7 +50,7 @@
               :loading="loginLoading.localAccount"
               block
             >
-              登录
+              {{ loginLoading.localAccount ? "取消登录" : "登录" }}
             </a-button>
           </a-form-model-item>
         </a-form-model>
@@ -89,7 +89,7 @@
               :loading="loginLoading.mail"
               block
             >
-              登录
+              {{ loginLoading.mail ? "取消登录" : "登录" }}
             </a-button>
           </a-form-model-item>
         </a-form-model>
@@ -129,7 +129,9 @@
               block
               disabled
             >
-              登录(暂不支持)
+              {{
+                loginLoading.mobile ? "取消登录(暂不支持)" : "登录(暂不支持)"
+              }}
             </a-button>
           </a-form-model-item>
         </a-form-model>
@@ -150,7 +152,7 @@
               class="login-scan-code-expiration"
             >
               <a-button type="primary" @click="drawLoginScanCode"
-                >点击刷新登陆二维码</a-button
+                >点击刷新登录二维码</a-button
               >
             </div>
           </div>
@@ -405,7 +407,7 @@ export default {
               let { code, msg } = response;
               if (code == 1) {
                 let { avatarUrl } = response.map;
-                // 扫码登陆 进入视图
+                // 扫码登录 进入视图
                 if (avatarUrl) {
                   vm.loginScanCodeAvatarUrl = avatarUrl;
                   vm.loginScanCodeAlert = {
@@ -418,13 +420,13 @@ export default {
                   AuthorizationCode,
                   identity
                 } = response.map;
-                // 确认登陆
+                // 确认登录
                 if (Authorization && AuthorizationCode && identity) {
                   vm.loginScanCodeAlert = {
-                    message: msg ? msg : "扫码登陆中。。。",
+                    message: msg ? msg : "扫码登录中。。。",
                     type: "success"
                   };
-                  // 处理登陆后
+                  // 处理登录后
                   vm.handleAfterLogin(response);
                   vm.isConfirmLogin = true;
                 }
@@ -439,13 +441,13 @@ export default {
           );
           // TODO Interval 处理过期情况
           let loginScanCodeInterval = setInterval(function() {
-            // 未确认登陆
+            // 未确认登录
             if (!vm.isConfirmLogin) {
               vm.loginScanCode = "";
               // vm.loginScanCodeBase64 = "";
               vm.loginScanCodeExpiration = 0;
               vm.loginScanCodeAlert = {
-                message: "请点击刷新登陆二维码",
+                message: "请点击刷新登录二维码",
                 type: "warning"
               };
             }
