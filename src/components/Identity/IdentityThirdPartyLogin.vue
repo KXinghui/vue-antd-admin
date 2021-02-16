@@ -26,10 +26,11 @@
 // https://blog.csdn.net/qq_34136709/article/details/107087053?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-3&spm=1001.2101.3001.4242
 // https://blog.csdn.net/li3455277925/article/details/102499536?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control
 import { FORM_MIXIN } from "@mixins/form-mixin";
-import { baseIdentityApi } from "../../api/base/ApiFactory";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
-import { mapState } from "vuex";
+import { msg } from "../../utils/antd-utils";
+import thirdPartyOAuth2Api from "../../api/integral/ThirdPartyOAuth2Api";
+import { IdentityRoleEnum } from "../../consts/base-enum";
 
 export default {
   name: "IdentityOauth2Login",
@@ -91,80 +92,67 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("identity", [
-      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      IDENTITY_MUTATION_TYPE.SET_TOKEN,
-      IDENTITY_MUTATION_TYPE.SET_IDENTITY
-    ]),
-    changeTabs(activeKey) {
-      if (4 == activeKey) {
-        if (!this.loginScanCodeBase64) {
-          // TODO 后台请求 this.identityRole
-          console.log(activeKey, this.loginScanCodeBase64);
-        }
-      }
-    },
-    loginByLocalAccount() {
-      console.log("localaccount login", this.form);
-      baseIdentityApi(this.identityRole)
-        .loginByLocalAccount(
-          {
-            localAccount: this.form.localAccount,
-            password: this.form.password
-            // userQuery: {
-            //   localAccount: this.form.localAccount,
-            //   password: this.form.password
-            // }
-          },
-          {}
-        )
+    async authorize() {
+      let { code, state } = this.$route.query;
+      let thirdParty = this.thirdParty;
+      await thirdPartyOAuth2Api
+        .authorize(thirdParty, { code, state })
         .then(res => {
-          if (res.data.map) {
-            this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
-              token: res.data.map["Authorization"],
-              tokenCode: res.data.map["AuthorizationCode"]
+          let thirdPartyOAuth2Authorize =
+            res.data.map.thirdPartyOAuth2Authorize;
+          if (thirdPartyOAuth2Authorize) {
+            this[IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY]({
+              thirdParty,
+              thirdPartyOAuth2Authorize
             });
           }
-          console.log(res.data.map);
         });
     },
-    loginByMail() {
-      console.log("mail login", this.form);
+    async loginIsRegister() {
+      await this.authorize();
+      let thirdParty = this.thirdParty;
+      let accessTokenName = `${thirdParty}_access_token`;
+      let accessToken = this.$store.getters.oauth2[thirdParty]["accessToken"];
+      thirdPartyOAuth2Api
+        .loginIsRegister(
+          thirdParty,
+          {
+            identityRole:
+              IdentityRoleEnum.of(this.identityRole).mapping ||
+              IdentityRoleEnum.USER.mapping
+          },
+          {
+            headers: {
+              [accessTokenName]: accessToken
+            }
+          }
+        )
+        .then(res => {
+          if (res.data.code == 1) {
+            let { Authorization, AuthorizationCode, identity } = res.data.map;
+            this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
+              token: Authorization,
+              tokenCode: AuthorizationCode
+            });
+            this[IDENTITY_MUTATION_TYPE.SET_IDENTITY](identity);
+          }
+        });
     },
-    loginByMobile() {
-      console.log("mobile login", this.form);
-    },
-    getLoginCancleTokenSource(identityType) {
-      switch (identityType) {
-        case "LOCALACCOUNT":
-          break;
-
-        default:
-          break;
-      }
-    }
-  },
-  created() {
-    console.log(this.$route.query.code);
-    console.log(this.$route.params);
+    ...mapMutations("identity", [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY,
+      IDENTITY_MUTATION_TYPE.SET_TOKEN,
+      IDENTITY_MUTATION_TYPE.SET_IDENTITY
+    ])
   },
   mounted() {
     // 根据第三方平台分别请求处理
-    let thirdParty = this.thirdParty;
-
-    this.isSupport = this.thirdPartySupport.includes(thirdParty);
+    this.isSupport = this.thirdPartySupport.includes(this.thirdParty);
     if (!this.isSupport) {
+      msg("暂不支持");
       return;
     }
-    if (thirdParty === "github") {
-      // No 'Access-Control-Allow-Origin' header is present on the requested resource
-      // 获取code
-      // 将code和state传到后台 后台根据code和state获取token 在header设置token后，请求用户信息 根据用户信息找第三方表 若有，则不增加记录；没有，增加两条记录([用户|系统用户|聊天用户]表和第三方表) 然后是登录
-    } else if (thirdParty === "gitee") {
-      console.log("gitee");
-    } else if (thirdParty === "oschina") {
-      console.log("oschina");
-    }
+    this.loginIsRegister();
   }
 };
 </script>

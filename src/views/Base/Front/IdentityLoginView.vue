@@ -35,14 +35,19 @@
                 <!-- <a-divider>登录即注册</a-divider> -->
                 <div class="thirdparty-wrap">
                   <a-button
+                    v-for="supportThirdParty in supportThirdPartys"
+                    :key="supportThirdParty.thirdParty"
+                    :disabled="!isSupport(supportThirdParty.thirdParty)"
                     size="large"
                     shape="circle"
-                    title="GitHub"
-                    @click="authorizeUrl('github')"
+                    :title="supportThirdParty.title"
+                    @click="authorizeUrl(supportThirdParty.thirdParty)"
                   >
-                    <icon icon="IconFont_github"></icon>
+                    <icon
+                      :icon="'IconFont_' + supportThirdParty.thirdParty"
+                    ></icon>
                   </a-button>
-                  <a-button
+                  <!-- <a-button
                     size="large"
                     shape="circle"
                     title="码云"
@@ -92,7 +97,7 @@
                     @click="authorizeUrl('qq')"
                   >
                     <icon icon="IconFont_qq"></icon>
-                  </a-button>
+                  </a-button> -->
                 </div>
               </template>
             </identity-login>
@@ -127,7 +132,16 @@ export default {
     return {
       modalTitle: "",
       modalVisible: false,
-      oauthLogin: "github"
+      oauthLogin: "github",
+      supportThirdPartys: [
+        { thirdParty: "github", title: "GitHub" },
+        { thirdParty: "gitee", title: "码云" },
+        { thirdParty: "oschina", title: "开源中国" },
+        { thirdParty: "alipay", title: "支付宝" },
+        { thirdParty: "weibo", title: "微博" },
+        { thirdParty: "wechat", title: "微信" },
+        { thirdParty: "qq", title: "QQ" }
+      ]
     };
   },
   props: {
@@ -162,10 +176,13 @@ export default {
     },
     ...mapState({
       // 传字符串参数 'count' 等同于 `state => state.count`
-      loading: state => state.admin.loading
+      thirdPartySupport: state => state.admin.thirdPartySupport
     })
   },
   methods: {
+    isSupport(thirdParty) {
+      return this.thirdPartySupport.includes(thirdParty);
+    },
     authorizeUrl(thirdParty) {
       thirdPartyOAuth2Api.authorizeUrl(thirdParty).then(res => {
         let authorizeUrl = res.data.map.authorizeUrl;

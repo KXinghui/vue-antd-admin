@@ -7,7 +7,7 @@
     </div>
     <a-tabs
       class="identity-login-tabs"
-      default-active-key="1"
+      default-active-key="localAccount"
       :tab-position="tabOption.position"
       :tab-bar-style="tabOption.tabBarStyle"
       :size="tabOption.size"
@@ -522,14 +522,15 @@ export default {
 } */
 
 .login-scan-code-wrap {
-  margin: 0.5rem 0 1.4rem;
+  /* border: 1px solid red; */
+  margin: 0.4rem 0 1.3rem;
 }
 
 .login-scan-code-wrap .login-scan-code-expiration {
+  /* border: 1px solid red; */
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
   position: absolute;
   width: 170px;
   height: 170px;
@@ -542,7 +543,7 @@ export default {
 
 .identity-login-header,
 .identity-login-footer {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin: -1rem 0 0;
 }
 </style>

@@ -36,11 +36,11 @@ const state = () => {
     thirdPartySupport: [
       "github",
       "gitee",
-      "oschina",
-      "alipay",
-      "weibo",
-      "wechat",
-      "qq"
+      "oschina"
+      // "alipay",
+      // "weibo",
+      // "wechat",
+      // "qq"
     ]
   };
 };

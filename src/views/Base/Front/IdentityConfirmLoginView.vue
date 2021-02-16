@@ -29,35 +29,21 @@
         </a-row>
       </template>
     </base-main>
-    <base-modal :modalVisible="true" :anchors="anchors">
-      <identity-login
-        id="base-form"
-        :identity-role="identityRole"
-      ></identity-login>
-      <identity-login identity-role="user"></identity-login>
-      <identity-login id="base-form2" identity-role="chatUser"></identity-login>
-    </base-modal>
   </div>
 </template>
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
-import IdentityLogin from "../../../components/Identity/IdentityLogin";
-import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
 import scanCodeLoginApi from "../../../api/integral/ScanCodeLoginApi";
 
 export default {
   name: "IdentityConfirmLoginView",
   mixins: [BASE_LAYOUT_MIXIN],
-  components: { IdentityLogin, BaseModal, IdentityAvatar },
+  components: { IdentityAvatar },
   data() {
     return {
-      identity: {},
-      anchors: [
-        { href: "#base-form", title: "Base Form" },
-        { href: "#base-form2", title: "Base Form2" }
-      ]
+      identity: {}
     };
   },
   props: {
