@@ -192,6 +192,7 @@ import { mapState, mapMutations } from "vuex";
 import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
 import scanCodeLoginApi from "../../api/integral/ScanCodeLoginApi";
 import { scanCodeLogin } from "../../api/ws/destination";
+import { pushRoute } from "../../utils/router-utils";
 
 const IDENITTY_TYPES = ["localAccount", "mail", "mobile", "scanCode"];
 
@@ -214,7 +215,8 @@ export default {
       },
       // loginScanCodeLoading: true,
       loginScanCode: "",
-      loginScanCodeBase64: `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`,
+      // loginScanCodeBase64: `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`,
+      loginScanCodeBase64: "",
       loginScanCodeExpiration: -1,
       loginScanCodeAvatarUrl: "",
       isConfirmLogin: false,
@@ -275,11 +277,15 @@ export default {
       identity: state => state.identity.identity
     }),
     loginScanCodeSrc() {
-      return `data:image/png;base64,${this.loginScanCodeBase64}`;
+      let loginScanCodeBase64 = this.loginScanCodeBase64;
+      if (!loginScanCodeBase64) {
+        return "/lazy/qrcode.png";
+      }
+      return `data:image/png;base64,${loginScanCodeBase64}`;
     }
   },
   methods: {
-    ...mapMutations("identity", [
+    ...mapMutations(IDENTITY_MUTATION_TYPE.NAME, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       IDENTITY_MUTATION_TYPE.SET_TOKEN,
       IDENTITY_MUTATION_TYPE.SET_IDENTITY
@@ -292,10 +298,10 @@ export default {
     loginByLocalAccount() {
       console.log("localAccount login", this.form);
       let vm = this;
-      if (vm.handleCancleWhenLogin("mail")) {
+      if (vm.handleCancleWhenLogin("localAccount")) {
         return;
       }
-      vm.loginLoading["localAccount"] = true;
+      vm.loginLoading["localAccount"] = { delay: 1500 };
       baseIdentityApi(this.identityRole)
         .loginByLocalAccount(
           {
@@ -324,7 +330,7 @@ export default {
       if (vm.handleCancleWhenLogin("mail")) {
         return;
       }
-      vm.loginLoading["mail"] = true;
+      vm.loginLoading["mail"] = { delay: 1500 };
       baseIdentityApi(this.identityRole)
         .loginByMail(
           {
@@ -351,10 +357,10 @@ export default {
     loginByMobile() {
       console.log("mobile login", this.form);
       let vm = this;
-      if (vm.handleCancleWhenLogin("mail")) {
+      if (vm.handleCancleWhenLogin("mobile")) {
         return;
       }
-      vm.loginLoading["mobile"] = true;
+      vm.loginLoading["mobile"] = { delay: 1500 };
       baseIdentityApi(this.identityRole)
         .loginByMobile(
           {
@@ -384,77 +390,92 @@ export default {
       if (vm.loginScanCodeExpiration && vm.loginScanCodeExpiration > 0) {
         return;
       }
+      vm.loginScanCodeExpiration = -1;
       vm.loginLoading.scanCode = true;
-      scanCodeLoginApi.drawScanCode(vm.identityRole).then(res => {
-        if (res.data.code == 1) {
-          vm.loginScanCodeAlert = {
-            message: "请扫描二维码登录",
-            type: "warning"
-          };
-          debugger;
-          let { scanCode, scanCodeBase64, scanCodeExpiration } = res.data.map;
-          vm.loginScanCode = scanCode;
-          vm.loginScanCodeBase64 = scanCodeBase64;
-          vm.loginScanCodeExpiration = scanCodeExpiration;
-          vm.loginLoading.scanCode = false;
-          vm.wssubscribe(
-            scanCodeLogin(scanCode),
-            function(response) {
-              console.log(
-                "处理订阅WebSocket 扫码和确认登录后的返回结果     ",
-                response
-              );
-              let { code, msg } = response;
-              if (code == 1) {
-                let { avatarUrl } = response.map;
-                // 扫码登录 进入视图
-                if (avatarUrl) {
-                  vm.loginScanCodeAvatarUrl = avatarUrl;
+      vm.loginScanCodeAlert = {
+        message: "正在刷新登录二维码",
+        type: "info"
+      };
+      scanCodeLoginApi
+        .drawScanCode(vm.identityRole)
+        .then(res => {
+          if (res.data.code == 1) {
+            vm.loginScanCodeAlert = {
+              message: "请扫描二维码登录",
+              type: "warning"
+            };
+            let { scanCode, scanCodeBase64, scanCodeExpiration } = res.data.map;
+            vm.loginScanCode = scanCode;
+            vm.loginScanCodeBase64 = scanCodeBase64;
+            vm.loginScanCodeExpiration = scanCodeExpiration;
+            vm.loginLoading.scanCode = false;
+            vm.wssubscribe(
+              scanCodeLogin(scanCode),
+              function(response) {
+                console.log(
+                  "处理订阅WebSocket 扫码和确认登录后的返回结果     ",
+                  response
+                );
+                let { code, msg } = response;
+                if (code == 1) {
+                  let { avatarUrl } = response.map;
+                  // 扫码登录 进入视图
+                  if (avatarUrl) {
+                    vm.loginScanCodeAvatarUrl = avatarUrl;
+                    vm.loginScanCodeAlert = {
+                      message: msg ? msg : "扫码成功",
+                      type: "success"
+                    };
+                  }
+                  let {
+                    Authorization,
+                    AuthorizationCode,
+                    identity
+                  } = response.map;
+                  // 确认登录
+                  if (Authorization && AuthorizationCode && identity) {
+                    vm.loginScanCodeAlert = {
+                      message: msg ? msg : "扫码登录中。。。",
+                      type: "success"
+                    };
+                    // 处理登录后
+                    vm.handleAfterLogin(response);
+                    vm.isConfirmLogin = true;
+                  }
+                } else {
                   vm.loginScanCodeAlert = {
-                    message: msg ? msg : "扫码成功",
-                    type: "success"
+                    message: msg ? msg : "扫码失败",
+                    type: "error"
                   };
                 }
-                let {
-                  Authorization,
-                  AuthorizationCode,
-                  identity
-                } = response.map;
-                // 确认登录
-                if (Authorization && AuthorizationCode && identity) {
-                  vm.loginScanCodeAlert = {
-                    message: msg ? msg : "扫码登录中。。。",
-                    type: "success"
-                  };
-                  // 处理登录后
-                  vm.handleAfterLogin(response);
-                  vm.isConfirmLogin = true;
-                }
-              } else {
+              },
+              {}
+            );
+            // TODO Interval 处理过期情况
+            let loginScanCodeInterval = setInterval(function() {
+              // 未确认登录
+              if (!vm.isConfirmLogin) {
+                vm.loginScanCode = "";
+                // vm.loginScanCodeBase64 = "";
+                vm.loginScanCodeExpiration = 0;
                 vm.loginScanCodeAlert = {
-                  message: msg ? msg : "扫码失败",
-                  type: "error"
+                  message: "请点击刷新登录二维码",
+                  type: "warning"
                 };
               }
-            },
-            {}
-          );
-          // TODO Interval 处理过期情况
-          let loginScanCodeInterval = setInterval(function() {
-            // 未确认登录
-            if (!vm.isConfirmLogin) {
-              vm.loginScanCode = "";
-              // vm.loginScanCodeBase64 = "";
-              vm.loginScanCodeExpiration = 0;
-              vm.loginScanCodeAlert = {
-                message: "请点击刷新登录二维码",
-                type: "warning"
-              };
-            }
-            clearInterval(loginScanCodeInterval);
-          }, scanCodeExpiration * 1000);
-        }
-      });
+              clearInterval(loginScanCodeInterval);
+            }, scanCodeExpiration * 1000);
+          }
+        })
+        .catch(() => {
+          vm.loginLoading.scanCode = false;
+          vm.loginScanCodeBase64 = "";
+          vm.loginScanCodeExpiration = 0;
+          vm.loginScanCodeAlert = {
+            message: "刷新登陆二维码失败",
+            type: "error"
+          };
+        });
     },
     getLoginCancleTokenSource(identityType, isCreateWhenNon = true) {
       if (IDENITTY_TYPES.includes(identityType)) {
@@ -477,6 +498,7 @@ export default {
         });
         vm[IDENTITY_MUTATION_TYPE.SET_IDENTITY](identity);
         // TODO 进入首页
+        pushRoute({ path: "/" });
       }
     },
     handleCancleWhenLogin(identityType) {
@@ -486,6 +508,7 @@ export default {
       let vm = this;
       let isCancle = vm.loginLoading[identityType];
       if (isCancle) {
+        debugger;
         let source = vm.getLoginCancleTokenSource(identityType, false);
         if (source) {
           source.cancel();
@@ -515,11 +538,10 @@ export default {
   justify-content: center;
   align-items: center;
 }
-/* .login-scan-code-wrap .login-scan-code {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-} */
+.login-scan-code-wrap .login-scan-code {
+  width: 150px;
+  height: 150px;
+}
 
 .login-scan-code-wrap {
   /* border: 1px solid red; */

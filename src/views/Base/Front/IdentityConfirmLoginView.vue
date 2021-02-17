@@ -36,15 +36,14 @@
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
 import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
 import scanCodeLoginApi from "../../../api/integral/ScanCodeLoginApi";
+import { mapState } from "vuex";
 
 export default {
   name: "IdentityConfirmLoginView",
   mixins: [BASE_LAYOUT_MIXIN],
   components: { IdentityAvatar },
   data() {
-    return {
-      identity: {}
-    };
+    return {};
   },
   props: {
     ms: {
@@ -57,6 +56,11 @@ export default {
       default: "",
       required: true
     }
+  },
+  computed: {
+    ...mapState({
+      identity: state => state.identity.identity
+    })
   },
   methods: {
     enterView() {

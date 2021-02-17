@@ -44,19 +44,20 @@
 import FullScreen from "../components/FullScreen";
 import IdentityAvatar from "@components/Identity/IdentityAvatar";
 import LayoutSiderLogo from "./LayoutSider/LayoutSiderLogo";
+import { mapState } from "vuex";
 
 export default {
   name: "LayoutHeader",
   components: { FullScreen, IdentityAvatar, LayoutSiderLogo },
   data() {
     return {
-      siderClosed: false,
-      identity: {
-        name: "kxh",
-        /* avatarUrl:
-          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" */
-        userStateEnum: "Disabled"
-      }
+      siderClosed: false
+      // identity: {
+      //   name: "kxh",
+      //   /* avatarUrl:
+      //     "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" */
+      //   userStateEnum: "Disabled"
+      // }
     };
   },
   props: {
@@ -75,6 +76,11 @@ export default {
       default: false,
       required: false
     }
+  },
+  computed: {
+    ...mapState({
+      identity: state => state.identity.identity
+    })
   },
   methods: {
     toggleCollapsedSider() {

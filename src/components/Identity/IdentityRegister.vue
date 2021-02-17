@@ -129,13 +129,13 @@
 
 <script>
 import { FORM_MIXIN } from "@mixins/form-mixin";
+import { mapState } from "vuex";
 
 export default {
   name: "IdentityLogin",
   mixins: [FORM_MIXIN],
   data() {
     return {
-      identity: { name: "kxh" },
       registerCancleTokenSource: {
         localAccount: null,
         mail: null,
@@ -179,23 +179,9 @@ export default {
     }
   },
   computed: {
-    /* formItemLayout() {
-      const { layout } = this.formOption;
-      return layout === "horizontal"
-        ? {
-            labelCol: { span: 5, offset: 1 },
-            wrapperCol: { span: 16, offset: 1 }
-          }
-        : {};
-    }, */
-    /* buttonItemLayout() {
-      const { layout } = this.formOption;
-      return layout === "horizontal"
-        ? {
-            wrapperCol: { span: 22, offset: 1 }
-          }
-        : {};
-    }, */
+    ...mapState({
+      identity: state => state.identity.identity
+    })
   },
   methods: {
     changeTabs(activeKey) {
