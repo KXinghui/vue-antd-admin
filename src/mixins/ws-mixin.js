@@ -28,6 +28,13 @@ export const WS_MIXIN = {
       }
       this.stompClient = client(options, headers, vm.wsconnect, vm.wserror);
     },
+    wsdisconnect() {
+      let vm = this;
+      let stompClient = vm.stompClient;
+      if (stompClient) {
+        disconnect(stompClient);
+      }
+    },
     wssend(destination, body, headers = {}) {
       if (!this.stompClient) {
         this.wsclient();
