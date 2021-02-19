@@ -33,6 +33,15 @@ const state = () => {
       "btn-primary-bg": "",
       "processing-color": ""
     },
+    supportThirdPartys: [
+      { thirdParty: "github", title: "GitHub" },
+      { thirdParty: "gitee", title: "码云" },
+      { thirdParty: "oschina", title: "开源中国" },
+      { thirdParty: "alipay", title: "支付宝" },
+      { thirdParty: "weibo", title: "微博" },
+      { thirdParty: "wechat", title: "微信" },
+      { thirdParty: "qq", title: "QQ" }
+    ],
     thirdPartySupport: [
       "github",
       "gitee",

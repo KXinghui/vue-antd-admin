@@ -3,7 +3,7 @@ import { genRouters } from "../../router/routes";
 // import { login, logout, getInfo } from '@/api/login'
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
-  identity: { name: "kxh", nickname: "kxh", chatNo: "kxh17666" },
+  identity: {},
   token: { tokenCode: "", token: "" },
   roles: [
     { id: "01", enCode: "SysUser" },
@@ -34,24 +34,12 @@ const getters = {
 };
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
+  SET_TOKEN: (state, { token, tokenCode }) => {
+    state.token.token = token;
+    state.token.tokenCode = tokenCode;
   },
-  SET_IDENTITY: (state, identity, properties) => {
-    let realIdentity = {};
-    if (properties) {
-      if (Array.isArray(properties)) {
-        properties.forEach(value => {
-          realIdentity[value] = identity[value];
-        });
-      }
-      if (typeof properties === "string") {
-        realIdentity[properties] = identity[properties];
-      }
-      state.identity = Object.assign(state.identity, realIdentity);
-    } else {
-      state.identity = identity;
-    }
+  SET_IDENTITY: (state, identity) => {
+    state.identity = identity;
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;

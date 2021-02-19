@@ -2,6 +2,8 @@
   <div class="identity-confirm-login-wrap">
     <base-header showBackIcon></base-header>
     <base-main
+      :isScroll="true"
+      :isScrollPull="false"
       baseMainTop="7.25%"
       baseMainHeight="92.5%"
       style="background-color: #f5f5f5;"
@@ -9,22 +11,14 @@
       <template slot="main">
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <h1 align="center">{{ ms }}</h1>
+            <h1 align="center">{{ msAlias }}</h1>
           </a-col>
         </a-row>
         <a-row type="flex" justify="center">
           <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <identity-avatar
-              :avatarSize="20"
-              :identity="identity"
-            ></identity-avatar>
-          </a-col>
-        </a-row>
-        <a-row type="flex" justify="center">
-          <a-col :xs="22" :sm="18" :md="10" :lg="6" :xl="6">
-            <a-button type="primary" block @click="confirmLogin">
-              确认登录
-            </a-button>
+            <identity-confirm-login
+              :identityRole="identityRole"
+            ></identity-confirm-login>
           </a-col>
         </a-row>
       </template>
@@ -34,14 +28,12 @@
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
-import IdentityAvatar from "../../../components/Identity/IdentityAvatar";
-import scanCodeLoginApi from "../../../api/integral/ScanCodeLoginApi";
-import { mapState } from "vuex";
+import IdentityConfirmLogin from "../../../components/Identity/IdentityConfirmLogin";
 
 export default {
   name: "IdentityConfirmLoginView",
   mixins: [BASE_LAYOUT_MIXIN],
-  components: { IdentityAvatar },
+  components: { IdentityConfirmLogin },
   data() {
     return {};
   },
@@ -51,36 +43,16 @@ export default {
       default: "",
       required: true
     },
-    identityRole: {
+    msAlias: {
       type: [String],
       default: "",
       required: true
-    }
-  },
-  computed: {
-    ...mapState({
-      identity: state => state.identity.identity
-    })
-  },
-  methods: {
-    enterView() {
-      let scanCode = this.$route.query.scancode;
-      scanCodeLoginApi.enterView({ scanCode }).then(res => {
-        console.log(res.data);
-      });
     },
-    confirmLogin() {
-      let scanCode = this.$route.query.scancode;
-      scanCodeLoginApi.confirmLogin({ scanCode }).then(res => {
-        console.log(res.data);
-      });
+    identityRole: {
+      type: [String],
+      default: "",
+      required: false
     }
-  },
-  created() {
-    this.enterView();
-  },
-  mounted() {
-    this.confirmLogin();
   }
 };
 </script>

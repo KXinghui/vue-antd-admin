@@ -31,6 +31,19 @@
                 </div>
                 <div class="thirdParty-wrap">
                   <a-button
+                    v-for="supportThirdParty in supportThirdPartys"
+                    :key="supportThirdParty.thirdParty"
+                    :disabled="!isSupport(supportThirdParty.thirdParty)"
+                    size="large"
+                    shape="circle"
+                    :title="supportThirdParty.title"
+                    @click="authorizeUrl(supportThirdParty.thirdParty)"
+                  >
+                    <icon
+                      :icon="'IconFont_' + supportThirdParty.thirdParty"
+                    ></icon>
+                  </a-button>
+                  <!-- <a-button
                     size="large"
                     shape="circle"
                     title="GitHub"
@@ -88,11 +101,12 @@
                     @click="thirdPartyLogin('qq')"
                   >
                     <icon icon="IconFont_qq"></icon>
-                  </a-button>
+                  </a-button> -->
                 </div>
               </template>
-            </identity-register> </a-col
-        ></a-row>
+            </identity-register>
+          </a-col></a-row
+        >
       </template>
     </base-main>
   </div>
@@ -102,6 +116,7 @@
 import { BASE_LAYOUT_MIXIN } from "../../../components/Mobile/mixins/BaseLayout";
 import IdentityRegister from "../../../components/Identity/IdentityRegister";
 import { msg } from "../../../utils/antd-utils";
+import { mapState } from "vuex";
 
 export default {
   name: "IdentityRegisterView",
@@ -139,9 +154,17 @@ export default {
         return "/password/forget";
       }
       return `/${this.ms}/password/forget`;
-    }
+    },
+    ...mapState({
+      // 传字符串参数 'count' 等同于 `state => state.count`
+      supportThirdPartys: state => state.admin.supportThirdPartys,
+      thirdPartySupport: state => state.admin.thirdPartySupport
+    })
   },
   methods: {
+    isSupport(thirdParty) {
+      return this.thirdPartySupport.includes(thirdParty);
+    },
     thirdPartyLogin(thirdParty) {
       let authorizeUrl = "";
       switch (thirdParty) {

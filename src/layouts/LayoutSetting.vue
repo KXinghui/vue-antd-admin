@@ -174,7 +174,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("admin", [
+    ...mapMutations(ADMIN_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       ADMIN_MUTATION_TYPE.SET_LAYOUT_SETTING,
       ADMIN_MUTATION_TYPE.SET_THEME_SETTING

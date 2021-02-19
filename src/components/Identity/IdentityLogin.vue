@@ -285,7 +285,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(IDENTITY_MUTATION_TYPE.NAME, [
+    ...mapMutations(IDENTITY_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       IDENTITY_MUTATION_TYPE.SET_TOKEN,
       IDENTITY_MUTATION_TYPE.SET_IDENTITY
@@ -307,10 +307,6 @@ export default {
           {
             localAccount: this.form.localAccount,
             password: this.form.password
-            // userQuery: {
-            //   localAccount: this.form.localAccount,
-            //   password: this.form.password
-            // }
           },
           {
             [CANCEL_TOKEN]: this.getLoginCancleTokenSource("localAccount").token
@@ -400,10 +396,6 @@ export default {
         .drawScanCode(vm.identityRole)
         .then(res => {
           if (res.data.code == 1) {
-            vm.loginScanCodeAlert = {
-              message: "请扫描二维码登录",
-              type: "warning"
-            };
             let { scanCode, scanCodeBase64, scanCodeExpiration } = res.data.map;
             vm.loginScanCode = scanCode;
             vm.loginScanCodeBase64 = scanCodeBase64;
@@ -412,26 +404,20 @@ export default {
             vm.wssubscribe(
               scanCodeLogin(scanCode),
               function(response) {
-                console.log(
-                  "处理订阅WebSocket 扫码和确认登录后的返回结果     ",
-                  response
-                );
-                let { code, msg } = response;
+                // TODO 处理订阅WebSocket 扫码和确认登录后的返回结果
+                let res = JSON.parse(response.body);
+                let { code, msg } = res;
+                let { avatarUrl, scanCodeExpiration } = res.map;
                 if (code == 1) {
-                  let { avatarUrl } = response.map;
                   // 扫码登录 进入视图
-                  if (avatarUrl) {
+                  if (scanCodeExpiration) {
                     vm.loginScanCodeAvatarUrl = avatarUrl;
                     vm.loginScanCodeAlert = {
                       message: msg ? msg : "扫码成功",
                       type: "success"
                     };
                   }
-                  let {
-                    Authorization,
-                    AuthorizationCode,
-                    identity
-                  } = response.map;
+                  let { Authorization, AuthorizationCode, identity } = res.map;
                   // 确认登录
                   if (Authorization && AuthorizationCode && identity) {
                     vm.loginScanCodeAlert = {
@@ -439,10 +425,13 @@ export default {
                       type: "success"
                     };
                     // 处理登录后
-                    vm.handleAfterLogin(response);
+                    vm.handleAfterLogin(res);
                     vm.isConfirmLogin = true;
                   }
                 } else {
+                  if (scanCodeExpiration) {
+                    vm.loginScanCodeExpiration = scanCodeExpiration;
+                  }
                   vm.loginScanCodeAlert = {
                     message: msg ? msg : "扫码失败",
                     type: "error"
@@ -451,7 +440,11 @@ export default {
               },
               {}
             );
-            // TODO Interval 处理过期情况
+            vm.loginScanCodeAlert = {
+              message: "请扫描二维码登录",
+              type: "warning"
+            };
+            // Interval 处理过期情况
             let loginScanCodeInterval = setInterval(function() {
               // 未确认登录
               if (!vm.isConfirmLogin) {
@@ -467,7 +460,8 @@ export default {
             }, scanCodeExpiration * 1000);
           }
         })
-        .catch(() => {
+        .catch(err => {
+          console.log(err);
           vm.loginLoading.scanCode = false;
           vm.loginScanCodeBase64 = "";
           vm.loginScanCodeExpiration = 0;
@@ -508,7 +502,6 @@ export default {
       let vm = this;
       let isCancle = vm.loginLoading[identityType];
       if (isCancle) {
-        debugger;
         let source = vm.getLoginCancleTokenSource(identityType, false);
         if (source) {
           source.cancel();
@@ -539,8 +532,8 @@ export default {
   align-items: center;
 }
 .login-scan-code-wrap .login-scan-code {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
 }
 
 .login-scan-code-wrap {

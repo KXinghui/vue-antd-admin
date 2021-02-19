@@ -3,7 +3,6 @@
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
   // key destinetion value [send|subscribe]Instance
-  stompClient: null,
   subscribeMap: new Map(),
   // 暂时不使用
   transactionMap: new Map()
@@ -16,40 +15,27 @@ const getters = {
 };
 
 const mutations = {
-  SET_STOMPCLIENT: (state, { stompClient }) => {
-    state.stompClient = stompClient;
-  },
-  GET_STOMPCLIENT: state => {
-    return state.stompClient;
-  },
   GET_SUBSCRIBE: (state, { destination }) => {
-    let subscribeMap = state.subscribeMap;
+    let subscribeMap = new Map(state.subscribeMap);
     return subscribeMap.get(destination);
   },
   DELETE_SUBSCRIBE: (state, { destination }) => {
-    let subscribeMap = state.subscribeMap;
-    if (!subscribeMap) {
-      subscribeMap = new Map();
-    }
+    let subscribeMap = new Map(state.subscribeMap);
     if (subscribeMap.has(destination)) {
       subscribeMap.delete(destination);
     }
+    state.subscribeMap = subscribeMap;
   },
   SET_SUBSCRIBE: (state, { destination, subscribeInstance, headers }) => {
-    let subscribeMap = state.subscribeMap;
-    if (!subscribeMap) {
-      let subscribeMap2 = new Map();
-      subscribeMap2.delete;
-    }
-    if (subscribeMap.has(destination)) {
-      let subscribeInstanceInMap = subscribeMap.get(destination);
-      if (subscribeInstanceInMap) {
-        // 取消订阅
-        "unsubscribe" in subscribeInstanceInMap &&
-          subscribeInstanceInMap.unsubscribe(headers);
-      }
+    let subscribeMap = new Map(state.subscribeMap);
+    let subscribeInstanceInMap = subscribeMap.get(destination);
+    if (subscribeInstanceInMap) {
+      // 取消订阅
+      "unsubscribe" in subscribeInstanceInMap &&
+        subscribeInstanceInMap.unsubscribe(headers);
     }
     subscribeMap.set(destination, subscribeInstance);
+    state.subscribeMap = subscribeMap;
   }
 };
 

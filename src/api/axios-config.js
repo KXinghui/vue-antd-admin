@@ -51,7 +51,7 @@ instance.interceptors.response.use(
   function(response) {
     console.log("interceptors.response 响应拦截");
     console.log(response);
-    console.log(response.data);
+    console.log("interceptors.response msg    " + response.data.msg);
     msg(response.data);
     return response;
   },

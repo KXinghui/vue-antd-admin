@@ -20,50 +20,63 @@ export const WS_MIXIN = {
       msg({ code: "-1", msg: "连接失败=======" });
       console.log("errorFrame ", errorFrame);
     },
-    wsclient(options, headers) {
+    wsclient(options, headers, isDisConnect = false) {
       let vm = this;
-      let stompClient = vm[WEBSOCKET_MUTATION_TYPE.GET_STOMPCLIENT];
-      if (stompClient) {
+      let stompClient = vm.stompClient;
+      if (isDisConnect) {
         disconnect(stompClient);
       }
       this.stompClient = client(options, headers, vm.wsconnect, vm.wserror);
-      vm[WEBSOCKET_MUTATION_TYPE.SET_STOMPCLIENT](this.stompClient);
     },
-    wssend(destination, body, headers) {
+    wssend(destination, body, headers = {}) {
       if (!this.stompClient) {
         this.wsclient();
       }
       let stompClient = this.stompClient;
-      stompClient.send(destination, body, Object.assign(headers, getHeader()));
+      /**
+       * 使用SockJS连接还没建立起来，往通道发送数据，会报错 The connection has not been established yet
+       * 如果使用WebSocket会报这个错InvalidStateError: An attempt was made to use an object that is not, or is no longer, usable
+       */
+      stompClient.connect(Object.assign(headers, getHeader()), () => {
+        stompClient.send(
+          destination,
+          body,
+          Object.assign(headers, getHeader())
+        );
+      });
     },
-    wssubscribe(destination, subscribeCallback, headers) {
+    wssubscribe(destination, subscribeCallback, headers = {}) {
       let vm = this;
-      debugger;
       if (!vm.stompClient) {
-        this.wsclient();
+        vm.wsclient();
       }
       let stompClient = vm.stompClient;
-      let subscribeInstance = stompClient.subscribe(
-        destination,
-        subscribeCallback,
-        Object.assign(headers, getHeader())
-      );
-      vm[WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE](destination, subscribeInstance);
+      stompClient.connect(Object.assign(headers, getHeader()), () => {
+        let subscribeInstance = stompClient.subscribe(
+          destination,
+          subscribeCallback,
+          Object.assign(headers, getHeader())
+        );
+        console.log("subscribeInstance  " + subscribeInstance);
+        // vm[WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE]({
+        //   destination,
+        //   subscribeInstance,
+        //   headers
+        // });
+      });
     },
-    wsunsubscribe(destination, headers) {
+    wsunsubscribe(destination, headers = {}) {
       let vm = this;
-      let subscribeInstance = vm[WEBSOCKET_MUTATION_TYPE.GET_SUBSCRIBE](
+      let subscribeInstance = vm[WEBSOCKET_MUTATION_TYPE.GET_SUBSCRIBE]({
         destination
-      );
+      });
       if (subscribeInstance && "unsubscribe" in subscribeInstance) {
         subscribeInstance.unsubscribe(Object.assign(headers, getHeader()));
       }
-      vm[WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE](destination);
+      // vm[WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE]({ destination });
     },
-    ...mapMutations("websocket", [
+    ...mapMutations(WEBSOCKET_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      WEBSOCKET_MUTATION_TYPE.SET_STOMPCLIENT,
-      WEBSOCKET_MUTATION_TYPE.GET_STOMPCLIENT,
       WEBSOCKET_MUTATION_TYPE.GET_SUBSCRIBE,
       WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE,
       WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE

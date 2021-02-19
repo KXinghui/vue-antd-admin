@@ -6,12 +6,28 @@
       <slot name="header"></slot>
     </div>
     <div class="identity-confirm-login-main">
-      <identity-avatar :avatarSize="20" :identity="identity"></identity-avatar>
-      <a-button type="primary" block @click="confirmLogin(true)">
-        确认登录
+      <div class="device-icon">
+        <icon :icon="deviceIcon"></icon>
+        <span> {{ loginScanCodeDevice }}</span>
+      </div>
+      <identity-avatar :avatarSize="100" :identity="identity"></identity-avatar>
+      <a-button
+        :disabled="isExpire"
+        :loading="isConfirm && loginLoading.scanCode"
+        type="primary"
+        block
+        @click="confirmLogin(true)"
+      >
+        {{ isExpire ? "确认登录(二维码无效或失效)" : "确认登录" }}
       </a-button>
-      <a-button type="info" block @click="confirmLogin(false)">
-        取消
+      <a-button
+        :disabled="isExpire"
+        :loading="!isConfirm && loginLoading.scanCode"
+        type="info"
+        block
+        @click="confirmLogin(false)"
+      >
+        {{ isExpire ? "取消(二维码无效或失效)" : "取消" }}
       </a-button>
     </div>
     <div class="identity-confirm-login-footer">
@@ -22,6 +38,7 @@
 
 <script>
 import { BASE_LAYOUT_MIXIN } from "../Mobile/mixins/BaseLayout";
+import { ROUTER_MIXIN } from "../../mixins/router-mixin";
 import IdentityAvatar from "./IdentityAvatar";
 import { CANCEL_TOKEN, getCancelTokenSource } from "../../api/axios-config";
 import scanCodeLoginApi from "../../api/integral/ScanCodeLoginApi";
@@ -29,7 +46,7 @@ import { mapState } from "vuex";
 
 export default {
   name: "IdentityConfirmLogin",
-  mixins: [BASE_LAYOUT_MIXIN],
+  mixins: [BASE_LAYOUT_MIXIN, ROUTER_MIXIN],
   components: { IdentityAvatar },
   data() {
     return {
@@ -39,11 +56,9 @@ export default {
       loginLoading: {
         scanCode: false
       },
-      // loginScanCodeLoading: true,
-      loginScanCode: "",
-      loginScanCodeBase64: `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`,
+      loginScanCodeDevice: "UNKNOWN",
       loginScanCodeExpiration: -1,
-      loginScanCodeAvatarUrl: "",
+      isEnterView: false,
       isConfirmLogin: false
     };
   },
@@ -55,75 +70,86 @@ export default {
     }
   },
   computed: {
+    isExpire() {
+      return this.loginScanCodeExpiration == 0;
+    },
+    deviceIcon() {
+      let device = this.loginScanCodeDevice;
+      if (["MOBILE", "TABLET"].includes(device)) {
+        return `Antd_${device.toLowerCase()}`;
+      }
+      if ("COMPUTER" == device) {
+        return `Antd_desktop`;
+      }
+      if ("WEARABLE" == device) {
+        return `IconFont_watch`;
+      }
+      return `IconFont_devices`;
+    },
     ...mapState({
       identity: state => state.identity.identity
-    }),
-    loginScanCodeSrc() {
-      return `data:image/png;base64,${this.loginScanCodeBase64}`;
-    }
+    })
   },
   methods: {
+    enterView() {
+      let vm = this;
+      if (vm.isEnterView) {
+        return;
+      }
+      let { scancode } = vm.$route.query;
+      scanCodeLoginApi.enterView({ scanCode: scancode }).then(res => {
+        debugger;
+        if (res.data.code == 1) {
+          let { device, scanCodeExpiration } = res.data.map;
+          if (scanCodeExpiration) {
+            vm.loginScanCodeExpiration = scanCodeExpiration;
+          }
+          vm.loginScanCodeDevice = device;
+          vm.isEnterView = true;
+          // Interval 处理过期情况
+          let loginScanCodeInterval = setInterval(function() {
+            // 未确认登录
+            if (!vm.isConfirmLogin) {
+              vm.loginScanCode = "";
+              // vm.loginScanCodeBase64 = "";
+              vm.loginScanCodeExpiration = 0;
+            }
+            clearInterval(loginScanCodeInterval);
+          }, scanCodeExpiration * 1000);
+        } else {
+          vm.loginScanCodeExpiration = 0;
+        }
+      });
+    },
     confirmLogin(isConfirm) {
       let vm = this;
-      let loginCancleTokenSource = vm.getLoginCancleTokenSource(false);
-      if (!isConfirm && vm.loginLoading.scanCode) {
-        loginCancleTokenSource && loginCancleTokenSource.cancel();
+      if (vm.isConfirmLogin) {
         return;
+      }
+      vm.isConfirm = isConfirm;
+      if (!isConfirm) {
+        let loginCancleTokenSource = vm.getLoginCancleTokenSource(false);
+        if (vm.loginLoading.scanCode && loginCancleTokenSource) {
+          loginCancleTokenSource.cancel();
+        }
       }
       let { scancode } = vm.$route.query;
       vm.loginLoading.scanCode = true;
       scanCodeLoginApi
         .confirmLogin(
-          { scanCode: scancode },
-          { [CANCEL_TOKEN]: vm.getLoginCancleTokenSource(true) }
+          { scanCode: scancode, isConfirm },
+          { [CANCEL_TOKEN]: vm.getLoginCancleTokenSource().token }
         )
         .then(res => {
           if (res.data.code == 1) {
             vm.loginLoading.scanCode = false;
-            // TODO 处理确认登陆
-            /* vm.wssubscribe(
-              scanCodeLogin(scanCode),
-              function(response) {
-                console.log(
-                  "处理订阅WebSocket 扫码和确认登录后的返回结果     ",
-                  response
-                );
-                let { code, msg } = response;
-                if (code == 1) {
-                  let { avatarUrl } = response.map;
-                  // 扫码登录 进入视图
-                  if (avatarUrl) {
-                    vm.loginScanCodeAvatarUrl = avatarUrl;
-                    vm.loginScanCodeAlert = {
-                      message: msg ? msg : "扫码成功",
-                      type: "success"
-                    };
-                  }
-                  let {
-                    Authorization,
-                    AuthorizationCode,
-                    identity
-                  } = response.map;
-                  // 确认登录
-                  if (Authorization && AuthorizationCode && identity) {
-                    vm.loginScanCodeAlert = {
-                      message: msg ? msg : "扫码登录中。。。",
-                      type: "success"
-                    };
-                    // 处理登录后
-                    vm.handleAfterLogin(response);
-                    vm.isConfirmLogin = true;
-                  }
-                } else {
-                  vm.loginScanCodeAlert = {
-                    message: msg ? msg : "扫码失败",
-                    type: "error"
-                  };
-                }
-              },
-              {}
-            );
-           */
+            vm.isConfirmLogin = true;
+            // TODO 处理扫码者的确认登陆
+          } else {
+            let { scanCodeExpiration } = res.map;
+            if (scanCodeExpiration) {
+              vm.loginScanCodeExpiration = scanCodeExpiration;
+            }
           }
         });
     },
@@ -142,6 +168,9 @@ export default {
         // TODO 退回或进入首页
       }
     }
+  },
+  mounted() {
+    this.enterView();
   }
 };
 </script>
@@ -151,47 +180,21 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-
-.ant-tabs-nav-scroll {
-  display: flex;
+.identity-confirm-login-header,
+.identity-confirm-login-footer {
+  margin: 1rem 0;
 }
-
-.login-wrap,
-.login-scan-code-wrap {
+.identity-confirm-login-main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 1rem 0;
 }
-/* .login-scan-code-wrap .login-scan-code {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-} */
-
-.login-scan-code-wrap {
-  /* border: 1px solid red; */
-  margin: 0.4rem 0 1.3rem;
+.identity-confirm-login-main > button {
+  margin-top: 0.8rem;
 }
-
-.login-scan-code-wrap .login-scan-code-expiration {
-  /* border: 1px solid red; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 170px;
-  height: 170px;
-  background-color: rgba(177, 180, 182, 0.4);
-}
-
-/* .login-scan-code-wrap .login-scan-code-tips {
-  margin-bottom: 1rem;
-} */
-
-.identity-confirm-login-header,
-.identity-confirm-login-footer {
-  /* border: 1px solid red; */
-  margin: -1rem 0 0;
+.identity-confirm-login-main > .device-icon {
+  margin: 0.5rem 0 1rem;
 }
 </style>

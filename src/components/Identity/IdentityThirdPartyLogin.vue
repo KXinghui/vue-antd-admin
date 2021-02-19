@@ -138,7 +138,7 @@ export default {
           }
         });
     },
-    ...mapMutations("identity", [
+    ...mapMutations(IDENTITY_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       IDENTITY_MUTATION_TYPE.SET_OAUTH2_THIRDPARTY,
       IDENTITY_MUTATION_TYPE.SET_TOKEN,

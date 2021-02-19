@@ -131,17 +131,7 @@ export default {
   data() {
     return {
       modalTitle: "",
-      modalVisible: false,
-      oauthLogin: "github",
-      supportThirdPartys: [
-        { thirdParty: "github", title: "GitHub" },
-        { thirdParty: "gitee", title: "码云" },
-        { thirdParty: "oschina", title: "开源中国" },
-        { thirdParty: "alipay", title: "支付宝" },
-        { thirdParty: "weibo", title: "微博" },
-        { thirdParty: "wechat", title: "微信" },
-        { thirdParty: "qq", title: "QQ" }
-      ]
+      modalVisible: false
     };
   },
   props: {
@@ -176,6 +166,7 @@ export default {
     },
     ...mapState({
       // 传字符串参数 'count' 等同于 `state => state.count`
+      supportThirdPartys: state => state.admin.supportThirdPartys,
       thirdPartySupport: state => state.admin.thirdPartySupport
     })
   },

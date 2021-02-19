@@ -92,6 +92,9 @@ export default {
     clickGuide() {
       this.$emit("guide");
     }
+  },
+  mounted() {
+    console.log(JSON.stringify(this.identity));
   }
 };
 </script>

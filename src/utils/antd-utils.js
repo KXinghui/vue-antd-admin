@@ -6,6 +6,9 @@ const MSG_DURATION = 3;
 export function msg(responseResult) {
   let responseResultCode = responseResult.code;
   let msg = responseResult.localeLangMsg || responseResult.msg;
+  if (!msg) {
+    return;
+  }
   let onClose = null;
   if (responseResultCode == "0-1") {
     message.loading(msg, MSG_DURATION, onClose);
@@ -35,6 +38,9 @@ export function destroyModal() {
 export function notify(responseResult) {
   let responseResultCode = responseResult.code;
   let msg = responseResult.localeLangMsg || responseResult.msg;
+  if (!msg) {
+    return;
+  }
   let notificationConfig = {
     message: msg,
     description: ""

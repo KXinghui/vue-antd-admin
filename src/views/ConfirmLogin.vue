@@ -3,8 +3,7 @@
     <identity-confirm-login-view
       ms="vue-antd-admin"
       msAlias="Vue Antd Admin"
-      identity-role="user"
-      :thirdParty="thirdParty"
+      :identityRole="identityRole"
     >
     </identity-confirm-login-view>
   </div>
@@ -20,13 +19,10 @@ export default {
     IdentityConfirmLoginView
   },
   props: {
-    thirdParty: {
+    identityRole: {
       type: [String],
       default: "",
-      required: true
-      // validator(value) {
-      //   return this.thirdPartySupport.includes(value);
-      // }
+      required: false
     }
   },
   computed: {

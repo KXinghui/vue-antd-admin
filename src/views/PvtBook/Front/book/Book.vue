@@ -162,7 +162,7 @@ export default {
       });
       return selectedNotes;
     },
-    ...mapMutations("admin", [
+    ...mapMutations(ADMIN_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
       ADMIN_MUTATION_TYPE.SHOW_DRAWER
     ]),
