@@ -59,7 +59,8 @@ export default {
       loginScanCodeDevice: "UNKNOWN",
       loginScanCodeExpiration: -1,
       isEnterView: false,
-      isConfirmLogin: false
+      isConfirmLogin: false,
+      isConfirm: false
     };
   },
   props: {
@@ -123,6 +124,9 @@ export default {
     },
     confirmLogin(isConfirm) {
       let vm = this;
+      if (!vm.isEnterView) {
+        return;
+      }
       if (vm.isConfirmLogin) {
         return;
       }
@@ -144,7 +148,8 @@ export default {
           if (res.data.code == 1) {
             vm.loginLoading.scanCode = false;
             vm.isConfirmLogin = true;
-            // TODO 处理扫码者的确认登陆
+            // TODO 处理扫码者的确认登陆 回退或回到首页
+            vm.handleAfterLogin(res.data);
           } else {
             let { scanCodeExpiration } = res.map;
             if (scanCodeExpiration) {
@@ -165,7 +170,7 @@ export default {
     handleAfterLogin(response) {
       let { Authorization, AuthorizationCode, identity } = response.map;
       if (Authorization && AuthorizationCode && identity) {
-        // TODO 退回或进入首页
+        // TODO 回退或进入首页
       }
     }
   },
