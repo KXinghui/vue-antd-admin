@@ -14,17 +14,14 @@ const instance = axios.create({
   timeout: DEFAULT_TIMEOUT,
   // 跨域【https://segmentfault.com/q/1010000008671922】
   // headers: { "content-type": "application/x-www-form-urlencoded" },
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "*",
-    "Access-Control-Allow-Methods": "*"
-  },
+  // headers: {
+  //   "Access-Control-Allow-Origin": "*",
+  //   "Access-Control-Allow-Headers": "*",
+  //   "Access-Control-Allow-Methods": "*"
+  // },
   // SpringBoot Axios 【https://segmentfault.com/a/1190000013312233】
   transformRequest: [
     function(data) {
-      if (data) {
-        console.log("请求 data      " + data);
-      }
       return qs.stringify(data);
     }
   ]

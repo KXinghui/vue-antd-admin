@@ -2,13 +2,18 @@
 import { client, disconnect, getHeader } from "@utils/websocket";
 import { msg } from "@utils/antd-utils";
 import { WEBSOCKET_MUTATION_TYPE } from "../store/mutation-type";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export const WS_MIXIN = {
   data() {
     return {
       stompClient: null
     };
+  },
+  computed: {
+    ...mapState({
+      wssubscribeMap: state => state.websocket.subscribeMap
+    })
   },
   methods: {
     wsconnect(connectFrame) {
@@ -59,32 +64,41 @@ export const WS_MIXIN = {
       }
       let stompClient = vm.stompClient;
       stompClient.connect(Object.assign(headers, getHeader()), () => {
+        debugger;
+        // 取消订阅
+        vm.wsunsubscribe(destination, Object.assign(headers, getHeader()));
+        // 订阅
         let subscribeInstance = stompClient.subscribe(
           destination,
           subscribeCallback,
           Object.assign(headers, getHeader())
         );
-        console.log("subscribeInstance  " + subscribeInstance);
-        // vm[WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE]({
-        //   destination,
-        //   subscribeInstance,
-        //   headers
-        // });
+        let subscribeInstanceId = subscribeInstance.id;
+        console.log("subscribeInstanceId  " + subscribeInstanceId);
+        vm[WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE]({
+          destination,
+          subscribeInstanceId
+        });
       });
     },
     wsunsubscribe(destination, headers = {}) {
       let vm = this;
-      let subscribeInstance = vm[WEBSOCKET_MUTATION_TYPE.GET_SUBSCRIBE]({
-        destination
-      });
-      if (subscribeInstance && "unsubscribe" in subscribeInstance) {
-        subscribeInstance.unsubscribe(Object.assign(headers, getHeader()));
+      debugger;
+      let subscribeInstanceId = vm.wssubscribeMap.get(destination);
+      let stompClient = vm.stompClient;
+      if (subscribeInstanceId) {
+        stompClient.unsubscribe(
+          subscribeInstanceId,
+          Object.assign(headers, getHeader())
+        );
       }
-      // vm[WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE]({ destination });
+      stompClient.connect(Object.assign(headers, getHeader()), () => {
+        debugger;
+      });
+      vm[WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE]({ destination });
     },
     ...mapMutations(WEBSOCKET_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-      WEBSOCKET_MUTATION_TYPE.GET_SUBSCRIBE,
       WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE,
       WEBSOCKET_MUTATION_TYPE.SET_SUBSCRIBE
     ])

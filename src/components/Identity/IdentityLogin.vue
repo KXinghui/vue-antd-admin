@@ -396,6 +396,10 @@ export default {
         .drawScanCode(vm.identityRole)
         .then(res => {
           if (res.data.code == 1) {
+            // TODO 取消订阅
+            if (vm.loginScanCode) {
+              vm.wsunsubscribe(scanCodeLogin(vm.loginScanCode));
+            }
             let { scanCode, scanCodeBase64, scanCodeExpiration } = res.data.map;
             vm.loginScanCode = scanCode;
             vm.loginScanCodeBase64 = scanCodeBase64;
@@ -429,7 +433,7 @@ export default {
                     vm.isConfirmLogin = true;
                   }
                 } else {
-                  if (scanCodeExpiration) {
+                  if (scanCodeExpiration == 0 || scanCodeExpiration) {
                     vm.loginScanCodeExpiration = scanCodeExpiration;
                   }
                   vm.loginScanCodeAlert = {
@@ -445,7 +449,7 @@ export default {
               type: "warning"
             };
             // Interval 处理过期情况
-            let loginScanCodeInterval = setInterval(function() {
+            vm.loginScanCodeInterval = setInterval(function() {
               // 未确认登录
               if (!vm.isConfirmLogin) {
                 vm.loginScanCode = "";
@@ -456,7 +460,7 @@ export default {
                   type: "warning"
                 };
               }
-              clearInterval(loginScanCodeInterval);
+              clearInterval(vm.loginScanCodeInterval);
             }, scanCodeExpiration * 1000);
           }
         })
@@ -509,6 +513,16 @@ export default {
         vm.loginLoading[identityType] = false;
       }
       return isCancle;
+    }
+  },
+  destroyed() {
+    debugger;
+    if (this.loginScanCode) {
+      this.wsunsubscribe(scanCodeLogin(this.loginScanCode));
+    }
+    this.wsdisconnect();
+    if (this.loginScanCodeInterval) {
+      clearInterval(this.loginScanCodeInterval);
     }
   }
 };

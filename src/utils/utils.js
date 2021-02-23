@@ -356,3 +356,12 @@ export function driverGuide(driverOption, stepDefinitions) {
   driver.start();
   return driver;
 }
+
+export function map(map) {
+  let newMap = new Map();
+  "forEach" in map &&
+    map.forEach((value, key) => {
+      newMap.set(key, value);
+    });
+  return newMap;
+}

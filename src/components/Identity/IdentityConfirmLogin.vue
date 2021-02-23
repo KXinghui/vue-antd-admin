@@ -108,14 +108,14 @@ export default {
           vm.loginScanCodeDevice = device;
           vm.isEnterView = true;
           // Interval 处理过期情况
-          let loginScanCodeInterval = setInterval(function() {
+          vm.loginScanCodeInterval = setInterval(function() {
             // 未确认登录
             if (!vm.isConfirmLogin) {
               vm.loginScanCode = "";
               // vm.loginScanCodeBase64 = "";
               vm.loginScanCodeExpiration = 0;
             }
-            clearInterval(loginScanCodeInterval);
+            clearInterval(vm.loginScanCodeInterval);
           }, scanCodeExpiration * 1000);
         } else {
           vm.loginScanCodeExpiration = 0;
@@ -145,17 +145,20 @@ export default {
           { [CANCEL_TOKEN]: vm.getLoginCancleTokenSource().token }
         )
         .then(res => {
+          vm.loginLoading.scanCode = false;
           if (res.data.code == 1) {
-            vm.loginLoading.scanCode = false;
             vm.isConfirmLogin = true;
             // TODO 处理扫码者的确认登陆 回退或回到首页
             vm.handleAfterLogin(res.data);
           } else {
-            let { scanCodeExpiration } = res.map;
-            if (scanCodeExpiration) {
+            let { scanCodeExpiration } = res.data.map;
+            if (scanCodeExpiration == 0 || scanCodeExpiration) {
               vm.loginScanCodeExpiration = scanCodeExpiration;
             }
           }
+        })
+        .catch(() => {
+          vm.loginLoading.scanCode = false;
         });
     },
     getLoginCancleTokenSource(isCreateWhenNon = true) {
@@ -171,11 +174,17 @@ export default {
       let { Authorization, AuthorizationCode, identity } = response.map;
       if (Authorization && AuthorizationCode && identity) {
         // TODO 回退或进入首页
+        this.$router.go(-1);
       }
     }
   },
   mounted() {
     this.enterView();
+  },
+  destroyed() {
+    if (this.loginScanCodeInterval) {
+      clearInterval(this.loginScanCodeInterval);
+    }
   }
 };
 </script>

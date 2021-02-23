@@ -25,3 +25,11 @@ export function pushRoute(route) {
   }
   router.push(route);
 }
+
+export function goRoute(n) {
+  router.go(n);
+}
+
+export function back() {
+  goRoute(-1);
+}

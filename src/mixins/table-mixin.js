@@ -300,6 +300,17 @@ export const TABLE_MIXIN = {
     } */
   },
   methods: {
+    openModal(form) {
+      console.log("打开表单：" + form);
+      // TODO 设置modal属性
+      this.form = form;
+      this.modalLoading[form] = false;
+      this.modalVisible[form] = true;
+      this.modalRefresh[form] = true;
+      if ("columnSetting" == form) {
+        this.modalTitle[form] = "列设置";
+      }
+    },
     ableBatchOp(rowSelectionType) {
       let curIsBatch = this.isBatch;
       let curRowSelectionType = this.rowSelectionType;

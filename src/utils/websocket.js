@@ -52,7 +52,7 @@ export function isSupport() {
 export const OPTIONS = {
   protocols: ["v10.stomp", "v11.stomp", "v12.stomp"],
   binary: false,
-  heartbeat: { incoming: 1000000, outgoing: 1000000 },
+  heartbeat: { incoming: 100000, outgoing: 100000 },
   timeout: 15000,
   debug: isProd() ? false : true
 };
@@ -78,12 +78,16 @@ export function client(
   return stompClient;
 }
 
-export function disconnect(stompClient) {
-  if (stompClient && stompClient instanceof webstomp.client) {
+export function disconnect(stompClient, headers = {}) {
+  if (isStompClient(stompClient)) {
     stompClient.disconnect(function() {
       msg({ code: "1", msg: "断连成功=======" });
-    }, getHeader());
+    }, Object.assign(headers, getHeader()));
   }
+}
+
+export function isStompClient(stompClient) {
+  return stompClient && stompClient instanceof webstomp.client;
 }
 
 /**

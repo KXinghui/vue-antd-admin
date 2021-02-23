@@ -10,24 +10,29 @@
         ><icon icon="IconFont_batch-op"></icon
         >{{ isBatch ? "取消批量" : "批量" }}</a-button
       > -->
-      <a-dropdown>
-        <a-button v-show="isShowBatch" type="primary"
-          ><icon icon="IconFont_batch-op"></icon
-          >{{ isBatch ? "取消批量" : "批量" }}</a-button
+      <div>
+        <a-button type="primary" @click="openModal('columnSetting')"
+          >列设置</a-button
         >
-        <a-menu slot="overlay" placement="bottomRight">
-          <a-menu-item key="1" @click="ableBatchOp('radio')">
-            <icon icon="Antd_check-circle" />{{
-              isBatch && rowSelectionType == "radio" ? "取消单选" : "单选"
-            }}
-          </a-menu-item>
-          <a-menu-item key="2" @click="ableBatchOp('checkbox')">
-            <icon icon="Antd_check-square" />{{
-              isBatch && rowSelectionType == "checkbox" ? "取消多选" : "多选"
-            }}
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
+        <a-dropdown>
+          <a-button v-show="isShowBatch" type="primary"
+            ><icon icon="IconFont_batch-op"></icon
+            >{{ isBatch ? "取消批量" : "批量" }}</a-button
+          >
+          <a-menu slot="overlay" placement="bottomRight">
+            <a-menu-item key="1" @click="ableBatchOp('radio')">
+              <icon icon="Antd_check-circle" />{{
+                isBatch && rowSelectionType == "radio" ? "取消单选" : "单选"
+              }}
+            </a-menu-item>
+            <a-menu-item key="2" @click="ableBatchOp('checkbox')">
+              <icon icon="Antd_check-square" />{{
+                isBatch && rowSelectionType == "checkbox" ? "取消多选" : "多选"
+              }}
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </div>
     </div>
     <!-- :row-selection="{
         type: rowSelection.type,
@@ -42,7 +47,7 @@
         movable: true,
         filter: function() {
           return !isBatch;
-        },
+        }
       }"
       :scroll="{ x: true, scrollToFirstRowOnChange: false }"
       class="base-table"
@@ -128,6 +133,14 @@
         </a-collapse-panel>
       </a-collapse>
     </a-modal>
+    <base-modal
+      :modalRefresh.sync="modalRefresh.columnSetting"
+      :modalVisible.sync="modalVisible.columnSetting"
+      :modalTitle="modalTitle.columnSetting"
+      :modalLoading.sync="modalLoading.columnSetting"
+    >
+      <template slot="footer"> </template>
+    </base-modal>
   </div>
   <!-- </bs-core> -->
 </template>
@@ -135,6 +148,7 @@
 <script>
 import { TABLE_MIXIN } from "../../mixins/table-mixin";
 import BsCore from "../BetterScroll/BsCore.vue";
+import BaseModal from "@components/Antd/Modal/BaseModal";
 
 // eslint-disable-next-line no-unused-vars
 const table = {
@@ -168,7 +182,7 @@ const table = {
   expandIconColumnIndex: 0,
   // 表格尾部	Function(currentPageData)|slot-scope
   // eslint-disable-next-line no-unused-vars
-  footer: (currentPageData) => {},
+  footer: currentPageData => {},
   // 展示树形数据时，每层缩进的宽度，以 px 为单位	number	15
   indentSize: 10,
   // 页面是否加载中	boolean|object	false
@@ -192,26 +206,26 @@ const table = {
   size: "default",
   // 表格标题	Function(currentPageData)|slot-scope
   // eslint-disable-next-line no-unused-vars
-  title: (currentPageData) => {},
+  title: currentPageData => {},
   // 设置头部行属性	Function(column, index)	-
   // eslint-disable-next-line no-unused-vars
   customHeaderRow: (column, index) => {},
   // 设置行属性	Function(record, index)	-
   // eslint-disable-next-line no-unused-vars
-  customRow: (record) => {
+  customRow: record => {
     return {
       // props: {
       //   xxx... //属性
       // },
       on: {
         // 事件
-        click: (event) => {
+        click: event => {
           this.clickRow(event, record);
         },
-        dblclick: (event) => {
+        dblclick: event => {
           this.dblclickRow(event, record);
         },
-        contextmenu: (event) => {
+        contextmenu: event => {
           this.contextmenuRow(event, record);
         } /* ,
         mouseenter: event => {
@@ -219,15 +233,15 @@ const table = {
         },
         mouseleave: event => {
           this.mouseleaveRow(event, record);
-        } */,
-      },
+        } */
+      }
     };
   },
   // 设置表格内各类浮层的渲染节点，如筛选菜单	(triggerNode) => HTMLElement	() => TableHtmlElement	1.5.0
   // getPopupContainer:
   // 数据渲染前可以再次改变，一般用户空数据的默认配置，可以通过 ConfigProvider 全局统一配置	Function({ text, column, record, index }) => any	-	1.5.4
   // eslint-disable-next-line no-unused-vars
-  transformCellText: ({ text, column, record, index }) => {},
+  transformCellText: ({ text, column, record, index }) => {}
 };
 // eslint-disable-next-line no-unused-vars
 const column = {
@@ -273,7 +287,7 @@ const column = {
   // width	列宽度	string|number	-
   // 设置单元格属性	Function(record, rowIndex)	-
   // eslint-disable-next-line no-unused-vars
-  customCell: (record, rowIndex) => {},
+  customCell: (record, rowIndex) => {}
   // customHeaderCell	设置头部单元格属性	Function(column)	-
   // onFilter	本地模式下，确定筛选的运行函数, 使用 template 或 jsx 时作为filter事件使用	Function	-
   // onFilterDropdownVisibleChange	自定义筛选菜单可见变化时调用，使用 template 或 jsx 时作为filterDropdownVisibleChange事件使用	function(visible) {}	-
@@ -330,7 +344,7 @@ export default {
   name: "BaseTable",
   mixins: [TABLE_MIXIN],
   // eslint-disable-next-line vue/no-unused-components
-  components: { BsCore },
+  components: { BsCore, BaseModal },
   data() {
     // var vm = this;
     return {
@@ -362,6 +376,10 @@ export default {
       //     }
       //   };
       // }
+      modalRefresh: { columnSetting: false },
+      modalVisible: { columnSetting: false },
+      modalTitle: { columnSetting: "" },
+      modalLoading: { columnSetting: true }
     };
   },
   methods: {
@@ -386,7 +404,7 @@ export default {
   },
   mounted() {
     console.log();
-  },
+  }
 };
 </script>
 

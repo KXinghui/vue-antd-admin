@@ -1,7 +1,5 @@
 <template>
-  <div class="note-table">
-    <!-- 搜索表单 -->
-
+  <div class="web-magic-entity-table">
     <!-- 表格 -->
     <base-table
       :isBatch.sync="isBatch"
@@ -184,25 +182,23 @@
 </template>
 
 <script>
-import BaseTable from "../../../../../components/Table/BaseTable.vue";
-import BaseModal from "../../../../../components/Antd/Modal/BaseModal";
-import { FORM_MIXIN } from "../../../../../mixins/form-mixin";
-// import BaseForm from "../../../../../components/Antd/Modal/BaseModal.vue";
-import { NoteTypeEnum, GroupStationEnum } from "../../../../../consts/pvtnote";
+import BaseTable from "@components/Table/BaseTable.vue";
+import BaseModal from "@components/Antd/Modal/BaseModal";
+import { FORM_MIXIN } from "@mixins/form-mixin";
 
 export default {
-  name: "NoteTableView",
+  name: "WebMagicEntityView",
   mixins: [FORM_MIXIN],
   components: { BaseTable, /* BaseForm, */ BaseModal },
   data() {
     return {
       isBatch: false,
-      enums: {
-        NoteTypeEnum,
-        NoteTypeEnumOptions: NoteTypeEnum.selectOptions(),
-        GroupStationEnum,
-        GroupStationEnumOptions: GroupStationEnum.selectOptions()
-      },
+      // enums: {
+      //   NoteTypeEnum,
+      //   NoteTypeEnumOptions: NoteTypeEnum.selectOptions(),
+      //   GroupStationEnum,
+      //   GroupStationEnumOptions: GroupStationEnum.selectOptions()
+      // },
       noteQuery: { title: "", subTitle: "" },
       form: "",
       formModel: { localAccount: "sentinel", password: "12321654" },
@@ -346,32 +342,6 @@ export default {
     };
   },
   methods: {
-    registerByLocalAccount() {},
-    reload() {
-      this.reload();
-    },
-    // openModal(form) {
-    //   let openModal = new Function(
-    //     "vm",
-    //     "form",
-    //     `return console.log("打开表单：" + form);
-    //   // TODO 设置modal属性
-    //   console.log("打开表单：" + vm);
-    //   vm.form = form;
-    //   vm.modalLoading = false;
-    //   vm.modalVisible = true;
-    //   vm.modalRefresh = true;
-    //   if (form === "Insert") {
-    //     vm.modalTitle = "增加便签";
-    //   } else if (form === "Update") {
-    //     vm.modalTitle = "更新便签";
-    //   }
-    //   /* setTimeout(() => {
-    //     this.modalLoading = false;
-    //   }, 4000); */`
-    //   );
-    //   openModal(this, form);
-    // },
     openModal(form) {
       console.log("打开表单：" + form);
       // TODO 设置modal属性
@@ -390,9 +360,6 @@ export default {
     },
     changePage(page, pageSize) {
       console.log("当前页码为： " + page + "当前每页条数为： " + pageSize);
-    },
-    changeNoteTypes(value) {
-      console.log("便签类型  " + value);
     }
   }
 };
