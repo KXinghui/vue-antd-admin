@@ -398,4 +398,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.div {
+  color: #ffffff;
+}
+</style>

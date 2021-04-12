@@ -18,14 +18,16 @@ export class BaseEnum {
   }
   static of(enumName) {
     let enumObj = new BaseEnum();
-    for (let enumClass in this) {
-      let enums = [
-        this[enumClass]["id"],
-        this[enumClass]["name"],
-        this[enumClass]["value"]
-      ];
-      if (enums.includes(enumName)) {
-        enumObj = this[enumClass];
+    if (enumName || enumName == 0) {
+      for (let enumClass in this) {
+        let enums = [
+          this[enumClass]["id"],
+          this[enumClass]["name"],
+          this[enumClass]["value"]
+        ];
+        if (enums.includes(enumName)) {
+          enumObj = this[enumClass];
+        }
       }
     }
     return enumObj;
@@ -54,19 +56,26 @@ export class BaseMappingEnum extends BaseEnum {
   }
   static of(enumName) {
     let enumObj = new BaseMappingEnum();
-    for (let enumClass in this) {
-      let enums = [
-        this[enumClass]["id"],
-        this[enumClass]["name"],
-        this[enumClass]["value"],
-        this[enumClass]["mapping"]
-      ];
-      if (enums.includes(enumName)) {
-        enumObj = this[enumClass];
+    if (enumName || enumName == 0) {
+      for (let enumClass in this) {
+        let enums = [
+          this[enumClass]["id"],
+          this[enumClass]["name"],
+          this[enumClass]["value"],
+          this[enumClass]["mapping"]
+        ];
+        if (enums.includes(enumName)) {
+          enumObj = this[enumClass];
+        }
       }
     }
     return enumObj;
   }
+}
+
+export class GenderEnum extends BaseEnum {
+  static FEMALE = this.enums(0, "FEMALE", "FeMale", "女");
+  static MALE = this.enums(1, "MALE", "Male", "男");
 }
 
 export class IdentityTypeEnum extends BaseMappingEnum {
@@ -89,6 +98,8 @@ export class IdentityTypeEnum extends BaseMappingEnum {
     "微博",
     "microblog"
   );
+  static BAIDU = this.enums(13, "BAIDU", "Baidu", "百度", "baidu");
+  static WECHAT_MP = this.enums(14, "WeChatMP", "微信小程序", "wechatmp");
 }
 
 export class IdentityRoleEnum extends BaseMappingEnum {

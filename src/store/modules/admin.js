@@ -37,6 +37,7 @@ const state = () => {
       { thirdParty: "github", title: "GitHub" },
       { thirdParty: "gitee", title: "码云" },
       { thirdParty: "oschina", title: "开源中国" },
+      { thirdParty: "baidu", title: "百度" },
       { thirdParty: "alipay", title: "支付宝" },
       { thirdParty: "weibo", title: "微博" },
       { thirdParty: "wechat", title: "微信" },
@@ -45,7 +46,8 @@ const state = () => {
     thirdPartySupport: [
       "github",
       "gitee",
-      "oschina"
+      "oschina",
+      "baidu"
       // "alipay",
       // "weibo",
       // "wechat",

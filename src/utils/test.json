@@ -1,0 +1,16 @@
+{
+    "errMsg": "getUserInfo:ok",
+    "rawData": "{\"nickName\":\"星辉kxh\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Dongguan\",\"province\":\"Guangdong\",\"country\":\"China\",\"avatarUrl\":\"https://thirdwx.qlogo.cn/mmopen/vi_32/R64YNf8zRjNwaXlnJicGufIF2e18VoyJfZibeJxiaRSBpOn7ja50ESO4zu6kRTKsS4goT7V8clicicicYYcmiaW03Yhgw/132\"}",
+    "signature": "6080189bcd8fe67594faed734171d5ebf20cb020",
+    "encryptedData": "iZiSDZ97UIkb+zyERTOFo5HqGfHSR6/mr8m3YDed7qigc2APWvSUsmkggLtRnrBpxzgEF+Bi1y1+ca9QA9gTEOlCSQLEBe2HumMkC6OWe4FTYUg2iZzqocPPkEEqODTyCuGmUJus2inYLNsTzQaWDN/dNWD8o9EOh8Q6+fduFBtcZtpEPP4DzGLIgZ7Rbfqdk5hrgGrIRB/Xa5aTFvGY7f9L3QYXgj85Y7rJlEBQR+TH132+nExrFmDtEa78BWhHLV6wg/j1cnT580v0JEva/R/gFwLsYqqeJ3rs/z0kP3ePvRvDZfO/VUjyCrZn1nZoWOsewqYcQiylpUj8Ev5IdNBviaER4VNSdTGCPXp6fBwcOFqajNWayi+jDO+dNzQjWNbd2s+vOr8EU16okyDss6+KB41vEH70wV3tuYzq3qPWTQY/DyPmhOwcCkaAUjLRASjAI3gJ/GCzLn5grWvymJA/sJpCmbAUaN0GOBSYQNJZmv8UzV16NO3bRfCE7rTD",
+    "iv": "Gn40pk8jTJH7O1wnb1m+HA==",
+    "userInfo": {
+        "nickName": "星辉kxh",
+        "gender": 1,
+        "language": "zh_CN",
+        "city": "Dongguan",
+        "province": "Guangdong",
+        "country": "China",
+        "avatarUrl": "https://thirdwx.qlogo.cn/mmopen/vi_32/R64YNf8zRjNwaXlnJicGufIF2e18VoyJfZibeJxiaRSBpOn7ja50ESO4zu6kRTKsS4goT7V8clicicicYYcmiaW03Yhgw/132"
+    }
+}

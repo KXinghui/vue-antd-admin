@@ -77,20 +77,6 @@ export default {
       default: "",
       required: true
     }
-  },
-  computed: {
-    registerUrl() {
-      if (["cloud", "vue-antd-admin"].includes(this.ms)) {
-        return "/register";
-      }
-      return `/${this.ms}/register`;
-    },
-    forgetPasswordUrl() {
-      if (["cloud", "vue-antd-admin"].includes(this.ms)) {
-        return "/password/forget";
-      }
-      return `/${this.ms}/password/forget`;
-    }
   }
 };
 </script>

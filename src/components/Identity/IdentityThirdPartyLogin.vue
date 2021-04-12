@@ -31,6 +31,7 @@ import { IDENTITY_MUTATION_TYPE } from "../../store/mutation-type";
 import { msg } from "../../utils/antd-utils";
 import thirdPartyOAuth2Api from "../../api/integral/ThirdPartyOAuth2Api";
 import { IdentityRoleEnum } from "../../consts/base-enum";
+import { pushRoute } from "../../utils/router-utils";
 
 export default {
   name: "IdentityOauth2Login",
@@ -129,14 +130,22 @@ export default {
         )
         .then(res => {
           if (res.data.code == 1) {
-            let { Authorization, AuthorizationCode, identity } = res.data.map;
-            this[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
-              token: Authorization,
-              tokenCode: AuthorizationCode
-            });
-            this[IDENTITY_MUTATION_TYPE.SET_IDENTITY](identity);
+            this.handleAfterLogin(res.data);
           }
         });
+    },
+    handleAfterLogin(response) {
+      let vm = this;
+      let { Authorization, AuthorizationCode, identity } = response.map;
+      if (Authorization && AuthorizationCode && identity) {
+        vm[IDENTITY_MUTATION_TYPE.SET_TOKEN]({
+          token: Authorization,
+          tokenCode: AuthorizationCode
+        });
+        vm[IDENTITY_MUTATION_TYPE.SET_IDENTITY](identity);
+        // TODO 进入首页
+        pushRoute({ path: "/" });
+      }
     },
     ...mapMutations(IDENTITY_MUTATION_TYPE.NAMESPACE, [
       // 将 `this.increment()` 映射为 `this.$store.commit('increment')`

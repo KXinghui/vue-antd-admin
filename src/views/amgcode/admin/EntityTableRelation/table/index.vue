@@ -13,7 +13,7 @@
     >
       <div slot="tableForm">
         <!-- <base-form :formModel="noteQuery"> </base-form> -->
-        <a-form-model :model="noteQuery" layout="inline">
+        <a-form-model :model="entityTableRelationQuery" layout="inline">
           <!-- v-bind="formItemLayout" -->
           <a-form-model-item label="标题">
             <a-input v-model="noteQuery.title" placeholder="标题" allow-clear />
@@ -210,9 +210,9 @@ export default {
       selectedRowKeys: [],
       columns: [
         {
-          title: "分组站",
-          dataIndex: "groupStationEnum",
-          scopedSlots: { customRender: "groupStationEnum" },
+          title: "全限定实体类名",
+          dataIndex: "fqEntityName",
+          // scopedSlots: { customRender: "fqEntityName" },
           width: 50,
           isResize: true,
           minWidth: 50,
@@ -221,9 +221,9 @@ export default {
           align: "center"
         },
         {
-          title: "标题",
-          dataIndex: "title2",
-          scopedSlots: { customRender: "title" },
+          title: "实体类注释",
+          dataIndex: "entityComment",
+          scopedSlots: { customRender: "entityComment" },
           width: 100,
           isResize: true,
           minWidth: 50,
@@ -232,8 +232,8 @@ export default {
           align: "center"
         },
         {
-          title: "封面图",
-          dataIndex: "coverUrl",
+          title: "全限定自身Query名",
+          dataIndex: "fqOwnQueryName",
           scopedSlots: { customRender: "coverUrl" },
           width: 100,
           isResize: true,
@@ -243,8 +243,8 @@ export default {
           align: "center"
         },
         {
-          title: "副标题",
-          dataIndex: "subTitle",
+          title: "全限定非自身Query名",
+          dataIndex: "fqOtherQueryName",
           width: 100,
           isResize: true,
           minWidth: 100,
@@ -253,9 +253,108 @@ export default {
           align: "center"
         },
         {
-          title: "便签类型",
-          dataIndex: "noteTypeEnum",
-          scopedSlots: { customRender: "noteTypeEnum" },
+          title: "Mapper全限定名",
+          dataIndex: "fqMapperName",
+          scopedSlots: { customRender: "fqMapperName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "Service全限定名",
+          dataIndex: "fqServiceName",
+          scopedSlots: { customRender: "fqServiceName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "ServiceImpl全限定名",
+          dataIndex: "fqServiceImplName",
+          scopedSlots: { customRender: "fqServiceImplName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "Controller全限定名",
+          dataIndex: "fqControllerName",
+          scopedSlots: { customRender: "fqControllerName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "数据库名",
+          dataIndex: "dbName",
+          scopedSlots: { customRender: "dbName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "数据库表名",
+          dataIndex: "tableName",
+          scopedSlots: { customRender: "tableName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "数据库表别名",
+          dataIndex: "tableAlias",
+          scopedSlots: { customRender: "tableAlias" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "数据库引擎",
+          dataIndex: "dbEngine",
+          scopedSlots: { customRender: "dbEngine" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "数据库名",
+          dataIndex: "dbName",
+          scopedSlots: { customRender: "dbName" },
+          width: 50,
+          isResize: true,
+          minWidth: 100,
+          maxWidth: 300,
+          ellipsis: true,
+          align: "center"
+        },
+        {
+          title: "字符集",
+          dataIndex: "charsetName",
+          scopedSlots: { customRender: "charsetName" },
           width: 50,
           isResize: true,
           minWidth: 100,

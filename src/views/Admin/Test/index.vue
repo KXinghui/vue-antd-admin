@@ -28,6 +28,7 @@
       selectNum="5"
       :selectedIcons.sync="selectedIcons"
     ></icon-selector>
+    <trianglify width="600" height="400"></trianglify>
   </div>
 </template>
 
@@ -38,10 +39,11 @@ import QRCode from "../../../components/QRCode";
 import { screenshot } from "../../../utils/file-utils";
 // import Cropper from "../../../components/Cropper";
 import IconSelector from "../../../components/Icon/IconSelector";
+import Trianglify from "../../../components/Trianglify";
 
 export default {
   name: "Test",
-  components: { "qr-code": QRCode, IconSelector },
+  components: { "qr-code": QRCode, IconSelector, Trianglify },
   data() {
     return {
       htmlRef: this.$refs.test,

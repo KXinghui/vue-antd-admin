@@ -233,13 +233,7 @@ export default {
         layout: "vertical"
       },
       form: {
-        name: "",
-        region: undefined,
-        date1: undefined,
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        name: ""
       },
       /* 登录二维码 */
       loginScanCodeAlert: {

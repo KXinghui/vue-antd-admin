@@ -123,6 +123,7 @@ import IdentityLogin from "../../../components/Identity/IdentityLogin.vue";
 // import BaseModal from "../../../components/Antd/Modal/BaseModal.vue";
 import { mapState } from "vuex";
 import thirdPartyOAuth2Api from "../../../api/integral/ThirdPartyOAuth2Api";
+import { IdentityRoleEnum } from "../../../consts/base-enum";
 
 export default {
   name: "IdentityLoginView",
@@ -175,12 +176,18 @@ export default {
       return this.thirdPartySupport.includes(thirdParty);
     },
     authorizeUrl(thirdParty) {
-      thirdPartyOAuth2Api.authorizeUrl(thirdParty).then(res => {
-        let authorizeUrl = res.data.map.authorizeUrl;
-        if (authorizeUrl) {
-          window.location.href = authorizeUrl;
-        }
-      });
+      thirdPartyOAuth2Api
+        .authorizeUrl(thirdParty, {
+          identityRole:
+            IdentityRoleEnum.of(this.identityRole).mapping ||
+            IdentityRoleEnum.USER.mapping
+        })
+        .then(res => {
+          let authorizeUrl = res.data.map.authorizeUrl;
+          if (authorizeUrl) {
+            window.location.href = authorizeUrl;
+          }
+        });
     }
   }
 };
