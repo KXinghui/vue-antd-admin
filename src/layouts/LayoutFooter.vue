@@ -1,10 +1,13 @@
 <template>
-  <div class="layout-footer" v-text="footerTitle"></div>
+  <div :class="['layout-footer', themeClass]" v-text="footerTitle"></div>
 </template>
 
 <script>
+import { THEME_MIXIN } from "@mixins/theme-mixin.js";
+
 export default {
   name: "LayoutFooter",
+  mixins: [THEME_MIXIN],
   data() {
     return { collapsed: false };
   },

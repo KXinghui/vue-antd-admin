@@ -50,14 +50,18 @@ export async function htmlToCanvas(ele, options) {
       {
         logging: true, // 启用日志记录以进行调试 (发现加上对去白边有帮助)
         backgroundColor: null, // 解决生成的图片有白边
-        width: element.clientWidth, //dom 原始宽度
-        height: element.clientHeight,
+        width: element.clientWidth, // DOM 原始宽度
+        height: element.clientHeight, // DOM 原始高度
         scrollY: 0,
         scrollX: 0,
         useCORS: true, // 跨域
-        allowTaint: true // 允许跨源图像污染画布
+        allowTaint: true, // 允许跨源图像污染画布
         // scale: 2, //图片清晰度的保证
         // taintTest: false
+        ignoreElements: ele => {
+          ele.id === "root" ||
+            ["IFRAME", "SCRIPT", "LINK"].includes(ele.targetName.toUpperCase());
+        }
       },
       options
     )

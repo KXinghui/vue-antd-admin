@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-sider-logo-container">
+  <div :class="['layout-sider-logo-container', themeClass]">
     <img class="layout-sider-logo-img" :src="logoUrl" />
     <span
       :class="[collapsed ? 'logo-title-display' : 'logo-title']"
@@ -10,12 +10,14 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { THEME_MIXIN } from "@mixins/theme-mixin.js";
 // Vue 引入图片的两种方式：
 //方法1：直接将图片引入为模块
 // import logoUrl from "../assets/logo.png";
 
 export default {
   name: "LayoutSiderLogo",
+  mixins: [THEME_MIXIN],
   data() {
     return {};
   },

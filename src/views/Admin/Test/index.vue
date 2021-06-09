@@ -29,6 +29,11 @@
       :selectedIcons.sync="selectedIcons"
     ></icon-selector>
     <trianglify width="600" height="400"></trianglify>
+    <identity-avatar-cropper :identity="identity"></identity-avatar-cropper>
+
+    <!-- <template v-slot="viewer">
+        <identity-avatar :></identity-avatar>
+      </template> -->
   </div>
 </template>
 
@@ -40,12 +45,20 @@ import { screenshot } from "../../../utils/file-utils";
 // import Cropper from "../../../components/Cropper";
 import IconSelector from "../../../components/Icon/IconSelector";
 import Trianglify from "../../../components/Trianglify";
+import IdentityAvatarCropper from "../../../components/Identity/IdentityAvatarCropper";
+import { mapState } from "vuex";
 
 export default {
   name: "Test",
-  components: { "qr-code": QRCode, IconSelector, Trianglify },
+  components: {
+    "qr-code": QRCode,
+    IconSelector,
+    Trianglify,
+    IdentityAvatarCropper
+  },
   data() {
     return {
+      cropperData: {},
       htmlRef: this.$refs.test,
       text: "https://webqr.com/create.html",
       selectedIcons: []
@@ -72,6 +85,11 @@ export default {
         console.log(res);
       });
     }
+  },
+  computed: {
+    ...mapState({
+      identity: state => state.identity.identity
+    })
   },
   mounted() {
     this.htmlRef = this.$refs["test"].$el;

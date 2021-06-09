@@ -10,7 +10,7 @@
           return isView;
         }
       }"
-      id="editor"
+      :id="quillWrap"
       :ref="quillWrap"
     ></div>
     <!-- v-html="html" -->

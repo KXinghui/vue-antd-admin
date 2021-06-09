@@ -7,7 +7,8 @@
     v-on="$listeners"
   >
     <template slot="title">
-      <div @click="pushRoute(menu.path)">
+      <!-- pushRoute(menu.path) -->
+      <div @click="clickMenu(item)">
         <icon :icon="menu.icon ? menu.icon : 'Antd_menu'" />
         <span>{{ menu.name }}</span>
       </div>
@@ -18,12 +19,20 @@
         v-if="!item.children || item.children.size == 0"
         :key="item.name"
       >
-        <router-link :to="item.path">
+        <div @click="clickMenu(item)">
+          <!-- <router-link :to="item.path"> -->
           <icon :icon="item.icon ? item.icon : 'Antd_menu'" />
-          <span>{{ item.name }}</span></router-link
-        >
+          <span>{{ item.name }}</span
+          ><!-- </router-link
+        > -->
+        </div>
       </a-menu-item>
-      <layout-sider-sub-menu v-else :key="item.name" :menu="item" />
+      <layout-sider-sub-menu
+        @clickMenu="clickMenu"
+        v-else
+        :key="item.name"
+        :menu="item"
+      />
     </template>
   </a-sub-menu>
 </template>
@@ -49,7 +58,10 @@ export default {
     }
   },
   methods: {
-    pushRoute
+    pushRoute,
+    clickMenu(menu) {
+      this.$emit("clickMenu", menu);
+    }
   }
 };
 </script>

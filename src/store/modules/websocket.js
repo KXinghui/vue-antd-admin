@@ -19,7 +19,6 @@ const getters = {
 const mutations = {
   GET_SUBSCRIBE: (state, { destination }) => {
     let subscribeMap = map(state.subscribeMap);
-    debugger;
     return subscribeMap.get(destination);
   },
   DELETE_SUBSCRIBE: (state, { destination }) => {
@@ -30,7 +29,6 @@ const mutations = {
     state.subscribeMap = subscribeMap;
   },
   SET_SUBSCRIBE: (state, { destination, subscribeInstanceId }) => {
-    debugger;
     let subscribeMap = map(state.subscribeMap);
     // let subscribeInstanceId = subscribeMap.get(destination);
     subscribeMap.set(destination, subscribeInstanceId);

@@ -50,7 +50,8 @@ export default {
     trianglifyStyle() {
       return {
         width: parseInt(this.width),
-        height: parseInt(this.height)
+        height: parseInt(this.height),
+        position: "relative"
       };
     },
     trianglifyOptions() {
@@ -68,7 +69,7 @@ export default {
       let children = trianglifyEle.childNodes[0];
       children
         ? //   替换
-          trianglifyEle.appendChild(canvas, children)
+          trianglifyEle.replaceChild(canvas, children)
         : //   添加
           vm.$refs[vm.trianglifyRef].appendChild(canvas);
     },
@@ -109,4 +110,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.trianglify-wrap canvas {
+  transition: 0.5s;
+  position: absolute;
+}
+</style>

@@ -137,7 +137,10 @@ export const BASE_LAYOUT_MENUS = [
 export const BASE_MENUS = [
   {
     path: "/",
-    name: "BaseLayout"
+    name: "BaseLayout",
+    meta: {
+      isActiveWhenNonTag: true
+    }
   },
   {
     path: "/test",

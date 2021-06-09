@@ -1,55 +1,68 @@
 <template>
   <div>
     <v-chart
-      force-fit="true"
+      :forceFit="true"
       height="500"
-      :padding="padding"
       :data="data"
-      :scale="scaleOptions"
+      :padding="padding"
+      :scale="scale"
     >
       <v-tooltip />
       <v-axis
-        :data-key="axispts.dataKey10"
+        :dataKey="axis1Opts.dataKey"
         :line="axis1Opts.line"
-        :tick-line="axis1Opts.tickLine"
+        :tickLine="axis1Opts.tickLine"
         :grid="axis1Opts.grid"
       />
       <v-axis
-        :data-key="axispts.dataKey20"
+        :dataKey="axis2Opts.dataKey"
         :line="axis2Opts.line"
-        :tick-line="axis2Opts.tickLine"
+        :tickLine="axis2Opts.tickLine"
         :grid="axis2Opts.grid"
       />
-      <v-legend
-        :data-key="legendOptions.dataKey"
-        :marker="legendOptions.marker"
-        :offset="legendOptions.offset"
-      />
-      <v-coord type="polar" :radius="0.8" />
-      <v-line
-        :position="linePointArea.position"
-        :color="linePointArea.color"
-        :size="linePointArea.size"
-      />
-      <v-point
-        :position="linePointArea.position"
-        :color="linePointArea.color"
-        :size="linePointArea.size"
-        :shape="linePointArea.shape"
-      />
-      <v-area
-        v-if="chartType === 'radar_base'"
-        :position="linePointArea.position"
-        :color="linePointArea.color"
-      />
+      <v-legend dataKey="user" marker="circle" :offset="30" />
+      <v-coord type="polar" radius="0.8" />
+      <v-line position="item*score" color="user" :size="2" />
+      <v-point position="item*score" color="user" :size="4" shape="circle" />
     </v-chart>
   </div>
 </template>
 
 <script>
-import { CHART_MIXIN } from "../../../mixins/chart-mixin";
+const DataSet = require("@antv/data-set");
+
+const sourceData = [
+  { item: "Design", a: 70, b: 30 },
+  { item: "Development", a: 60, b: 70 },
+  { item: "Marketing", a: 50, b: 60 },
+  { item: "Users", a: 40, b: 50 },
+  { item: "Test", a: 60, b: 70 },
+  { item: "Language", a: 70, b: 50 },
+  { item: "Technology", a: 50, b: 40 },
+  { item: "Support", a: 30, b: 40 },
+  { item: "Sales", a: 60, b: 40 },
+  { item: "UX", a: 50, b: 60 }
+];
+
+const dv = new DataSet.View().source(sourceData);
+dv.transform({
+  type: "fold",
+  fields: ["a", "b"],
+  key: "user",
+  value: "score"
+});
+const data = dv.rows;
+
+const scale = [
+  {
+    dataKey: "score",
+    min: 0,
+    max: 80
+  }
+];
 
 const axis1Opts = {
+  dataKey: "item",
   line: null,
   tickLine: null,
   grid: {
@@ -60,6 +73,7 @@ const axis1Opts = {
   }
 };
 const axis2Opts = {
+  dataKey: "score",
   line: null,
   tickLine: null,
   grid: {
@@ -71,23 +85,14 @@ const axis2Opts = {
 };
 
 export default {
-  name: "Radar",
-  mixins: [CHART_MIXIN],
   data() {
     return {
-      padding: [20, 20, 95, 20],
+      data,
+      scale,
       axis1Opts,
-      axis2Opts
+      axis2Opts,
+      padding: [20, 20, 95, 20]
     };
-  },
-  props: {
-    axispts: {
-      type: [Object],
-      default: function() {
-        return { dataKey10: "", dataKey20: "" };
-      },
-      require: true
-    }
   }
 };
 </script>

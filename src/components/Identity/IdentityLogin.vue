@@ -510,7 +510,6 @@ export default {
     }
   },
   destroyed() {
-    debugger;
     if (this.loginScanCode) {
       this.wsunsubscribe(scanCodeLogin(this.loginScanCode));
     }

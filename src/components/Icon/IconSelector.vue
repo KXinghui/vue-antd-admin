@@ -142,14 +142,12 @@ export default {
       if (!iconUrl) {
         return;
       }
-      debugger;
       this.selectIcon("Link", iconUrl);
     },
     composeIcon(provider, icon) {
       return `${provider}_${icon}`;
     },
     selectIcon(provider, icon) {
-      debugger;
       let selectIcon = this.composeIcon(provider, icon);
       let selectedIcons = [...this.selectedIcons];
       let index = selectedIcons.indexOf(selectIcon);

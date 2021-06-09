@@ -20,6 +20,8 @@ import "./styles/global.less";
 
 import "./icons";
 
+import "./utils/endecrypt";
+
 // process.env.NODE_ENV !== "production" && require("./mock/index.js");
 
 Vue.config.productionTip = false;

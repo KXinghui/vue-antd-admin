@@ -10,6 +10,8 @@
         <!-- 'min-width': layoutSiderWidth, -->
         <pane :style="{ 'max-width': layoutSiderWidth }">
           <layout-sider
+            @clickMenu="clickMenu"
+            :menus="layoutMenus"
             :id="layoutSiderRef"
             :ref="layoutSiderRef"
             :theme="layoutSetting.layoutTheme"
@@ -33,6 +35,7 @@
                   style="background: #fff; padding: 0;"
                 >
                   <layout-header
+                    :theme="layoutSetting.layoutTheme"
                     :is-mobile.sync="isMobile"
                     :collapsed-sider.sync="collapsedSider"
                     :show-sider.sync="showSider"
@@ -41,10 +44,17 @@
                 </a-layout-header>
               </pane>
               <!-- <a-layout-content> -->
-              <pane v-if="false">
+              <pane
+                v-if="layoutSetting.showTagBar"
+                :id="layoutTagBarRef"
+                style="max-height: 40px;"
+              >
                 <layout-tag-bar
-                  v-if="false"
-                  style="background: #fff; margin: .3rem 0 0; height: 40px;"
+                  @activeTag="activeTag"
+                  :tags.sync="layoutTags"
+                  :activeTagIndex.sync="activeTagIndex"
+                  :theme="layoutSetting.layoutTheme"
+                  v-if="layoutSetting.showTagBar"
                 ></layout-tag-bar>
               </pane>
               <pane :id="layoutMainRef" style="overflow: auto; height: 100%">
@@ -56,6 +66,7 @@
                 >
                   <layout-main
                     :menu="menu"
+                    :theme="layoutSetting.layoutTheme"
                     :showMainBreadcrumbBar="layoutSetting.showMainBreadcrumbBar"
                   ></layout-main>
                 </a-spin>
@@ -69,11 +80,14 @@
                   }"
                 >
                   <!-- margin: isMobile ? '0 -3rem' : '' -->
-                  <layout-footer />
+                  <layout-footer :theme="layoutSetting.layoutTheme" />
                 </a-layout-footer>
               </pane>
             </splitpanes>
-            <layout-setting :id="layoutSettingRef"></layout-setting>
+            <layout-setting
+              :id="layoutSettingRef"
+              :theme="layoutSetting.layoutTheme"
+            ></layout-setting>
           </a-layout>
         </pane>
       </splitpanes>
@@ -93,8 +107,10 @@ import {
   LayoutSetting,
   LayoutFooter
 } from "@layouts/layout";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { driverGuide } from "../utils/utils";
+import { ADMIN_MUTATION_TYPE } from "../store/mutation-type";
+import { transferRoute, matchRoute, pushRoute } from "../utils/router-utils";
 // import Driver from "driver.js";
 // import "driver.js/dist/driver.min.css";
 
@@ -139,6 +155,11 @@ export default {
         Math.random()
           .toString()
           .substr(2),
+      layoutTagBarRef:
+        "layoutTagBar-" +
+        Math.random()
+          .toString()
+          .substr(2),
       imgUrl: require("../assets/logo.png"),
       collapsed: false,
       layoutSiderWidth: "200px",
@@ -161,7 +182,8 @@ export default {
             url: "/404"
           }
         ]
-      }
+      },
+      activeTagIndex: -1
     };
   },
   computed: {
@@ -175,8 +197,49 @@ export default {
       isMobile: state => state.admin.isMobile,
       // 传字符串参数 'count' 等同于 `state => state.count`
       layoutSetting: state => state.admin.layoutSetting,
+      layoutMenus: state => state.admin.layoutMenus,
+      // layoutActiveTagIndex: state => state.admin.layoutActiveTagIndex,
       loading: state => state.admin.loading
     }),
+    // layoutSetting: {
+    //   // getter
+    //   get: function() {
+    //     // Do not mutate vuex store state outside mutation handlers
+    //     return Object.assign({}, this.$store.state.admin.layoutSetting);
+    //   },
+    //   // setter
+    //   set: function(newValue) {
+    //     this[ADMIN_MUTATION_TYPE.SET_LAYOUT_SETTING](newValue);
+    //   }
+    // },
+    layoutMenus: {
+      // getter
+      get: function() {
+        // Do not mutate vuex store state outside mutation handlers
+        return this.$store.state.admin.layoutMenus;
+      },
+      // setter
+      set: function(newValue) {
+        this[ADMIN_MUTATION_TYPE.SET_LAYOUT_MENUS](newValue);
+      }
+    },
+    layoutTags: {
+      // getter
+      get: function() {
+        // Do not mutate vuex store state outside mutation handlers
+        return this.$store.state.admin.layoutTags;
+      },
+      // setter
+      set: function(newValue) {
+        let oldLayoutTags = [...this.layoutTags];
+        this[ADMIN_MUTATION_TYPE.SET_LAYOUT_TAGS](newValue);
+        // 拖拽排序的激活标签索引
+        this.activeTagIndex = matchRoute(
+          this.layoutTags,
+          oldLayoutTags[this.activeTagIndex]
+        );
+      }
+    },
     mobileLayoutSiderWidth() {
       // computed 元素还未渲染
       let layoutSiderRef = this.$refs[this.layoutSiderRef];
@@ -217,10 +280,54 @@ export default {
       // setter
       set: function(newValue) {
         this.layoutSiderWidth = newValue;
-      } 
+      }
     }*/
   },
+  beforeRouteEnter(to, from, next) {
+    // 在组件导航守卫路中需要 Menu 转换 Tag
+    next(vm => {
+      vm.clickMenu(to);
+    });
+  },
   methods: {
+    pushRoute,
+    activeTag(activeTagIndex) {
+      this.clickMenu(this.layoutTags[activeTagIndex]);
+    },
+    /**
+     * Menu 转换 Tag 在组件导航守卫路中(根据path匹配路由)需要该方法
+     */
+    clickMenu(menu) {
+      if (!menu) {
+        // TODO 当layoutTags为空时，需要查找没有标签时的激活路由作为参数调用自身
+        this.clickMenu({
+          path: "/",
+          name: "BaseLayout"
+        });
+        return;
+      }
+      let layoutTags = [...this.layoutTags];
+      let activeTagIndex = matchRoute(layoutTags, menu);
+      let isExist = activeTagIndex != -1;
+      if (!isExist) {
+        layoutTags.push(
+          transferRoute(menu)
+          /* Object.assign({}, menu, {
+            children: null,
+            path: "fullPath" in menu ? menu.fullPath : menu.path
+          }) */
+        );
+        this.layoutTags = layoutTags;
+        activeTagIndex =
+          this.layoutTags.length - 1 >= 0 ? this.layoutTags.length - 1 : 0;
+      }
+      this.activeTagIndex = activeTagIndex;
+      this.pushRoute(
+        this.layoutTags[this.activeTagIndex].route
+          ? this.layoutTags[this.activeTagIndex].route
+          : this.layoutTags[this.activeTagIndex].path
+      );
+    },
     resizeLayoutSiderWidth(element) {
       var width = element.offsetWidth;
       this.layoutSiderWidth = this.layoutSetting.floatSider
@@ -229,7 +336,18 @@ export default {
     },
     handleGuide() {
       this.driver = driverGuide(this.driverOption, this.stepDefinitions);
-    }
+    },
+    ...mapMutations(ADMIN_MUTATION_TYPE.NAMESPACE, [
+      // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      // ADMIN_MUTATION_TYPE.SET_LAYOUT_SETTING,
+      ADMIN_MUTATION_TYPE.SET_LAYOUT_TAGS
+    ]) /* ,
+    changeLayoutSetting(prop) {
+      let value = this.layoutSetting[prop];
+      this.layoutSetting = Object.assign(this.layoutSetting, {
+        [prop]: !value
+      });
+    } */
   },
   watch: {
     // Unexpected side effect in "" computed

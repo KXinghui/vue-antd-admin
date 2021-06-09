@@ -124,10 +124,11 @@ import { FORM_MIXIN } from "@mixins/form-mixin";
 import { ADMIN_MUTATION_TYPE } from "../store/mutation-type";
 import ColorPicker from "../components/ColorPicker";
 import { msg } from "../utils/antd-utils";
+import { THEME_MIXIN } from "@mixins/theme-mixin.js";
 
 export default {
   name: "LayoutSetting",
-  mixins: [FORM_MIXIN],
+  mixins: [FORM_MIXIN, THEME_MIXIN],
   components: { ColorPicker },
   data() {
     return {

@@ -48,7 +48,7 @@ export const DEFAULT_EDITOR_STYLE_CONFIG = {
  * 默认编辑器配置
  */
 export const DEFAULT_EDITOR_CONFIG = {
-  zIndex: 0,
+  // zIndex: 0,
   // 菜单配置
   menus: [
     "head", // 标题

@@ -14,6 +14,7 @@ BScroll.use(ScrollBar);
 
 const DEFAULT_BS_OPTIONS = {
   click: true,
+  stopPropagation: true,
   dblclick: { delay: 300 } || true,
   scrollX: false,
   scrollY: true,

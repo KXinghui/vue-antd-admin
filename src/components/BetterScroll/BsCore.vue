@@ -30,18 +30,23 @@ export default {
   width: 100%;
 }
 
-.better-scroll .scroll-x-wrap {
+.scroll-x-wrap {
   white-space: nowrap;
 }
-.better-scroll .scroll-x-content {
-  display: inline-block;
+.scroll-x-content {
+  /* display: inline-block; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .better-scroll-wrap {
+  /* border: 1px solid red; */
   position: relative;
   height: 100%;
   width: 100%;
   overflow: hidden;
+  white-space: nowrap;
 }
 /* .mouse-wheel-content {
   height: 100%;

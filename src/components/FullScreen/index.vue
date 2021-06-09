@@ -44,7 +44,6 @@ export default {
         ele = document.body;
       }
       if (isString(ele)) {
-        debugger;
         ele.includes("#")
           ? document.getElementById(ele)
           : ele.includes(".")

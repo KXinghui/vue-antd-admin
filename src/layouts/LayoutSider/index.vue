@@ -12,7 +12,11 @@
   >
     <!-- :style="layoutSiderWrapStyle" -->
     <div class="layout-sider">
-      <layout-sider-logo v-show="showSiderLogo" :collapsed="collapsedSider" />
+      <layout-sider-logo
+        :theme="theme"
+        v-show="showSiderLogo"
+        :collapsed="collapsedSider"
+      />
       <div
         v-show="isMobile"
         :class="
@@ -43,12 +47,20 @@
             :key="item.name"
             @openChange="onOpenChange"
           >
-            <router-link :to="item.path">
+            <div @click="clickMenu(item)">
+              <!-- <router-link :to="item.path"> -->
               <icon :icon="item.icon ? item.icon : 'Antd_menu'" />
-              <span>{{ item.name }}</span></router-link
-            >
+              <span>{{ item.name }}</span
+              ><!-- </router-link
+              > -->
+            </div>
           </a-menu-item>
-          <layout-sider-sub-menu v-else :key="item.name" :menu="item" />
+          <layout-sider-sub-menu
+            @clickMenu="clickMenu"
+            v-else
+            :key="item.name"
+            :menu="item"
+          />
         </template>
       </a-menu>
     </div>
@@ -59,7 +71,7 @@
 // 该组件可从Vuex获取身份Token，请求后台获取LogoUrl和LogoTile
 import LayoutSiderLogo from "./LayoutSiderLogo";
 import LayoutSiderSubMenu from "./LayoutSiderSubMenu";
-import { BASE_MENUS, BASE_LAYOUT_MENUS } from "@router/admin-menu";
+import { THEME_MIXIN } from "@mixins/theme-mixin";
 // import { EDITOR_ROUTES, FORM_ROUTES } from "@router/admin-routes";
 // TODO
 /* 
@@ -71,6 +83,7 @@ transition: .6s;
 */
 export default {
   name: "LayoutSider",
+  mixins: [THEME_MIXIN],
   components: {
     LayoutSiderLogo,
     LayoutSiderSubMenu
@@ -83,12 +96,19 @@ export default {
           .toString()
           .substr(2),
       // menus: [...EDITOR_ROUTES, ...FORM_ROUTES],
-      menus: [...BASE_LAYOUT_MENUS, ...BASE_MENUS],
+
       isRefresh: false
       /* colla.psed: false */
     };
   },
   props: {
+    menus: {
+      type: [Array],
+      default() {
+        return [];
+      },
+      required: false
+    },
     isMobile: {
       type: [Boolean],
       default: false,
@@ -113,14 +133,6 @@ export default {
       type: [Boolean],
       default: true,
       required: false
-    },
-    theme: {
-      type: [String],
-      default: "dark",
-      required: false,
-      validator(value) {
-        return ["dark", "light"].includes(value);
-      }
     }
   },
   computed: {
@@ -139,6 +151,9 @@ export default {
     // }
   },
   methods: {
+    clickMenu(menu) {
+      this.$emit("clickMenu", menu);
+    },
     toggleCollapsedSider() {
       this.$emit("update:collapsedSider", !this.collapsedSider);
     },

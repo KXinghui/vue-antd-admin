@@ -1,6 +1,6 @@
 <template>
   <!-- class="layout-main-container" -->
-  <div class="layout-main-container" :style="layoutMainStyle">
+  <div :class="['layout-main-container', themeClass]" :style="layoutMainStyle">
     <!-- 面包屑导航 -->
     <a-row v-show="showMainBreadcrumbBar">
       <a-col :xs="0" :sm="24" :md="24" :lg="24" :xl="24">
@@ -24,7 +24,7 @@
       :ref="layoutMainRef"
     >
       <transition mode="out-in">
-        <keep-alive :target="target" :max="10">
+        <keep-alive :target="target" :max="20" :include="layoutTagNames">
           <router-view />
           <a-back-top
             :visibility-height="10"
@@ -41,9 +41,11 @@
 <script>
 var elementResizeDetectorMaker = require("element-resize-detector");
 // import BsCore from "../components/BetterScroll/BsCore";
+import { THEME_MIXIN } from "@mixins/theme-mixin.js";
 
 export default {
   name: "LayoutMain",
+  mixins: [THEME_MIXIN],
   // components: { BsCore },
   data() {
     return {
@@ -68,6 +70,25 @@ export default {
         return [] || null;
       },
       required: false
+    }
+  },
+  computed: {
+    layoutTagNames() {
+      let layoutTagNames = [];
+      this.$store.state.admin.layoutMenus.forEach(tag => {
+        let isIncludeParamsWhenMatch =
+          tag.meta && "isIncludeParamsWhenMatch" in tag.meta
+            ? tag.meta.isIncludeParamsWhenMatch
+            : false;
+        let tagStr = isIncludeParamsWhenMatch
+          ? `${tag.path}-${JSON.stringify(tag.params)}-${JSON.stringify(
+              tag.query
+            )}`
+          : `${tag.path}`;
+        tagStr = `${tag.name}-${tagStr}`;
+        layoutTagNames.push(tagStr);
+      });
+      return layoutTagNames;
     }
   },
   methods: {

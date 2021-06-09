@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-header">
+  <div :class="['layout-header', themeClass]">
     <a-col :xs="8" :sm="0" :md="0" :lg="0" :xl="0">
       <a-icon
         v-show="isMobile"
@@ -45,9 +45,11 @@ import FullScreen from "../components/FullScreen";
 import IdentityAvatar from "@components/Identity/IdentityAvatar";
 import LayoutSiderLogo from "./LayoutSider/LayoutSiderLogo";
 import { mapState } from "vuex";
+import { THEME_MIXIN } from "@mixins/theme-mixin";
 
 export default {
   name: "LayoutHeader",
+  mixins: [THEME_MIXIN],
   components: { FullScreen, IdentityAvatar, LayoutSiderLogo },
   data() {
     return {
@@ -92,9 +94,6 @@ export default {
     clickGuide() {
       this.$emit("guide");
     }
-  },
-  mounted() {
-    console.log(JSON.stringify(this.identity));
   }
 };
 </script>

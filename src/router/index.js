@@ -24,11 +24,18 @@ const router = new VueRouter({
   // eslint-disable-next-line no-unused-vars
   scrollBehavior(to, from, savedPosition) {
     // eslint-disable-next-line no-unused-vars
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({ x: 0, y: 0 });
-      }, 500);
-    });
+    // return new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     resolve({ x: 0, y: 0 });
+    //   }, 500);
+    // });
+    if (to.hash) {
+      return {
+        selector: to.hash,
+        // 启用原生平滑滚动
+        behavior: "smooth"
+      };
+    }
   }
 });
 

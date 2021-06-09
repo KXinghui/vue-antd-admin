@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { ADMIN_MUTATION_TYPE } from "../mutation-type";
+import {
+  EDITOR_RICHTEXTS_MENUS,
+  CHART_MENUS,
+  CHART_VISER_MENUS,
+  BASE_MENUS,
+  BASE_LAYOUT_MENUS
+} from "../../router/admin-menu";
+
 const state = () => {
   return {
     isMobile: true,
@@ -14,7 +22,7 @@ const state = () => {
       floatSider: false,
       showSiderLogo: true,
       showMainBreadcrumbBar: true,
-      showTagBar: false,
+      showTagBar: true,
       /* IM */
       showDrawer: true,
       drawerPlacement: "left",
@@ -52,6 +60,13 @@ const state = () => {
       // "weibo",
       // "wechat",
       // "qq"
+    ],
+    layoutMenus: [...BASE_LAYOUT_MENUS, ...BASE_MENUS],
+    // 布局标签
+    layoutTags: [
+      ...EDITOR_RICHTEXTS_MENUS,
+      ...CHART_MENUS,
+      ...CHART_VISER_MENUS
     ]
   };
 };
@@ -93,6 +108,18 @@ const mutations = {
       return;
     }
     state.isMobile = payload;
+  },
+  [ADMIN_MUTATION_TYPE.SET_LAYOUT_TAGS](state, payload) {
+    if (payload === undefined) {
+      return;
+    }
+    state.layoutTags = payload;
+  },
+  [ADMIN_MUTATION_TYPE.SET_LAYOUT_MENUS](state, payload) {
+    if (payload === undefined) {
+      return;
+    }
+    state.layoutTags = payload;
   }
 };
 

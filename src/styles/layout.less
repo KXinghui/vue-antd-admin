@@ -1,5 +1,14 @@
 @import "./themes/variables.less";
 
+.theme-dark {
+  color: @heading-color-dark;
+  background-color: @layout-header-background;
+}
+.theme-light {
+  color: @heading-color;
+  background-color: @layout-sider-background-light;
+}
+
 .base-layout-spin-container .ant-spin-container {
   height: 100%;
   min-height: 100%;
@@ -61,7 +70,7 @@
 }
 
 .splitpanes--vertical {
-  &>.splitpanes__splitter {
+  & > .splitpanes__splitter {
     &:before {
       left: -30px;
       right: -30px;
@@ -71,7 +80,7 @@
 }
 
 .splitpanes--horizontal {
-  &>.splitpanes__splitter {
+  & > .splitpanes__splitter {
     &:before {
       top: -30px;
       bottom: -30px;
@@ -80,11 +89,11 @@
   }
 }
 
-.base-layout-main .ant-layout-header{
+.base-layout-main .ant-layout-header {
   // color: @heading-color;
   // color: @btn-primary-color;
   // background-color: #fff;
-  background-color: @layout-header-background;
+  // background-color: @layout-header-background;
 }
 
 .layout-header {
@@ -97,7 +106,7 @@
   // color: @heading-color;
   // color: @btn-primary-color;
   // background-color: #fff;
-  background-color: @layout-header-background;
+  // background-color: @layout-header-background;
 }
 
 .layout-header .btn {
@@ -107,7 +116,7 @@
 
 .layout-header:hover,
 .layout-header .btn:hover {
-  color: @primary-color;
+  // color: @primary-color;
 }
 
 .layout-header-left {
@@ -156,8 +165,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: @text-color;
   font-size: inherit;
+}
+footer.ant-layout-footer {
+  height: 100%;
+  padding: 0;
 }
 
 .layout-setting {
@@ -166,7 +178,6 @@
   right: 0;
   color: @text-color;
 }
-
 
 .layout-sider-logo-container {
   display: flex;
@@ -187,7 +198,7 @@
 
 .logo-title:hover,
 .logo-title-display:hover {
-  color: @primary-color;
+  // color: @primary-color;
 }
 
 .logo-title-display {
@@ -293,8 +304,6 @@ aside.layout-sider-wrap-mobile {
   color: @heading-color-dark;
 } */
 
-
-
 /* 
 .layout-sider-menu li,
 .layout-sider-menu a {
@@ -316,3 +325,30 @@ aside.layout-sider-wrap-mobile {
 .layout-sider-menu .icon svg:hover {
   color: @primary-color;
 } */
+.layout-tag-bar {
+  height: 100%;
+  padding: 0.3rem 1rem 0;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.layout-tag {
+  border: 1px solid transparent;
+}
+
+.layout-tag-active {
+  color: @primary-color;
+  border: 1px solid @primary-color;
+}
+.layout-tag-active:before {
+  content: "";
+  background: @primary-color;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 0.1rem;
+}

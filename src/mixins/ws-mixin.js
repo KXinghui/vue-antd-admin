@@ -64,7 +64,6 @@ export const WS_MIXIN = {
       }
       let stompClient = vm.stompClient;
       stompClient.connect(Object.assign(headers, getHeader()), () => {
-        debugger;
         // 取消订阅
         vm.wsunsubscribe(destination, Object.assign(headers, getHeader()));
         // 订阅
@@ -83,7 +82,6 @@ export const WS_MIXIN = {
     },
     wsunsubscribe(destination, headers = {}) {
       let vm = this;
-      debugger;
       let subscribeInstanceId = vm.wssubscribeMap.get(destination);
       let stompClient = vm.stompClient;
       if (subscribeInstanceId) {
@@ -92,9 +90,7 @@ export const WS_MIXIN = {
           Object.assign(headers, getHeader())
         );
       }
-      stompClient.connect(Object.assign(headers, getHeader()), () => {
-        debugger;
-      });
+      stompClient.connect(Object.assign(headers, getHeader()), () => {});
       vm[WEBSOCKET_MUTATION_TYPE.DELETE_SUBSCRIBE]({ destination });
     },
     ...mapMutations(WEBSOCKET_MUTATION_TYPE.NAMESPACE, [
