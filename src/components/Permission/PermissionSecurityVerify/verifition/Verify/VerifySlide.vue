@@ -246,6 +246,7 @@
                     let data = {
                         captchaType:this.captchaType,
                         "pointJson":this.secretKey ? aesEncrypt(JSON.stringify({x:moveLeftDistance,y:5.0}),this.secretKey):JSON.stringify({x:moveLeftDistance,y:5.0}),
+						
                         "token":this.backToken
                     }
                     reqCheck(data).then(res=>{
