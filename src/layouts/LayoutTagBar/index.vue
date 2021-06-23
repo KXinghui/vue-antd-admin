@@ -215,7 +215,6 @@ export default {
       if ("deleteAll" == event) {
         tags = [];
       } else if ("deleteCur" == event) {
-        debugger;
         isActiveInDelete = curIndex == activeTagIndex;
         fixActiveTagIndex =
           isActiveInDelete && curIndex - 1 >= 0 ? curIndex - 1 : 0;
