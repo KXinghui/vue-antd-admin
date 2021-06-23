@@ -99,8 +99,8 @@ export default {
       }
       let { scancode } = vm.$route.query;
       scanCodeLoginApi.enterView({ scanCode: scancode }).then(res => {
-        debugger;
-        if (res.data.code == 1) {
+        let respResult = scanCodeLoginApi.respResult(res);
+        if (respResult.isSucc()) {
           let { device, scanCodeExpiration } = res.data.map;
           if (scanCodeExpiration) {
             vm.loginScanCodeExpiration = scanCodeExpiration;

@@ -134,7 +134,7 @@ export class RSA {
       digestName.toLowerCase()
     );
   }
-  static verify(content, sign, publicKey, digestName) {
+  static verifySign(content, sign, publicKey, digestName) {
     var verify = new JSEncrypt();
     let pkcs8 = true;
     let pubHeadFoot = pkcs8 ? "PUBLIC" : "RSA PUBLIC";

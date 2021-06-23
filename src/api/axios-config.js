@@ -30,8 +30,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function(config) {
     config.headers = Object.assign(config.headers, {
-      Authorization: store.getters.token.token,
-      AuthorizationCode: store.getters.token.tokenCode
+      Authorization: store.getters.tokenMap.token,
+      AuthorizationCode: store.getters.tokenMap.tokenCode
     });
     // Do something before request is sent
     console.log("interceptors.request 请求拦截");

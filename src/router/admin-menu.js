@@ -152,11 +152,17 @@ export const BASE_MENUS = [
   },
   {
     path: "/about",
-    name: "About"
+    name: "About",
+    meta: {
+      isPushToTagBarWhenClickMenu: false
+    }
   },
   {
     path: "/login",
-    name: "Login"
+    name: "Login",
+    meta: {
+      isPushToTagBarWhenClickMenu: false
+    }
   },
   {
     path: "/register",

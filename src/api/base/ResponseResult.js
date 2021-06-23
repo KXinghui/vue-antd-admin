@@ -6,22 +6,22 @@ class ResponseResult {
   static REPEAT = "2";
   static FREQUENT = "3";
 
-  static isIng() {
+  isIng() {
     return ResponseResult.ING == this.code || 202 == this.httpStatusCode;
   }
-  static isSucc() {
+  isSucc() {
     return ResponseResult.SUCC == this.code;
   }
-  static isFail() {
+  isFail() {
     return ResponseResult.FAIL == this.code;
   }
-  static isError() {
+  isError() {
     return ResponseResult.ERROR == this.code;
   }
-  static isRepeat() {
+  isRepeat() {
     return ResponseResult.REPEAT == this.code;
   }
-  static isFrequent() {
+  isFrequent() {
     return ResponseResult.FREQUENT == this.code;
   }
 
@@ -32,6 +32,14 @@ class ResponseResult {
   entity;
   list;
   map;
+  /**
+   * 加解密
+   */
+  edcSign;
+  /**
+   * 本地语言消息
+   */
+  localeLangMsg;
 
   constructor(responseResult) {
     let {
@@ -41,7 +49,9 @@ class ResponseResult {
       msg,
       entity,
       list,
-      map
+      map,
+      edcSign,
+      localeLangMsg
     } = responseResult;
     this.httpStatusCode = httpStatusCode;
     this.httpStatusMsg = httpStatusMsg;
@@ -50,6 +60,11 @@ class ResponseResult {
     this.entity = entity;
     this.list = list;
     this.map = map;
+    this.edcSign = edcSign;
+    this.localeLangMsg = localeLangMsg;
+  }
+  unSign() {
+    return Object.assign({}, this, { edcSign: "" });
   }
   getInMap(key) {
     return this.map[key];

@@ -113,3 +113,15 @@ export class IdentityRoleEnum extends BaseMappingEnum {
     "chatUser"
   );
 }
+
+export class EnDeCryptModeEnum extends BaseEnum {
+  static NON = this.enums(0, "NON", "Non", "非加解密模式");
+  static SYMMETRIC = this.enums(1, "SYMMETRIC", "Symmetric", "对称加解密模式");
+  static ASYMMETRIC = this.enums(
+    2,
+    "ASYMMETRIC",
+    "Asymmetric",
+    "非对称加解密模式"
+  );
+  static MIX = this.enums(3, "MIX", "Mix", "混合加解密模式");
+}

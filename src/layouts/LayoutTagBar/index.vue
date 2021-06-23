@@ -1,52 +1,52 @@
 <template>
   <div :class="['layout-tag-bar', themeClass]">
     <!-- TODO 使用 vuedraggable 实现拖拽排序 -->
-    <!-- <bs-core :scrollX="true" :scrollY="false"> -->
-    <!-- <transition-group> children must be keyed: <div> -->
-    <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
-    <vue-draggable
-      class="tags-drag-wrap"
-      v-model="layoutTags"
-      v-bind="dragOptions"
-      handle=".text"
-    >
-      <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
-      <a-dropdown
-        :trigger="['contextmenu']"
-        v-for="(tag, tagIndex) in tags"
-        :key="getRouteStr(tag)"
+    <bs-core style="width: 80%" :scrollX="true" :scrollY="false">
+      <!-- <transition-group> children must be keyed: <div> -->
+      <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
+      <vue-draggable
+        class="tags-drag-wrap"
+        v-model="layoutTags"
+        v-bind="dragOptions"
+        handle=".text"
       >
-        <layout-tag
-          :tag="tag"
-          :tagIndex="tagIndex"
-          :isActive="activeTagIndex == tagIndex"
-          @activeTag="activeTag"
-          @deleteTag="deleteTag"
+        <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
+        <a-dropdown
+          :trigger="['contextmenu']"
+          v-for="(tag, tagIndex) in tags"
+          :key="getRouteStr(tag)"
         >
-          <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
-          <!-- <template v-slot="tagSlot">
+          <layout-tag
+            :tag="tag"
+            :tagIndex="tagIndex"
+            :isActive="activeTagIndex == tagIndex"
+            @activeTag="activeTag"
+            @deleteTag="deleteTag"
+          >
+            <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
+            <!-- <template v-slot="tagSlot">
           {{ tagSlot.tag }}
         </template> -->
-        </layout-tag>
-        <a-menu slot="overlay" @click="handleTagClick">
-          <a-menu-item key="deleteAll">
-            删除全部标签
-          </a-menu-item>
-          <a-menu-item key="deleteCur">
-            删除激活标签
-          </a-menu-item>
-          <a-menu-item key="deleteCurLeft">
-            删除激活标签左边
-          </a-menu-item>
-          <a-menu-item key="deleteCurRight">
-            删除激活标签右边
-          </a-menu-item>
-          <a-menu-item key="deleteNotCur">
-            删除非激活标签
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
-      <!-- <layout-tag
+          </layout-tag>
+          <a-menu slot="overlay" @click="handleTagClick">
+            <a-menu-item key="deleteAll">
+              删除全部标签
+            </a-menu-item>
+            <a-menu-item key="deleteCur">
+              删除激活标签
+            </a-menu-item>
+            <a-menu-item key="deleteCurLeft">
+              删除激活标签左边
+            </a-menu-item>
+            <a-menu-item key="deleteCurRight">
+              删除激活标签右边
+            </a-menu-item>
+            <a-menu-item key="deleteNotCur">
+              删除非激活标签
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+        <!-- <layout-tag
         v-for="(tag, tagIndex) in tags"
         :key="getRouteStr(tag)"
         :tag="tag"
@@ -56,14 +56,14 @@
         @deleteTag="deleteTag"
       >
       </layout-tag> -->
-      <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
-      <!-- <template v-slot="tagSlot">
+        <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
+        <!-- <template v-slot="tagSlot">
           {{ tagSlot.tag }}
         </template> -->
-      <!-- </transition-group> -->
-    </vue-draggable>
-    <!-- </div> -->
-    <!-- </bs-core> -->
+        <!-- </transition-group> -->
+      </vue-draggable>
+      <!-- </div> -->
+    </bs-core>
     <div class="tag-op-wrap">
       <a-dropdown>
         <a-menu slot="overlay" @click="handleTagClick">
@@ -94,7 +94,7 @@
 <script>
 import LayoutTag from "./LayoutTag";
 import { THEME_MIXIN } from "@mixins/theme-mixin.js";
-// import BsCore from "../../components/BetterScroll/BsCore.vue";
+import BsCore from "../../components/BetterScroll/BsCore.vue";
 import VueDraggable from "vuedraggable";
 import { mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "@store/mutation-type";
@@ -104,7 +104,7 @@ export default {
   name: "LayoutTagBar",
   mixins: [THEME_MIXIN],
   components: {
-    // BsCore,
+    BsCore,
     LayoutTag,
     VueDraggable
   },
@@ -164,9 +164,6 @@ export default {
       };
     }
   },
-  updated() {
-    console.log("layoutTags     " + JSON.stringify(this.layoutTags));
-  },
   // mounted() {
   //   this.layoutTags = this.tags;
   // },
@@ -191,16 +188,21 @@ export default {
       this.$emit("activeTag", activeTagIndex);
     },
     deleteTag(tagIndex) {
-      this.handleTag({ key: "deleteCur" }, tagIndex);
+      let isCur = this.activeTagIndex == this.tagIndex;
+      this.handleTag(
+        { key: isCur ? "deleteCur" : "deleteOneNotCur" },
+        tagIndex
+      );
     },
-    // TODO 使用 vuedraggable 实现拖拽排序
+    // 使用 vuedraggable 实现拖拽排序
     // 处理标签
     handleTag(e, curIndex) {
-      // deleteAll
-      // deleteCur
-      // deleteNotCur
-      // deleteCurLeft
-      // deleteCurRight
+      // deleteAll 删除全部
+      // deleteCur 删除当前
+      // deleteOneNotCur 删除一个非当前
+      // deleteNotCur 删除全部非当前
+      // deleteCurLeft 删除当前左边
+      // deleteCurRight 删除当前右边
       let event = e.key;
       let tagsLen = this.tags.length;
       if (curIndex < 0 || curIndex > tagsLen) {
@@ -213,6 +215,7 @@ export default {
       if ("deleteAll" == event) {
         tags = [];
       } else if ("deleteCur" == event) {
+        debugger;
         isActiveInDelete = curIndex == activeTagIndex;
         fixActiveTagIndex =
           isActiveInDelete && curIndex - 1 >= 0 ? curIndex - 1 : 0;
@@ -220,6 +223,9 @@ export default {
       } else if ("deleteNotCur" == event) {
         isActiveInDelete = curIndex != activeTagIndex;
         tags = [tags[curIndex]];
+      } else if ("deleteOneNotCur" == event) {
+        fixActiveTagIndex = activeTagIndex;
+        tags.splice(curIndex, 1);
       } else if ("deleteCurLeft" == event) {
         isActiveInDelete = 0 <= activeTagIndex && activeTagIndex < curIndex;
         tags.splice(0, curIndex);
@@ -230,7 +236,9 @@ export default {
         tags.splice(curIndex + 1, tagsLen - curIndex - 1);
       }
       this.$emit("update:tags", tags);
-      this.activeTag(fixActiveTagIndex);
+      if (fixActiveTagIndex != activeTagIndex) {
+        this.activeTag(fixActiveTagIndex);
+      }
     },
     handleTagClick(e) {
       this.handleTag(e, this.activeTagIndex);

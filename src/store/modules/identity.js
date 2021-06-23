@@ -4,7 +4,13 @@ import { genRouters } from "../../router/routes";
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
   identity: {},
-  token: { tokenCode: "", token: "" },
+  tokenMap: {
+    tokenCode: "",
+    token: "",
+    pmsnEnDeCryptMode: "",
+    pmsnSrtKey: "",
+    pmsnPubKey: ""
+  },
   roles: [
     { id: "01", enCode: "SysUser" },
     { id: "02", enCode: "User" },

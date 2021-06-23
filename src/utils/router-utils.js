@@ -6,9 +6,9 @@ export function transferRoute(route) {
   return {
     name: route.name,
     path: "fullPath" in route ? route.fullPath : route.path,
-    params: route.params,
-    query: route.query,
-    meta: route.meta
+    params: route.params || {},
+    query: route.query || {},
+    meta: route.meta || {}
   };
 }
 /**
@@ -17,6 +17,7 @@ export function transferRoute(route) {
  * isActiveWhenNonTag 没有标签时是否激活
  * isClosable 是否可关闭
  * isIncludeParamsWhenMatch 匹配时是否包含参数
+ * isPushToTagBarWhenClickMenu 点击菜单时是否推到标签栏
  */
 
 /**
@@ -26,6 +27,9 @@ export function transferRoute(route) {
  */
 export function matchRoute(routes, route) {
   let routeIndex = -1;
+  if (!routes || !route) {
+    return routeIndex;
+  }
   let realRoute = transferRoute(route);
   /**
    * Cannot use 'in' operator to search for 'isIncludeParamsWhenMatch' in undefined

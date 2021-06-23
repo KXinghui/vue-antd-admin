@@ -234,10 +234,13 @@ export default {
         let oldLayoutTags = [...this.layoutTags];
         this[ADMIN_MUTATION_TYPE.SET_LAYOUT_TAGS](newValue);
         // 拖拽排序的激活标签索引
-        this.activeTagIndex = matchRoute(
+        let activeTagIndex = matchRoute(
           this.layoutTags,
           oldLayoutTags[this.activeTagIndex]
         );
+        if (activeTagIndex != -1) {
+          this.activeTagIndex = activeTagIndex;
+        }
       }
     },
     mobileLayoutSiderWidth() {
@@ -306,12 +309,20 @@ export default {
         });
         return;
       }
+      let tag = transferRoute(menu);
       let layoutTags = [...this.layoutTags];
       let activeTagIndex = matchRoute(layoutTags, menu);
-      let isExist = activeTagIndex != -1;
-      if (!isExist) {
+      let isNotExist = activeTagIndex == -1;
+      // 不存在且当点击菜单时可推到标签栏
+      let isIncludePushToTagBarWhenClickMenu =
+        "isPushToTagBarWhenClickMenu" in tag.meta;
+      let isPushToTagBarWhenClickMenu =
+        !isIncludePushToTagBarWhenClickMenu ||
+        (isIncludePushToTagBarWhenClickMenu &&
+          tag.meta.isPushToTagBarWhenClickMenu);
+      if (isNotExist && isPushToTagBarWhenClickMenu) {
         layoutTags.push(
-          transferRoute(menu)
+          tag
           /* Object.assign({}, menu, {
             children: null,
             path: "fullPath" in menu ? menu.fullPath : menu.path
@@ -323,9 +334,11 @@ export default {
       }
       this.activeTagIndex = activeTagIndex;
       this.pushRoute(
-        this.layoutTags[this.activeTagIndex].route
+        isPushToTagBarWhenClickMenu
           ? this.layoutTags[this.activeTagIndex].route
-          : this.layoutTags[this.activeTagIndex].path
+            ? this.layoutTags[this.activeTagIndex].route
+            : this.layoutTags[this.activeTagIndex].path
+          : menu
       );
     },
     resizeLayoutSiderWidth(element) {

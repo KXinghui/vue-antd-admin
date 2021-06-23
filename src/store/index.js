@@ -21,7 +21,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const getters = {
   identity: state => state.identity.identity,
-  token: state => state.identity.token,
+  tokenMap: state => state.identity.tokenMap,
   roles: state => state.identity.roles,
   permissions: state => state.identity.permissions,
   oauth2: state => state.identity.oauth2
