@@ -359,3 +359,19 @@ aside.layout-sider-wrap-mobile {
   position: relative;
   margin-right: 0.1rem;
 }
+
+.layout-tag-bar .tags-drag-wrap,
+.layout-tag-bar .tags-drag-wrap > span {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.layout-tag-bar .tags-drag-wrap {
+  width: 90%;
+  /* 滚动条隐藏 */
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

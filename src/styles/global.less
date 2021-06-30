@@ -6,7 +6,7 @@
   font-size: 1.1rem;
   // line-height: 64px;
   // line-height: normal;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   cursor: pointer;
   transition: 0.3s;
 
@@ -22,7 +22,7 @@
 }
 
 .img {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   cursor: pointer;
 }
 
@@ -116,4 +116,23 @@
 
 .ant-tag + .ant-tag {
   margin-left: 0.5rem;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0rem;
+  height: 0.2rem;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(218, 216, 216);
+  border-radius: 2px;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #747474;
+}
+.scrollbar::-webkit-scrollbar-corner {
+  background: #f6f6f6;
 }

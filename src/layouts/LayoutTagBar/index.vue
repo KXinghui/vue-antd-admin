@@ -1,52 +1,58 @@
 <template>
   <div :class="['layout-tag-bar', themeClass]">
     <!-- TODO 使用 vuedraggable 实现拖拽排序 -->
-    <bs-core style="width: 80%" :scrollX="true" :scrollY="false">
+    <vue-draggable
+      class="tags-drag-wrap scrollbar"
+      v-model="layoutTags"
+      v-bind="dragOptions"
+      handle=".text"
+    >
+      <!-- <bs-core
+        style="width: 80%"
+        :scrollX="true"
+        :scrollY="false"
+        :isRefresh.sync="tagBarRefresh"
+        :options="{ observeDOM: true }"
+      > -->
       <!-- <transition-group> children must be keyed: <div> -->
       <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
-      <vue-draggable
-        class="tags-drag-wrap"
-        v-model="layoutTags"
-        v-bind="dragOptions"
-        handle=".text"
+      <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
+      <a-dropdown
+        :trigger="['contextmenu']"
+        v-for="(tag, tagIndex) in tags"
+        :key="getRouteStr(tag)"
       >
-        <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
-        <a-dropdown
-          :trigger="['contextmenu']"
-          v-for="(tag, tagIndex) in tags"
-          :key="getRouteStr(tag)"
+        <layout-tag
+          :tag="tag"
+          :tagIndex="tagIndex"
+          :isActive="activeTagIndex == tagIndex"
+          @activeTag="activeTag"
+          @deleteTag="deleteTag"
         >
-          <layout-tag
-            :tag="tag"
-            :tagIndex="tagIndex"
-            :isActive="activeTagIndex == tagIndex"
-            @activeTag="activeTag"
-            @deleteTag="deleteTag"
-          >
-            <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
-            <!-- <template v-slot="tagSlot">
+          <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
+          <!-- <template v-slot="tagSlot">
           {{ tagSlot.tag }}
         </template> -->
-          </layout-tag>
-          <a-menu slot="overlay" @click="handleTagClick">
-            <a-menu-item key="deleteAll">
-              删除全部标签
-            </a-menu-item>
-            <a-menu-item key="deleteCur">
-              删除激活标签
-            </a-menu-item>
-            <a-menu-item key="deleteCurLeft">
-              删除激活标签左边
-            </a-menu-item>
-            <a-menu-item key="deleteCurRight">
-              删除激活标签右边
-            </a-menu-item>
-            <a-menu-item key="deleteNotCur">
-              删除非激活标签
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
-        <!-- <layout-tag
+        </layout-tag>
+        <a-menu slot="overlay" @click="handleTagClick">
+          <a-menu-item key="deleteAll">
+            删除全部标签
+          </a-menu-item>
+          <a-menu-item key="deleteCur">
+            删除激活标签
+          </a-menu-item>
+          <a-menu-item key="deleteCurLeft">
+            删除激活标签左边
+          </a-menu-item>
+          <a-menu-item key="deleteCurRight">
+            删除激活标签右边
+          </a-menu-item>
+          <a-menu-item key="deleteNotCur">
+            删除非激活标签
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+      <!-- <layout-tag
         v-for="(tag, tagIndex) in tags"
         :key="getRouteStr(tag)"
         :tag="tag"
@@ -56,16 +62,16 @@
         @deleteTag="deleteTag"
       >
       </layout-tag> -->
-        <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
-        <!-- <template v-slot="tagSlot">
+      <!-- vuedraggable 在拖拽元素上绑定点击事件 使用 handle 属性（类型为字符串或数组）绑定没有绑定点击事件的元素（类名）即可 -->
+      <!-- <template v-slot="tagSlot">
           {{ tagSlot.tag }}
         </template> -->
-        <!-- </transition-group> -->
-      </vue-draggable>
+      <!-- </transition-group> -->
       <!-- </div> -->
-    </bs-core>
+      <!-- </bs-core> -->
+    </vue-draggable>
     <div class="tag-op-wrap">
-      <a-dropdown>
+      <a-dropdown :class="themeClass">
         <a-menu slot="overlay" @click="handleTagClick">
           <a-menu-item key="deleteAll">
             删除全部标签
@@ -94,7 +100,7 @@
 <script>
 import LayoutTag from "./LayoutTag";
 import { THEME_MIXIN } from "@mixins/theme-mixin.js";
-import BsCore from "../../components/BetterScroll/BsCore.vue";
+// import BsCore from "../../components/BetterScroll/BsCore.vue";
 import VueDraggable from "vuedraggable";
 import { mapMutations } from "vuex";
 import { ADMIN_MUTATION_TYPE } from "@store/mutation-type";
@@ -104,14 +110,15 @@ export default {
   name: "LayoutTagBar",
   mixins: [THEME_MIXIN],
   components: {
-    BsCore,
+    // BsCore,
     LayoutTag,
     VueDraggable
   },
   data() {
     return {
       activeTagName: "",
-      drag: false
+      drag: false,
+      tagBarRefresh: false
     };
   },
   props: {
@@ -238,6 +245,7 @@ export default {
       if (fixActiveTagIndex != activeTagIndex) {
         this.activeTag(fixActiveTagIndex);
       }
+      this.tagBarRefresh = true;
     },
     handleTagClick(e) {
       this.handleTag(e, this.activeTagIndex);
@@ -255,12 +263,3 @@ export default {
 </script>
 
 <style lang="less" src="../../styles/layout.less"></style>
-<style scoed>
-.tags-drag-wrap,
-.tags-drag-wrap > span {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-}
-</style>

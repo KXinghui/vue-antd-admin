@@ -2,6 +2,7 @@ import BScroll from "@better-scroll/core";
 import MouseWheel from "@better-scroll/mouse-wheel";
 import ScrollBar from "@better-scroll/scroll-bar";
 import NestedScroll from "@better-scroll/nested-scroll";
+import ObserveDom from '@better-scroll/observe-dom'
 
 import PullDown from "@better-scroll/pull-down";
 import Pullup from "@better-scroll/pull-up";
@@ -24,7 +25,8 @@ const DEFAULT_BS_OPTIONS = {
     speed: 20,
     invert: false,
     easeTime: 300
-  }
+  },
+  observeDOM: false
 };
 
 export default {
@@ -99,6 +101,9 @@ export default {
     initBscroll() {
       if (this.bsOptions.nestedScroll) {
         BScroll.use(NestedScroll);
+      }
+      if(this.bsOptions.observeDom){
+        BScroll.use(ObserveDom);
       }
       let bscroll = new BScroll(
         this.$refs[this.bsWrap] || `#${this.bsWrap}`,

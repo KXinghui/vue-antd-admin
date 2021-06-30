@@ -14,7 +14,7 @@
     "@better-scroll/infinity": "^2.0.5",
     "@better-scroll/mouse-wheel": "^2.0.5",
     "@better-scroll/nested-scroll": "^2.0.6",
-    "@better-scroll/observe-dom": "^2.0.5",
+    "@better-scroll/observe-dom": "^2.4.1",
     "@better-scroll/pull-down": "^2.0.5",
     "@better-scroll/pull-up": "^2.0.5",
     "@better-scroll/scroll-bar": "^2.0.5",
