@@ -215,6 +215,7 @@ export default {
       if (curIndex < 0 || curIndex > tagsLen) {
         return;
       }
+      debugger;
       let tags = [...this.tags];
       let isActiveInDelete = false;
       let activeTagIndex = this.activeTagIndex;
@@ -242,7 +243,7 @@ export default {
         tags.splice(curIndex + 1, tagsLen - curIndex - 1);
       }
       this.$emit("update:tags", tags);
-      if (fixActiveTagIndex != activeTagIndex) {
+      if (fixActiveTagIndex != activeTagIndex || tags.length == 0) {
         this.activeTag(fixActiveTagIndex);
       }
       // this.tagBarRefresh = true;
