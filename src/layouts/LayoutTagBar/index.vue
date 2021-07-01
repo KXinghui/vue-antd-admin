@@ -12,7 +12,7 @@
     <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
     <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
     <vue-draggable
-      class="tags-drag-wrap"
+      class="tags-drag-wrap scrollbar"
       v-model="layoutTags"
       v-bind="dragOptions"
       handle=".text"
@@ -89,7 +89,7 @@
             删除非激活标签
           </a-menu-item>
         </a-menu>
-        <a-button :class="themeClass" style="margin-left: .5rem">
+        <a-button type="primary" :class="themeClass" style="margin-left: .5rem">
           标签操作<a-icon type="down" />
         </a-button>
       </a-dropdown>

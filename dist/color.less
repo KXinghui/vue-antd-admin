@@ -1590,10 +1590,14 @@ li.ant-select-tree-treenode-disabled > .ant-select-tree-node-content-wrapper:hov
 .tag-left::after {border-left-color: transparent;}
 .tag-right::after {border-right-color: transparent;}
 .typing-text {border-right: 1px solid transparent;}
+.scrollbar::-webkit-scrollbar-track {background: #f6f6f6;border-radius: 2px;}
+.scrollbar::-webkit-scrollbar-thumb {background: #dad8d8;border-radius: 2px;}
+.scrollbar::-webkit-scrollbar-thumb:hover {background: #747474;}
+.scrollbar::-webkit-scrollbar-corner {background: #f6f6f6;}
 .theme-dark {color: @heading-color dark;background-color: @layout-header-background;}
 .theme-light {color: @heading-color;background-color: #fff;}
 .base-layout-main {color: @primary-color;}
-.layout-sider-mask {background-color: color(~`colorPalette("@{layout-header-background}", 9)`)73;}
+.layout-sider-mask {background-color: color(~`colorPalette("@{text-color-secondary}", 9)`)73;}
 .splitpanes {background-color: #f8f8f8;}
 .splitpanes__splitter {background-color: #cccccc;}
 .splitpanes__splitter:before {background-color: #ff00004d;}

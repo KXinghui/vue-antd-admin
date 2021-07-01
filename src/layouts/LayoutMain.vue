@@ -97,7 +97,6 @@ export default {
       var height = element.offsetHeight;
       let isNotNone = height <= 830;
       let minHeight = isNotNone ? "99%" : "";
-      console.log("高度自适应   " + height);
       if (
         this.layoutMainStyle.minHeight &&
         this.layoutMainStyle.minHeight == minHeight
