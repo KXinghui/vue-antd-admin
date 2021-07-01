@@ -88,7 +88,7 @@ export const EDITOR_MENUS = [
 export const FORM_ELE_MENUS = [
   {
     path: "/formModel/input",
-    name: "Input"
+    name: "FormModelInput"
   }
 ];
 

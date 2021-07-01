@@ -38,6 +38,7 @@
                     :theme="layoutSetting.layoutTheme"
                     :is-mobile.sync="isMobile"
                     :collapsed-sider.sync="collapsedSider"
+                    :showHeaderLogo="layoutSetting.showHeaderLogo"
                     :show-sider.sync="showSider"
                     @guide="handleGuide"
                   ></layout-header>

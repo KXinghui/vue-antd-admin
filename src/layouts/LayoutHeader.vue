@@ -24,8 +24,8 @@
         />
       </div>
     </a-col>
-    <a-col :xs="8" :sm="0" :md="0" :lg="0" :xl="0">
-      <layout-sider-logo :collapsed="true" />
+    <a-col v-show="showHeaderLogo" :xs="8" :sm="0" :md="0" :lg="0" :xl="0">
+      <layout-sider-logo :theme="theme" :collapsed="true" />
     </a-col>
     <!-- <a-col :xs="8" :sm="0" :md="0" :lg="0" :xl="0">
       <identity-avatar :identity="identity" avatar-shape="square" />
@@ -64,6 +64,11 @@ export default {
   },
   props: {
     isMobile: {
+      type: [Boolean],
+      default: false,
+      required: false
+    },
+    showHeaderLogo: {
       type: [Boolean],
       default: false,
       required: false

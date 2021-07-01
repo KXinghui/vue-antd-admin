@@ -1,22 +1,22 @@
 <template>
   <div :class="['layout-tag-bar', themeClass]">
     <!-- TODO 使用 vuedraggable 实现拖拽排序 -->
-    <vue-draggable
-      class="tags-drag-wrap scrollbar"
-      v-model="layoutTags"
-      v-bind="dragOptions"
-      handle=".text"
-    >
-      <!-- <bs-core
+    <!-- <bs-core
         style="width: 80%"
         :scrollX="true"
         :scrollY="false"
         :isRefresh.sync="tagBarRefresh"
         :options="{ observeDOM: true }"
       > -->
-      <!-- <transition-group> children must be keyed: <div> -->
-      <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
-      <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
+    <!-- <transition-group> children must be keyed: <div> -->
+    <!-- <div style="display:flex; flex-direction: row; justify-content: start;"> -->
+    <!-- <transition-group type="transition" :name="!drag ? 'flip-list' : null"> -->
+    <vue-draggable
+      class="tags-drag-wrap"
+      v-model="layoutTags"
+      v-bind="dragOptions"
+      handle=".text"
+    >
       <a-dropdown
         :trigger="['contextmenu']"
         v-for="(tag, tagIndex) in tags"
@@ -68,10 +68,10 @@
         </template> -->
       <!-- </transition-group> -->
       <!-- </div> -->
-      <!-- </bs-core> -->
     </vue-draggable>
+    <!-- </bs-core> -->
     <div class="tag-op-wrap">
-      <a-dropdown :class="themeClass">
+      <a-dropdown>
         <a-menu slot="overlay" @click="handleTagClick">
           <a-menu-item key="deleteAll">
             删除全部标签
@@ -89,7 +89,7 @@
             删除非激活标签
           </a-menu-item>
         </a-menu>
-        <a-button style="margin-left: .5rem">
+        <a-button :class="themeClass" style="margin-left: .5rem">
           标签操作<a-icon type="down" />
         </a-button>
       </a-dropdown>
@@ -117,8 +117,8 @@ export default {
   data() {
     return {
       activeTagName: "",
-      drag: false,
-      tagBarRefresh: false
+      drag: false
+      // tagBarRefresh: false
     };
   },
   props: {
@@ -195,7 +195,7 @@ export default {
       this.$emit("activeTag", activeTagIndex);
     },
     deleteTag(tagIndex) {
-      let isCur = this.activeTagIndex == this.tagIndex;
+      let isCur = this.activeTagIndex == tagIndex;
       this.handleTag(
         { key: isCur ? "deleteCur" : "deleteOneNotCur" },
         tagIndex
@@ -245,7 +245,7 @@ export default {
       if (fixActiveTagIndex != activeTagIndex) {
         this.activeTag(fixActiveTagIndex);
       }
-      this.tagBarRefresh = true;
+      // this.tagBarRefresh = true;
     },
     handleTagClick(e) {
       this.handleTag(e, this.activeTagIndex);

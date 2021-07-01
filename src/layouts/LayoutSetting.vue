@@ -51,6 +51,14 @@
         </a-form-model-item>
         <a-form-model-item>
           <a-checkbox
+            :checked="layoutSetting.showHeaderLogo"
+            @change="changeLayoutSetting('showHeaderLogo')"
+          >
+            展示布局头部栏Logo
+          </a-checkbox>
+        </a-form-model-item>
+        <a-form-model-item>
+          <a-checkbox
             :checked="layoutSetting.showMainBreadcrumbBar"
             @change="changeLayoutSetting('showMainBreadcrumbBar')"
           >

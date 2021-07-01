@@ -21,6 +21,7 @@ const state = () => {
       foldSider: true,
       floatSider: false,
       showSiderLogo: true,
+      showHeaderLogo: true,
       showMainBreadcrumbBar: true,
       showTagBar: true,
       /* IM */

@@ -127,6 +127,12 @@ export const routes = [
     component: BaseLayout,
     children: [
       {
+        path: "/",
+        name: "BaseLayout",
+        component: () =>
+          import(/* webpackChunkName: "adminhome" */ "@views/Admin/Home")
+      },
+      {
         path: "/test",
         name: "Test",
         component: () =>
