@@ -1,4 +1,9 @@
 <template>
+  <!-- 
+  菜单激活随导航改变
+  a-menu :selectedKeys="[$route.path]"
+  a-menu-item :key="item.path"
+  -->
   <a-layout-sider
     v-model="collapsedSider"
     :trigger="null"
@@ -35,6 +40,7 @@
       <!-- theme="dark"  -->
       <a-menu
         class="layout-sider-menu"
+        :selectedKeys="[$route.path]"
         mode="inline"
         :theme="theme"
         :inline-collapsed="collapsedSider"
@@ -44,7 +50,7 @@
           <a-menu-item
             class="layout-sider-menu-item"
             v-if="!item.children"
-            :key="item.name"
+            :key="item.path"
             @openChange="onOpenChange"
           >
             <div @click="clickMenu(item)">

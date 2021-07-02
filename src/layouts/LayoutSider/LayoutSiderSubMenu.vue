@@ -2,6 +2,7 @@
   <!-- class="layout-sider-menu-item" -->
   <a-sub-menu
     class="layout-sider-menu-item"
+    :selectedKeys="[$route.path]"
     :key="menu.name"
     v-bind="$props"
     v-on="$listeners"
@@ -17,7 +18,7 @@
       <a-menu-item
         class="layout-sider-menu-item"
         v-if="!item.children || item.children.size == 0"
-        :key="item.name"
+        :key="item.path"
       >
         <div @click="clickMenu(item)">
           <!-- <router-link :to="item.path"> -->

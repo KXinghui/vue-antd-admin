@@ -230,7 +230,7 @@ export default {
       } else if ("deleteCurLeft" == event) {
         isActiveInDelete = 0 <= activeTagIndex && activeTagIndex < curIndex;
         tags.splice(0, curIndex);
-        fixActiveTagIndex = isActiveInDelete ? curIndex : activeTagIndex;
+        fixActiveTagIndex = isActiveInDelete ? 0 : activeTagIndex;
       } else if ("deleteCurRight" == event) {
         isActiveInDelete =
           curIndex < activeTagIndex && activeTagIndex < tagsLen;
