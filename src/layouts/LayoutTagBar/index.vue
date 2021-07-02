@@ -34,21 +34,21 @@
           {{ tagSlot.tag }}
         </template> -->
         </layout-tag>
-        <a-menu slot="overlay" @click="handleTagClick">
+        <a-menu slot="overlay" @click="e => handleTagClick(e, tagIndex)">
           <a-menu-item key="deleteAll">
             删除全部标签
           </a-menu-item>
           <a-menu-item key="deleteCur">
-            删除激活标签
+            删除当前标签
           </a-menu-item>
           <a-menu-item key="deleteCurLeft">
-            删除激活标签左边
+            删除当前标签左边
           </a-menu-item>
           <a-menu-item key="deleteCurRight">
-            删除激活标签右边
+            删除当前标签右边
           </a-menu-item>
           <a-menu-item key="deleteNotCur">
-            删除非激活标签
+            删除非当前标签
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -191,22 +191,16 @@ export default {
     //     },
     //   },
     activeTag(activeTagIndex) {
-      // this.$emit("update:activeTagIndex", activeTagIndex);
       this.$emit("activeTag", activeTagIndex);
     },
     deleteTag(tagIndex) {
-      let isCur = this.activeTagIndex == tagIndex;
-      this.handleTag(
-        { key: isCur ? "deleteCur" : "deleteOneNotCur" },
-        tagIndex
-      );
+      this.handleTag({ key: "deleteCur" }, tagIndex);
     },
     // 使用 vuedraggable 实现拖拽排序
     // 处理标签
     handleTag(e, curIndex) {
       // deleteAll 删除全部
       // deleteCur 删除当前
-      // deleteOneNotCur 删除一个非当前
       // deleteNotCur 删除全部非当前
       // deleteCurLeft 删除当前左边
       // deleteCurRight 删除当前右边
@@ -215,7 +209,6 @@ export default {
       if (curIndex < 0 || curIndex > tagsLen) {
         return;
       }
-      debugger;
       let tags = [...this.tags];
       let isActiveInDelete = false;
       let activeTagIndex = this.activeTagIndex;
@@ -224,41 +217,45 @@ export default {
         tags = [];
       } else if ("deleteCur" == event) {
         isActiveInDelete = curIndex == activeTagIndex;
-        fixActiveTagIndex =
-          isActiveInDelete && curIndex - 1 >= 0 ? curIndex - 1 : 0;
+        fixActiveTagIndex = isActiveInDelete
+          ? curIndex - 1 >= 0
+            ? curIndex - 1
+            : 0
+          : activeTagIndex;
         tags.splice(curIndex, 1);
       } else if ("deleteNotCur" == event) {
         isActiveInDelete = curIndex != activeTagIndex;
         tags = [tags[curIndex]];
-      } else if ("deleteOneNotCur" == event) {
-        fixActiveTagIndex = activeTagIndex;
-        tags.splice(curIndex, 1);
+        fixActiveTagIndex = isActiveInDelete ? curIndex : 0;
       } else if ("deleteCurLeft" == event) {
         isActiveInDelete = 0 <= activeTagIndex && activeTagIndex < curIndex;
         tags.splice(0, curIndex);
+        fixActiveTagIndex = isActiveInDelete ? curIndex : activeTagIndex;
       } else if ("deleteCurRight" == event) {
         isActiveInDelete =
           curIndex < activeTagIndex && activeTagIndex < tagsLen;
-        fixActiveTagIndex = curIndex;
+        fixActiveTagIndex = isActiveInDelete ? curIndex : activeTagIndex;
         tags.splice(curIndex + 1, tagsLen - curIndex - 1);
       }
       this.$emit("update:tags", tags);
-      if (fixActiveTagIndex != activeTagIndex || tags.length == 0) {
+      if (
+        (fixActiveTagIndex == 0 && activeTagIndex == 0) ||
+        fixActiveTagIndex != activeTagIndex ||
+        tags.length == 0
+      ) {
+        // 激活标签情况：
+        // 1 合适激活标签索引和激活标签索引都为0
+        // 2 合适激活标签索引与激活标签索引不一致
+        // 3 处理标签后的标签列表长度为 0
         this.activeTag(fixActiveTagIndex);
       }
+
       // this.tagBarRefresh = true;
     },
-    handleTagClick(e) {
-      this.handleTag(e, this.activeTagIndex);
+    handleTagClick(e, tagIndex) {
+      // 标签索引：当前标签索引 或 激活标签索引
+      this.handleTag(e, tagIndex ? tagIndex : this.activeTagIndex);
     }
-    // clickTag(tag) {
-    //   let isExist = true;
-    //   this.layoutTags.forEach(tag => {});
-
-    //   if (!isExist) {
-    //     this.layoutTags.push(tag);
-    //   }
-    // }
   }
 };
 </script>
